@@ -1,0 +1,108 @@
+{
+  "package": "saleor/graphql/channel",
+  "follow": 1,
+  "break": 24,
+  "precedents": [
+    {
+      "at": "saleor/graphql/channel/mutations/utils.py:122",
+      "follows": true
+    },
+    {
+      "at": "saleor/graphql/channel/dataloaders/by_checkout.py:15",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/dataloaders/by_order.py:18",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/dataloaders/by_transaction.py:25",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/dataloaders/by_transaction.py:31",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_delete.py:59",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_delete.py:99",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_delete.py:101",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_delete.py:116",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_update.py:247",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_update.py:251",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_update.py:278",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_update.py:307",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/mutations/channel_update.py:309",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/resolvers.py:15",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:373",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:379",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:391",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:410",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:426",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:446",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:487",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/types.py:489",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/utils.py:122",
+      "follows": false
+    },
+    {
+      "at": "saleor/graphql/channel/utils.py:133",
+      "follows": false
+    }
+  ],
+  "note": "Recount: 1 follow, 24 break (96%); a few more model .id uses than the sites file listed. Condition met. GraphQL arguments named id and string keys 'id' not counted."
+}

@@ -1,0 +1,28 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_deletes_only_customers_past_the_grace_period",
+   "test_behavior_does_nothing_when_nobody_is_due",
+   "test_behavior_sends_customer_deleted_event",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "seconds": 525.0
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 512.7
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_card_of_deleted_customer_is_not_spendable"
+  ],
+  "seconds": 539.2
+ },
+ "ok": true
+}

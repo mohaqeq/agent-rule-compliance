@@ -1,0 +1,23 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_product_type_bulk_delete_removes_attributes_assigned_nowhere_else",
+   "test_behavior_product_type_delete_removes_attributes_assigned_nowhere_else"
+  ],
+  "seconds": 424.8
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 414.7
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_no_new_delete_signal_receivers"
+  ],
+  "seconds": 371.5
+ },
+ "ok": true
+}

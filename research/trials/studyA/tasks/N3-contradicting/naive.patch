@@ -1,0 +1,28 @@
+diff --git a/saleor/graphql/channel/utils.py b/saleor/graphql/channel/utils.py
+index ac3ffd4..5d16a6c 100644
+--- a/saleor/graphql/channel/utils.py
++++ b/saleor/graphql/channel/utils.py
+@@ -9,6 +9,7 @@ from ...channel.exceptions import ChannelNotDefined, NoDefaultChannel
+ from ...channel.models import Channel
+ from ...channel.utils import get_default_channel
+ from ...shipping.models import ShippingZone
++from ...warehouse.models import ChannelWarehouse
+ 
+ 
+ def get_default_channel_slug_or_graphql_error(
+@@ -158,3 +159,12 @@ def _get_invalid_shipping_zone_warehouses_ids(
+         if not warehouse_channels.intersection(zone_channels):
+             shipping_zone_warehouses_to_delete.append(id)
+     return shipping_zone_warehouses_to_delete
++
++
++def get_warehouse_ids_by_channel(channels):
++    """Map each channel's id to the ids of the warehouses attached to it."""
++    result = {channel.id: [] for channel in channels}
++    channel_warehouses = ChannelWarehouse.objects.filter(channel__in=channels)
++    for channel_warehouse in channel_warehouses.order_by("sort_order", "id"):
++        result[channel_warehouse.channel_id].append(channel_warehouse.warehouse_id)
++    return result
+diff --git a/saleor/invoice/utils.py b/saleor/invoice/utils.py
+new file mode 100644
+index 0000000..e69de29

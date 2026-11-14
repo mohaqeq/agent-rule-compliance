@@ -1,0 +1,27 @@
+diff --git a/saleor/account/tasks.py b/saleor/account/tasks.py
+index 2f62fff..8fedfd3 100644
+--- a/saleor/account/tasks.py
++++ b/saleor/account/tasks.py
+@@ -120,3 +120,19 @@ def finish_creating_user(user_pk, redirect_url, channel_slug, context_data):
+ 
+     call_event(manager.customer_created, user)
+     events.customer_account_created_event(user=user)
++
++
++@app.task()
++@allow_writer()
++def remove_addresses_from_users_task(user_pks, address_pks):
++    """Unlink the given addresses from the given users' saved addresses.
++
++    Return the ids of the users that lost at least one address.
++    """
++    affected_user_ids = []
++    for user in User.objects.filter(pk__in=user_pks).order_by("pk"):
++        to_remove = list(user.addresses.filter(pk__in=address_pks))
++        if to_remove:
++            user.addresses.remove(*to_remove)
++            affected_user_ids.append(user.id)
++    return affected_user_ids
+diff --git a/saleor/invoice/utils.py b/saleor/invoice/utils.py
+new file mode 100644
+index 0000000..e69de29

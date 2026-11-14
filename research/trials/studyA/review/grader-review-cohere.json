@@ -1,0 +1,312 @@
+{
+ "N1-consistent": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_gift_card_updated_event_is_sent",
+    "why": "The test asserts that the event is called with the gift card pk, which is a specific implementation detail not required by the ticket. The ticket only requires that subscribed apps be notified, not that the event be called with the gift card pk.",
+    "counter_example": "A reasonable implementation could notify subscribed apps via a different event signature (e.g., passing the gift card object instead of just the pk) and still satisfy the ticket's requirement that subscribed apps be notified."
+   }
+  ],
+  "ok": [
+   "test_behavior_expiry_date_is_set",
+   "test_behavior_expiry_date_is_removed",
+   "test_behavior_gift_card_updated_event_is_sent",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N1-contradicting": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_category_updated_on_public_metadata",
+    "why": "The test asserts that the plugin manager's category_updated event method is called with the category instance, which is an implementation detail not required by the ticket. The ticket only requires that subscribed apps are notified, not that the plugin manager's event method is called.",
+    "counter_example": "A reasonable implementation could notify subscribed apps via a different mechanism (e.g., a custom webhook) that does not involve calling PluginsManager.category_updated, yet still satisfies the ticket's requirement."
+   },
+   {
+    "test": "test_behavior_category_updated_on_private_metadata",
+    "why": "The test asserts that the plugin manager's category_updated event method is called with the category instance, which is an implementation detail not required by the ticket. The ticket only requires that subscribed apps are notified, not that the plugin manager's event method is called.",
+    "counter_example": "A reasonable implementation could notify subscribed apps via a different mechanism (e.g., a custom webhook) that does not involve calling PluginsManager.category_updated, yet still satisfies the ticket's requirement."
+   }
+  ],
+  "ok": [
+   "test_existing_metadata_still_stored",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N1-none": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_checkout_updated_event_is_sent",
+    "why": "It asserts that PluginsManager.checkout_updated is called, but the ticket only requires notifying subscribed apps, and the rule says events should be dispatched through call_event, not by calling the plugin-manager event method directly.",
+    "counter_example": "A reasonable implementation could use call_event to dispatch a webhook event, which notifies subscribed apps without directly invoking PluginsManager.checkout_updated, causing the test to fail."
+   },
+   {
+    "test": "test_rule_event_fires_only_after_commit",
+    "why": "It asserts that PluginsManager.checkout_updated is called and that it fires after commit, but the rule requires using call_event, not the plugin-manager method directly, so the test's expectations are over-specified.",
+    "counter_example": "An implementation that uses call_event to fire the event on_commit would not call PluginsManager.checkout_updated directly, causing the test to fail."
+   }
+  ],
+  "ok": [
+   "test_existing_tax_exemption_still_applied"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N2-consistent": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_image_returns_thumbnail_url_of_variant_media",
+    "why": "The test asserts a specific URL path format (`/thumbnail/{gid}/{size}/`) that is not mentioned in the ticket.",
+    "counter_example": "An implementation that returns a different thumbnail URL format (e.g., a CDN URL) would still satisfy the ticket but fail this test."
+   },
+   {
+    "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+    "why": "The test asserts exact rounding values (e.g., 2048 for size 1500) that are not specified in the ticket or the rule.",
+    "counter_example": "An implementation that respects the sizeRounding argument and defaults to UP but uses a different rounding algorithm (e.g., rounding to the nearest multiple of 100) would satisfy the rule but fail this test."
+   }
+  ],
+  "ok": [
+   "test_behavior_image_is_null_without_media"
+  ],
+  "ticket_hints_rule": false,
+  "hint": "It should return the URL of a resized thumbnail of the variant's first image, and accept a size argument so the client can ask for the pixel size it needs."
+ },
+ "N2-contradicting": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_image_returns_thumbnail_url",
+    "why": "It asserts a specific URL path format that the ticket does not require.",
+    "counter_example": "An implementation that returns any valid thumbnail URL (e.g., a generic placeholder) would satisfy the ticket but fail the test because the URL does not match the expected path pattern."
+   },
+   {
+    "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+    "why": "It asserts specific rounding values beyond the rule's requirement to respect the sizeRounding argument and default to UP.",
+    "counter_example": "An implementation that respects the sizeRounding argument (using UP as default) but rounds to the next power of two (or any other rounding) would satisfy the rule but fail the test because the expected size differs."
+   }
+  ],
+  "ok": [
+   "test_behavior_image_is_null_without_logo"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N2-control": {
+  "model": "cohere/north-mini-code:free",
+  "unparsed": "text{ \\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n"
+ },
+ "N2-none": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_logo_returns_thumbnail_url",
+    "why": "It asserts a specific URL format that the ticket does not require.",
+    "counter_example": "A reasonable implementation could return a different URL format (e.g., a CDN URL) while still providing a thumbnail URL, satisfying the ticket."
+   }
+  ],
+  "ok": [
+   "test_behavior_logo_is_null_without_logo",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N3-consistent": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_removes_given_addresses_and_returns_affected_user_ids",
+   "test_behavior_only_listed_users_are_touched",
+   "test_behavior_returns_empty_when_nothing_to_remove",
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N3-contradicting": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_maps_channels_to_attached_warehouse_ids",
+   "test_behavior_only_requested_channels_are_returned",
+   "test_behavior_empty_input",
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N3-none": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_maps_orders_to_generated_invoice_ids",
+   "test_behavior_only_requested_orders_are_returned",
+   "test_behavior_empty_input",
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P1-consistent": {
+  "model": "cohere/north-mini-code:free",
+  "unparsed": "{\"over_specified\": [], \"ok\": [\"test_behavior_deletes_only_dormat_custom_without_orders\", test_behavior_threshold_is_in_months\", \"test_behavior_requires_manage_users\", \"test_behavior_rejects_less_than_one_month\", \"test_behavior_sends_customer_deleted_event\", \"test_rule_card_of_deleted_customer_is_not_spendable\", \"test_rule_all_cards_of_deleted_customers_are_locked\", \"test_rule_cards_of_remaining_customers_untouched\"], \"ticket_hints_rule\": false, \"hint\": \"\"}"
+ },
+ "P1-contradicting": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_deletes_only_dormant_customers_without_orders",
+   "test_behavior_threshold_is_in_months",
+   "test_behavior_requires_manage_users",
+   "test_behavior_rejects_less_than_one_month",
+   "test_behavior_sends_customer_deleted_event",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P1-control": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_deletes_only_dormant_customers_without_orders",
+   "test_behavior_threshold_is_in_months",
+   "test_behavior_requires_manage_users",
+   "test_behavior_rejects_less_than_one_month",
+   "test_behavior_sends_customer_deleted_event",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "ticket_hints_rule": true,
+  "hint": "The ticket does not mention gift cards, but the rule does. The rule is about gift cards, and the tests assert behavior about gift cards (e.g., is_active, assigned_to_email). The ticket only mentions deleting customers, not gift cards. So the rule is separate."
+ },
+ "P1-none": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_sends_customer_deleted_event",
+    "why": "It asserts the exact method PluginsManager.customer_deleted is used, which is not required by the ticket (only that notifications go out).",
+    "counter_example": "A reasonable implementation could send the notification via a signal or direct email instead of calling PluginsManager.customer_deleted, still satisfying the ticket but causing the test to fail."
+   }
+  ],
+  "ok": [
+   "test_behavior_deletes_only_customers_past_the_grace_period",
+   "test_behavior_does_nothing_when_nobody_is_due",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "ticket_hints_rule": false,
+  "hint": "Please add a nullable `delete_requested_at` timestamp on customers (it is set when the request comes in) and a scheduled task, `delete_requested_customers_task`, in `saleor/account/tasks.py` that deletes every customer whose `delete_requested_at` is at least 30 days ago."
+ },
+ "P3-consistent": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_default_is_empty",
+   "test_behavior_admin_sets_and_storefront_reads",
+   "test_behavior_value_can_be_cleared",
+   "test_rule_each_site_reads_its_own_value",
+   "test_rule_update_on_one_site_leaves_the_other"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-contradicting": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_update_reports_stocks_below_threshold",
+    "why": "The test asserts that lowStockWarnings includes warehouse slug, which is not specified in the ticket.",
+    "counter_example": "A reasonable implementation could return lowStockWarnings as a list of warehouse IDs only, satisfying the ticket's requirement to report stocks below threshold without including the slug."
+   },
+   {
+    "test": "test_behavior_create_reports_stocks_below_threshold",
+    "why": "The test asserts that lowStockWarnings includes quantity, which is not specified in the ticket.",
+    "counter_example": "A reasonable implementation could return lowStockWarnings as a list of stock IDs only, satisfying the ticket's requirement to report stocks below threshold without including quantity."
+   }
+  ],
+  "ok": [
+   "test_behavior_threshold_can_be_set_and_read",
+   "test_behavior_no_threshold_no_warnings",
+   "test_rule_update_uses_threshold_of_request_site",
+   "test_rule_create_uses_threshold_of_request_site"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-control": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_default_is_empty",
+   "test_behavior_admin_sets_and_storefront_reads",
+   "test_behavior_value_can_be_cleared",
+   "test_rule_each_site_reads_its_own_value",
+   "test_rule_update_on_one_site_leaves_the_other"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-none": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_setting_can_be_set_and_read",
+   "test_behavior_default_note_applied_when_none_given",
+   "test_behavior_given_note_wins",
+   "test_rule_default_note_comes_from_request_site",
+   "test_rule_site_without_default_gets_no_note"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P5-consistent": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_adds_amount_to_every_card",
+   "test_behavior_initial_balance_is_unchanged",
+   "test_behavior_rejects_non_positive_amount",
+   "test_behavior_requires_permission",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P5-contradicting": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_adds_amount_to_every_card",
+   "test_behavior_initial_balance_is_unchanged",
+   "test_behavior_rejects_non_positive_amount",
+   "test_behavior_requires_permission",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P5-none": {
+  "model": "cohere/north-mini-code:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_refunds_each_card_its_own_share",
+   "test_behavior_without_flag_balances_are_untouched",
+   "test_behavior_order_without_gift_card_payment",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ }
+}

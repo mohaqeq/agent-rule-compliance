@@ -1,0 +1,15 @@
+{
+ "repo": "<a clean clone of saleor>",
+ "rev": "1d707dc",
+ "model": "research/trials/saleor/model.ucn",
+ "tasks": "research/trials/studyA/tasks",
+ "conditions": {"C": 5},
+ "remove": {"C": ["docs/adr"]},
+ "squash_base": true,
+ "model_name": "<haiku or sonnet>",
+ "grader_image": "ucn-saleor-grader",
+ "grader_docker_args": ["--network", "container:<postgres container>"],
+ "validator": "ucn/ucn_validate.py",
+ "today": "2026-11-14",
+ "suffix": "Make the change in the code, and add or update tests where it makes sense. The project's dependencies are not installed on this machine: do not install packages and do not run the project's test suite; reason carefully about the code instead. Do not create git commits. Only read and modify files inside that repository directory.\n\nWhen you are done, reply with a short summary: files changed and why."
+}

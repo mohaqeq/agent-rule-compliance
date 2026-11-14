@@ -1,0 +1,25 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_expiry_date_is_removed",
+   "test_behavior_expiry_date_is_set",
+   "test_behavior_gift_card_updated_event_is_sent",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 417.6
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 393.2
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 445.9
+ },
+ "ok": true
+}

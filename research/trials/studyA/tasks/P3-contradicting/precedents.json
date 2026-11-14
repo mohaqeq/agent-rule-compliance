@@ -1,0 +1,22 @@
+[
+ {
+  "at": "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:111",
+  "follows": false
+ },
+ {
+  "at": "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:157",
+  "follows": false
+ },
+ {
+  "at": "saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py:126",
+  "follows": false
+ },
+ {
+  "at": "saleor/graphql/product/mutations/product_variant/product_variant_update.py:344",
+  "follows": false
+ },
+ {
+  "at": "saleor/graphql/product/filters/product_helpers.py:169",
+  "follows": true
+ }
+]

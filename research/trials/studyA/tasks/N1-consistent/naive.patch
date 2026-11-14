@@ -1,0 +1,95 @@
+diff --git a/saleor/graphql/giftcard/mutations/__init__.py b/saleor/graphql/giftcard/mutations/__init__.py
+index c702bad..8dc8a8a 100644
+--- a/saleor/graphql/giftcard/mutations/__init__.py
++++ b/saleor/graphql/giftcard/mutations/__init__.py
+@@ -5,6 +5,7 @@ from .gift_card_balance_adjust import GiftCardBalanceAdjust
+ from .gift_card_create import GiftCardCreate
+ from .gift_card_deactivate import GiftCardDeactivate
+ from .gift_card_delete import GiftCardDelete
++from .gift_card_expiry_date_update import GiftCardExpiryDateUpdate
+ from .gift_card_resend import GiftCardResend
+ from .gift_card_unassign_user import GiftCardUnassignUser
+ from .gift_card_update import GiftCardUpdate
+@@ -17,6 +18,7 @@ __all__ = [
+     "GiftCardCreate",
+     "GiftCardDeactivate",
+     "GiftCardDelete",
++    "GiftCardExpiryDateUpdate",
+     "GiftCardResend",
+     "GiftCardUnassignUser",
+     "GiftCardUpdate",
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_expiry_date_update.py b/saleor/graphql/giftcard/mutations/gift_card_expiry_date_update.py
+new file mode 100644
+index 0000000..c3dd614
+--- /dev/null
++++ b/saleor/graphql/giftcard/mutations/gift_card_expiry_date_update.py
+@@ -0,0 +1,49 @@
++import graphene
++
++from ....permission.enums import GiftcardPermissions
++from ....webhook.event_types import WebhookEventAsyncType
++from ...core import ResolveInfo
++from ...core.doc_category import DOC_CATEGORY_GIFT_CARDS
++from ...core.mutations import BaseMutation
++from ...core.scalars import Date
++from ...core.types import GiftCardError
++from ...core.utils import WebhookEventInfo
++from ...plugins.dataloaders import get_plugin_manager_promise
++from ..types import GiftCard
++
++
++class GiftCardExpiryDateUpdate(BaseMutation):
++    gift_card = graphene.Field(GiftCard, description="The updated gift card.")
++
++    class Arguments:
++        id = graphene.ID(required=True, description="ID of a gift card to update.")
++        expiry_date = Date(
++            required=False,
++            description="The new expiry date. Pass null to remove the expiry date.",
++        )
++
++    class Meta:
++        description = "Set or remove the expiry date of a gift card."
++        doc_category = DOC_CATEGORY_GIFT_CARDS
++        permissions = (GiftcardPermissions.MANAGE_GIFT_CARD,)
++        error_type_class = GiftCardError
++        error_type_field = "gift_card_errors"
++        webhook_events_info = [
++            WebhookEventInfo(
++                type=WebhookEventAsyncType.GIFT_CARD_UPDATED,
++                description="A gift card was updated.",
++            )
++        ]
++
++    @classmethod
++    def perform_mutation(  # type: ignore[override]
++        cls, _root, info: ResolveInfo, /, *, id: str, expiry_date=None
++    ):
++        gift_card = cls.get_node_or_error(
++            info, id, field="gift_card_id", only_type=GiftCard
++        )
++        gift_card.expiry_date = expiry_date
++        gift_card.save(update_fields=["expiry_date"])
++        manager = get_plugin_manager_promise(info.context).get()
++        manager.gift_card_updated(gift_card)
++        return GiftCardExpiryDateUpdate(gift_card=gift_card)
+diff --git a/saleor/graphql/giftcard/schema.py b/saleor/graphql/giftcard/schema.py
+index 3fdfe5a..bd95270 100644
+--- a/saleor/graphql/giftcard/schema.py
++++ b/saleor/graphql/giftcard/schema.py
+@@ -29,6 +29,7 @@ from .mutations import (
+     GiftCardCreate,
+     GiftCardDeactivate,
+     GiftCardDelete,
++    GiftCardExpiryDateUpdate,
+     GiftCardResend,
+     GiftCardUnassignUser,
+     GiftCardUpdate,
+@@ -146,6 +147,7 @@ class GiftCardMutations(graphene.ObjectType):
+     gift_card_delete = GiftCardDelete.Field()
+     gift_card_deactivate = GiftCardDeactivate.Field()
+     gift_card_update = GiftCardUpdate.Field()
++    gift_card_expiry_date_update = GiftCardExpiryDateUpdate.Field()
+     gift_card_resend = GiftCardResend.Field()
+     gift_card_add_note = GiftCardAddNote.Field()
+ 

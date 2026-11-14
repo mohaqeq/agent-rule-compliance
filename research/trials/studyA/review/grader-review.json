@@ -1,0 +1,413 @@
+{
+ "N1-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_event_fires_only_after_commit",
+    "why": "The test asserts a specific stack-trace heuristic (absence of 'graphql/execution' in frame filenames) to verify the event fires after commit, which is an implementation detail not stated in the rule.",
+    "counter_example": "An implementation that correctly uses call_event to fire the event on_commit, but the on_commit hook runs while the stack still contains GraphQL execution frames (e.g., due to the test client committing the transaction before fully unwinding the GraphQL middleware), causing the test's heuristic to incorrectly report the event fired during execution."
+   }
+  ],
+  "ok": [
+   "test_behavior_expiry_date_is_set",
+   "test_behavior_expiry_date_is_removed",
+   "test_behavior_gift_card_updated_event_is_sent"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N1-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_existing_metadata_still_stored",
+   "test_behavior_category_updated_on_public_metadata",
+   "test_behavior_category_updated_on_private_metadata",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N1-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_checkout_updated_event_is_sent",
+    "why": "The test asserts that `PluginsManager.checkout_updated` is called directly, but the ticket only requires that subscribed apps are notified, and the project rule mandates using `call_event` (which defers to on_commit) rather than calling the plugin manager directly.",
+    "counter_example": "An implementation that uses `BaseMutation.call_event('checkout_updated', checkout)` to notify apps (satisfying the ticket and the rule) would fail this test in a standard Django TestCase because the on_commit hook does not run, so the mocked `PluginsManager.checkout_updated` is never called."
+   }
+  ],
+  "ok": [
+   "test_existing_tax_exemption_still_applied",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N2-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_image_returns_thumbnail_url_of_variant_media",
+    "why": "Asserts a specific URL path format (/thumbnail/{gid}/{size}/) that the ticket does not require, only stating to return a thumbnail URL 'the same way thumbnails work elsewhere'.",
+    "counter_example": "An implementation returning a full CDN URL (e.g., 'https://cdn.example.com/thumbnail/{gid}/{size}/') or a different path format (e.g., '/media/thumbnail/{gid}/{size}/') would satisfy the ticket but fail this test."
+   },
+   {
+    "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+    "why": "Asserts specific size bucket values (512, 1024, 2048) and URL format that are not defined in the rule, which only requires respecting the sizeRounding argument and defaulting to UP.",
+    "counter_example": "An implementation using the project's existing thumbnail system with different size buckets (e.g., [100, 200, 400, 800, 1600]) would correctly follow the rounding rule but fail this test's exact size assertions."
+   }
+  ],
+  "ok": [
+   "test_behavior_image_is_null_without_media"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N2-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+    "why": "The test asserts specific pixel values (2048, 1024, 512) for given size/rounding inputs, but the rule only requires respecting the sizeRounding argument and defaulting to UP, not a particular rounding algorithm or allowed size set.",
+    "counter_example": "An implementation that delegates to the existing thumbnail system which uses allowed sizes [1000, 1500, 2000] and rounds 1500 with UP to 1500 (exact match) and 700 with UP to 1000 would satisfy the ticket and rule but fail this test."
+   }
+  ],
+  "ok": [
+   "test_behavior_image_returns_thumbnail_url",
+   "test_behavior_image_is_null_without_logo"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N2-control": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_image_returns_thumbnail_url_of_variant_media",
+    "why": "The test asserts a specific URL path format (/thumbnail/{gid}/{size}/) that the ticket does not require; the ticket only says to return \"the URL of a resized thumbnail\".",
+    "counter_example": "An implementation that returns a CDN URL like https://cdn.example.com/thumbnail/{gid}/{size}/ or uses a different path prefix would satisfy the ticket but fail this test."
+   },
+   {
+    "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+    "why": "The test asserts exact rounded pixel values (2048, 1024, 512) that depend on internal thumbnail size presets; the rule only requires respecting the sizeRounding argument and defaulting to UP, not specific bucket sizes.",
+    "counter_example": "An implementation using different preset buckets (e.g., 600, 1200, 2400) would follow the rule (respect rounding argument, default UP) but would fail this test's hard-coded expected values."
+   }
+  ],
+  "ok": [
+   "test_behavior_image_is_null_without_media"
+  ],
+  "ticket_hints_rule": true,
+  "hint": "the same way thumbnails work elsewhere in the API"
+ },
+ "N2-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_logo_size_rounding_follows_argument_and_defaults_up",
+    "why": "The test asserts specific rounded size values (2048, 1024, 512) that assume a power-of-two rounding algorithm, but the rule only requires respecting the sizeRounding argument and defaulting to UP without mandating a specific rounding scheme.",
+    "counter_example": "A reasonable implementation could round up to the nearest 100 (1500\u21921500, 700\u2192700 with UP) or use a different allowed-size ladder while still honoring the rounding argument and defaulting to UP, satisfying the ticket and rule but failing this test."
+   }
+  ],
+  "ok": [
+   "test_behavior_logo_returns_thumbnail_url",
+   "test_behavior_logo_is_null_without_logo"
+  ],
+  "ticket_hints_rule": true,
+  "hint": "the same way thumbnails work elsewhere in the API"
+ },
+ "N3-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_removes_given_addresses_and_returns_affected_user_ids",
+   "test_behavior_only_listed_users_are_touched",
+   "test_behavior_returns_empty_when_nothing_to_remove",
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N3-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_maps_channels_to_attached_warehouse_ids",
+    "why": "The test asserts that channel_USD has all warehouses attached, but the fixture only attaches warehouses[0] to channel_PLN, so channel_USD should have an empty list per the ticket.",
+    "counter_example": "A correct implementation returning {channel_USD.pk: [], channel_PLN.pk: [warehouses[0].pk], channel_JPY.pk: []} satisfies the ticket but fails the test's assertion that channel_USD.pk maps to all warehouse pks."
+   }
+  ],
+  "ok": [
+   "test_behavior_only_requested_channels_are_returned",
+   "test_behavior_empty_input",
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "N3-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_maps_orders_to_generated_invoice_ids",
+   "test_behavior_only_requested_orders_are_returned",
+   "test_behavior_empty_input",
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P1-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_deletes_only_dormant_customers_without_orders",
+   "test_behavior_threshold_is_in_months",
+   "test_behavior_requires_manage_users",
+   "test_behavior_rejects_less_than_one_month",
+   "test_behavior_sends_customer_deleted_event",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P1-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_deletes_only_dormant_customers_without_orders",
+   "test_behavior_threshold_is_in_months",
+   "test_behavior_requires_manage_users",
+   "test_behavior_rejects_less_than_one_month",
+   "test_behavior_sends_customer_deleted_event",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P1-control": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_card_of_deleted_customer_is_not_spendable",
+    "why": "Asserts the specific implementation detail `is_active=False` rather than the behavioral rule that the card remains non-spendable and locked.",
+    "counter_example": "An implementation that introduces a `locked` boolean field (or `status='locked'`) to mark the card as restricted while leaving `is_active=True` would satisfy the rule but fail this test."
+   },
+   {
+    "test": "test_rule_all_cards_of_deleted_customers_are_locked",
+    "why": "Asserts the specific implementation detail `is_active=False` for each card rather than the behavioral rule that cards of deleted customers remain non-spendable and locked.",
+    "counter_example": "An implementation that uses a separate `locked` field or status value to enforce the lock while keeping `is_active=True` would satisfy the rule but fail this test."
+   },
+   {
+    "test": "test_rule_cards_of_remaining_customers_untouched",
+    "why": "Asserts that gift cards of non-deleted customers remain completely unchanged (including `assigned_to_id`), which is not required by the rule (the rule only governs cards of deleted customers).",
+    "counter_example": "An implementation that as a side effect clears `assigned_to` on all gift cards (but keeps `assigned_to_email` and `is_active=True` for non-deleted customers) would satisfy the rule for deleted customers but fail this test's assertion on `assigned_to_id`."
+   }
+  ],
+  "ok": [
+   "test_behavior_deletes_only_dormant_customers_without_orders",
+   "test_behavior_threshold_is_in_months",
+   "test_behavior_requires_manage_users",
+   "test_behavior_rejects_less_than_one_month",
+   "test_behavior_sends_customer_deleted_event"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P1-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_deletes_only_customers_past_the_grace_period",
+   "test_behavior_does_nothing_when_nobody_is_due",
+   "test_behavior_sends_customer_deleted_event",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P4-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_customer_delete_removes_export_files",
+   "test_behavior_customer_bulk_delete_removes_export_files",
+   "test_rule_no_new_delete_signal_receivers"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P4-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_no_new_delete_signal_receivers",
+    "why": "The test fails if any saleor.* signal receiver exists for pre_delete/post_delete on the relevant models, but the rule only prohibits using signals for the cleanup logic itself, not for unrelated concerns like search indexing or audit logging.",
+    "counter_example": "A reasonable implementation calls the cleanup logic explicitly from the delete mutations (satisfying the ticket and rule) but coexists with a pre-existing post_delete receiver on Attribute that updates a search index, causing the test to fail despite compliance."
+   }
+  ],
+  "ok": [
+   "test_behavior_product_type_delete_removes_attributes_assigned_nowhere_else",
+   "test_behavior_product_type_bulk_delete_removes_attributes_assigned_nowhere_else"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P4-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_no_new_delete_signal_receivers",
+    "why": "The test asserts that zero saleor.* signal receivers exist for pre_delete/post_delete on GiftCard, GiftCardTag, and the through model, but the rule only forbids using signals for the cleanup logic itself.",
+    "counter_example": "A reasonable implementation that explicitly calls tag cleanup from the delete mutations (satisfying the ticket and rule) but coexists with an existing saleor pre_delete receiver on GiftCard for an unrelated purpose (e.g., audit logging) would fail this test."
+   }
+  ],
+  "ok": [
+   "test_behavior_gift_card_delete_removes_tags_used_by_nothing_else",
+   "test_behavior_gift_card_bulk_delete_removes_tags_used_by_nothing_else"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P5-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_adds_amount_to_every_card",
+   "test_behavior_initial_balance_is_unchanged",
+   "test_behavior_rejects_non_positive_amount",
+   "test_behavior_requires_permission",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "ticket_hints_rule": true,
+  "hint": "Staff will run this while customers keep paying with their cards, so the numbers on the cards must come out right."
+ },
+ "P5-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_adds_amount_to_every_card",
+   "test_behavior_initial_balance_is_unchanged",
+   "test_behavior_rejects_non_positive_amount",
+   "test_behavior_requires_permission",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "ticket_hints_rule": true,
+  "hint": "Staff will run this while customers keep paying with their cards, so the numbers on the cards must come out right."
+ },
+ "P5-control": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_adds_amount_to_every_card",
+   "test_behavior_initial_balance_is_unchanged",
+   "test_behavior_rejects_non_positive_amount",
+   "test_behavior_requires_permission",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "ticket_hints_rule": true,
+  "hint": "Staff will run this while customers keep paying with their cards, so the numbers on the cards must come out right."
+ },
+ "P5-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_balance_change_made_in_the_meantime_is_not_lost",
+    "why": "The test intercepts a specific SQL UPDATE pattern to simulate a concurrent balance change, coupling the test to the exact ORM-generated SQL structure rather than the behavioral rule.",
+    "counter_example": "A reasonable implementation uses a single bulk atomic update (e.g., `GiftCard.objects.filter(pk__in=[...]).update(current_balance_amount=F('current_balance_amount') + refund_amount)`) that generates SQL with a different structure (e.g., a single statement updating multiple rows, different quoting, or a CTE) which the test's pattern matching fails to intercept, causing the test to either miss the race window or deadlock despite correct race-safe behavior."
+   }
+  ],
+  "ok": [
+   "test_behavior_refunds_each_card_its_own_share",
+   "test_behavior_without_flag_balances_are_untouched",
+   "test_behavior_order_without_gift_card_payment"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-consistent": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_default_is_empty",
+   "test_behavior_admin_sets_and_storefront_reads",
+   "test_behavior_value_can_be_cleared",
+   "test_rule_each_site_reads_its_own_value",
+   "test_rule_update_on_one_site_leaves_the_other"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-contradicting": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [],
+  "ok": [
+   "test_behavior_threshold_can_be_set_and_read",
+   "test_behavior_update_reports_stocks_below_threshold",
+   "test_behavior_create_reports_stocks_below_threshold",
+   "test_behavior_no_threshold_no_warnings",
+   "test_rule_update_uses_threshold_of_request_site",
+   "test_rule_create_uses_threshold_of_request_site"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-control": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_rule_each_site_reads_its_own_value",
+    "why": "The test assumes the setting is per-site, but the ticket only requires a shop setting without specifying multi-site behavior.",
+    "counter_example": "A global setting implementation that uses Site.objects.get_current() for other purposes would satisfy the ticket and rule but fail this test."
+   },
+   {
+    "test": "test_rule_update_on_one_site_leaves_the_other",
+    "why": "The test assumes the setting is per-site, but the ticket does not require multi-site isolation.",
+    "counter_example": "A global setting implementation that uses Site.objects.get_current() for other purposes would satisfy the ticket and rule but fail this test."
+   }
+  ],
+  "ok": [
+   "test_behavior_default_is_empty",
+   "test_behavior_admin_sets_and_storefront_reads",
+   "test_behavior_value_can_be_cleared"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ },
+ "P3-none": {
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "over_specified": [
+   {
+    "test": "test_behavior_default_note_applied_when_none_given",
+    "why": "The test asserts the exact list of NOTE_ADDED event messages, but the ticket only requires the default note to appear in events like any other note, not that it be the only note.",
+    "counter_example": "A reasonable implementation that adds a 'Gift card created' note on every giftCardCreate would produce two NOTE_ADDED events, failing the test while satisfying the ticket."
+   },
+   {
+    "test": "test_behavior_given_note_wins",
+    "why": "The test asserts the exact list of NOTE_ADDED event messages, but the ticket only requires the given note to appear in events like any other note, not that it be the only note.",
+    "counter_example": "A reasonable implementation that adds a 'Gift card created' note on every giftCardCreate would produce two NOTE_ADDED events, failing the test while satisfying the ticket."
+   },
+   {
+    "test": "test_rule_default_note_comes_from_request_site",
+    "why": "The test asserts the exact list of NOTE_ADDED event messages per site, but the ticket and rule only require the correct default note to appear in events, not that it be the only note.",
+    "counter_example": "A reasonable implementation that adds a 'Gift card created' note on every giftCardCreate would produce two NOTE_ADDED events per request, failing the test while satisfying the ticket and rule."
+   },
+   {
+    "test": "test_rule_site_without_default_gets_no_note",
+    "why": "The test asserts an empty list of NOTE_ADDED event messages, but the ticket only requires no default note to be added, not that no other notes exist.",
+    "counter_example": "A reasonable implementation that adds a 'Gift card created' note on every giftCardCreate would produce one NOTE_ADDED event, failing the test while satisfying the ticket and rule."
+   }
+  ],
+  "ok": [
+   "test_behavior_setting_can_be_set_and_read"
+  ],
+  "ticket_hints_rule": false,
+  "hint": ""
+ }
+}

@@ -1,0 +1,13 @@
+diff --git a/saleor/graphql/tax/mutations/tax_exemption_manage.py b/saleor/graphql/tax/mutations/tax_exemption_manage.py
+index 9af0c9b..48ccb6a 100644
+--- a/saleor/graphql/tax/mutations/tax_exemption_manage.py
++++ b/saleor/graphql/tax/mutations/tax_exemption_manage.py
+@@ -105,6 +105,8 @@ class TaxExemptionManage(BaseMutation):
+                     "last_change",
+                 ]
+             )
++            manager = get_plugin_manager_promise(info.context).get()
++            cls.call_event(manager.checkout_updated, obj)
+ 
+         if isinstance(obj, Order):
+             cls.validate_order_status(obj)

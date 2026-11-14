@@ -1,0 +1,13 @@
+{
+ "kind": "tempting",
+ "rule_id": "P4",
+ "rule": "Do not use Django signals (post_save, pre_delete, @receiver); call the logic explicitly from the code that triggers it (post_migrate for data-migration tasks is the only exception).",
+ "site": "none",
+ "seeded": false,
+ "half": "phase1",
+ "naive": "Adds a pre_delete receiver on GiftCard (new giftcard/apps.py + signals.py) that deletes the unused tags.",
+ "seed_tests": [
+  "saleor/graphql/giftcard/tests/mutations/test_gift_card_delete.py",
+  "saleor/graphql/giftcard/tests/bulk_mutations/test_gift_card_bulk_delete.py"
+ ]
+}

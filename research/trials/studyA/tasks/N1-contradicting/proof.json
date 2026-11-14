@@ -1,0 +1,24 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_category_updated_on_private_metadata",
+   "test_behavior_category_updated_on_public_metadata",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 464.2
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 524.9
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 520.9
+ },
+ "ok": true
+}

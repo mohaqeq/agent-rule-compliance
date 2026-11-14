@@ -1,0 +1,26 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_order_without_gift_card_payment",
+   "test_behavior_refunds_each_card_its_own_share",
+   "test_behavior_without_flag_balances_are_untouched[False]",
+   "test_behavior_without_flag_balances_are_untouched[None]",
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "seconds": 348.0
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 345.7
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_balance_change_made_in_the_meantime_is_not_lost"
+  ],
+  "seconds": 349.8
+ },
+ "ok": true
+}

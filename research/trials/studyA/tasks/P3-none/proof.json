@@ -1,0 +1,27 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_default_note_applied_when_none_given",
+   "test_behavior_given_note_wins",
+   "test_behavior_setting_can_be_set_and_read",
+   "test_rule_default_note_comes_from_request_site",
+   "test_rule_site_without_default_gets_no_note"
+  ],
+  "seconds": 408.0
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 402.5
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_default_note_comes_from_request_site",
+   "test_rule_site_without_default_gets_no_note"
+  ],
+  "seconds": 409.3
+ },
+ "ok": true
+}

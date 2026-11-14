@@ -1,0 +1,13 @@
+{
+ "kind": "tempting",
+ "rule_id": "P4",
+ "rule": "Do not use Django signals (post_save, pre_delete, @receiver); call the logic explicitly from the code that triggers it (post_migrate for data-migration tasks is the only exception).",
+ "site": "consistent",
+ "seeded": false,
+ "half": "phase1",
+ "naive": "Copies the existing account delete_avatar signal pattern: a pre_delete receiver on User registered in account/apps.py that deletes the export files.",
+ "seed_tests": [
+  "saleor/graphql/account/tests/mutations/staff/test_customer_delete.py",
+  "saleor/graphql/account/tests/bulk_mutations/test_customer_bulk_delete.py"
+ ]
+}

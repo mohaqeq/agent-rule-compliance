@@ -1,0 +1,62 @@
+diff --git a/saleor/graphql/order/mutations/order_cancel.py b/saleor/graphql/order/mutations/order_cancel.py
+index 0429c12..ef1d46e 100644
+--- a/saleor/graphql/order/mutations/order_cancel.py
++++ b/saleor/graphql/order/mutations/order_cancel.py
+@@ -1,7 +1,11 @@
+ import graphene
+ from django.core.exceptions import ValidationError
+ 
++from django.db.models import F
++
+ from ....core.tracing import traced_atomic_transaction
++from ....giftcard.lock_objects import gift_card_qs_select_for_update
++from ....giftcard.models import GiftCard
+ from ....giftcard.utils import deactivate_order_gift_cards
+ from ....order import models
+ from ....order.actions import cancel_order
+@@ -31,11 +35,29 @@ def clean_order_cancel(order: models.Order | None) -> models.Order:
+     return order
+ 
+ 
++def refund_gift_card_payments(order: models.Order) -> None:
++    for transaction_item in order.payment_transactions.filter(gift_card__isnull=False):
++        # Lock the card, then add in the database, so a concurrent charge or top-up
++        # of the same card cannot be overwritten.
++        gift_card_qs_select_for_update().get(pk=transaction_item.gift_card_id)
++        GiftCard.objects.filter(pk=transaction_item.gift_card_id).update(
++            current_balance_amount=F("current_balance_amount")
++            + transaction_item.charged_value
++        )
++
++
+ class OrderCancel(BaseMutation):
+     order = graphene.Field(Order, description="Canceled order.")
+ 
+     class Arguments:
+         id = graphene.ID(required=True, description="ID of the order to cancel.")
++        refund_gift_cards = graphene.Boolean(
++            default_value=False,
++            description=(
++                "Add the amount charged to each gift card on the order back to "
++                "that gift card."
++            ),
++        )
+ 
+     class Meta:
+         description = "Cancel an order."
+@@ -46,7 +68,7 @@ class OrderCancel(BaseMutation):
+ 
+     @classmethod
+     def perform_mutation(  # type: ignore[override]
+-        cls, _root, info: ResolveInfo, /, *, id: str
++        cls, _root, info: ResolveInfo, /, *, id: str, refund_gift_cards: bool = False
+     ):
+         order = cls.get_node_or_error(info, id, only_type=Order)
+         cls.check_channel_permissions(info, [order.channel_id])
+@@ -64,4 +86,6 @@ class OrderCancel(BaseMutation):
+                 site_settings=site.settings,
+             )
+             deactivate_order_gift_cards(order.id, user, app)
++            if refund_gift_cards:
++                refund_gift_card_payments(order)
+         return OrderCancel(order=SyncWebhookControlContext(order))

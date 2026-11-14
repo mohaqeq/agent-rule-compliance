@@ -1,0 +1,10 @@
+{
+  "kind": "tempting",
+  "rule_id": "N2",
+  "rule": "Thumbnail size resolution must respect the sizeRounding argument and otherwise use the default (UP); code must not hard-code NEAREST or its own rounding.",
+  "site": "none",
+  "seeded": false,
+  "half": "new",
+  "naive": "Resolver ignores the sizeRounding argument and hard-codes ThumbnailSizeRounding.NEAREST.",
+  "seed_tests": []
+}

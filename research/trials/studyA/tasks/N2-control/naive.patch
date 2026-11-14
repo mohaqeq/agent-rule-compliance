@@ -1,0 +1,58 @@
+diff --git a/saleor/graphql/product/types/products.py b/saleor/graphql/product/types/products.py
+index 4470f93..1fb6fd8 100644
+--- a/saleor/graphql/product/types/products.py
++++ b/saleor/graphql/product/types/products.py
+@@ -388,6 +388,10 @@ class ProductVariant(ChannelContextType[models.ProductVariant]):
+         lambda: ProductMedia,
+         description="List of media for the product variant.",
+     )
++    image = ThumbnailField(
++        graphene.String,
++        description="URL of a resized thumbnail of the variant's first image.",
++    )
+     translation = TranslationField(
+         ProductVariantTranslation,
+         type_name="product variant",
+@@ -817,6 +821,42 @@ class ProductVariant(ChannelContextType[models.ProductVariant]):
+     def resolve_images(root: ChannelContext[models.ProductVariant], info):
+         return ImagesByProductVariantIdLoader(info.context).load(root.node.id)
+ 
++    @staticmethod
++    def resolve_image(
++        root: ChannelContext[models.ProductVariant],
++        info,
++        *,
++        size: int | None = None,
++        format: str | None = None,
++        **_kwargs,
++    ):
++        format = get_thumbnail_format(format)
++        selected_size = resolve_thumbnail_size(size, ThumbnailSizeRounding.NEAREST)
++
++        def return_first_image(variant_media):
++            if not variant_media:
++                return None
++
++            media = variant_media[0]
++
++            def _resolve_url(thumbnail):
++                url = get_image_or_proxy_url(
++                    thumbnail, media.id, "ProductMedia", selected_size, format
++                )
++                return build_absolute_uri(url)
++
++            return (
++                ThumbnailByProductMediaIdSizeAndFormatLoader(info.context)
++                .load((media.id, selected_size, format))
++                .then(_resolve_url)
++            )
++
++        return (
++            MediaByProductVariantIdLoader(info.context)
++            .load(root.node.id)
++            .then(return_first_image)
++        )
++
+     @staticmethod
+     def resolve_weight(root: ChannelContext[models.ProductVariant], _info):
+         return convert_weight_to_default_weight_unit(root.node.weight)

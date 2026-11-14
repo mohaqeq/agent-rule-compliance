@@ -804,6 +804,211 @@ class ReconGrading(Tmp):
         self.assertEqual(r["tampered"], ["context.ucn", "model.ucn", "pyproject.toml"])
         self.assertEqual(r["violations"], 1)
 
+    def test_seed_is_part_of_the_base_and_labels_are_copied(self):
+        def git(*a):
+            return subprocess.run(["git", "-C", self.d, *a], capture_output=True, text=True, check=True).stdout
+        write(os.path.join(self.d, "src", "app", "a", "x.ts"), "export const x = 2;\n")
+        patch = git("diff")
+        git("checkout", "--", ".")
+        task_dir = tempfile.mkdtemp()
+        self.addCleanup(rmtree, task_dir)
+        with open(os.path.join(task_dir, "seed.patch"), "w", newline="\n") as fh:
+            fh.write(patch)
+        seeded = self.recon.apply_seed(self.d, task_dir)
+        self.assertEqual(list(seeded), ["src/app/a/x.ts"])
+        self.spec["model_name"] = "haiku"
+        task = {"dir": os.path.join(self.d, "_task"), "rule_id": "R1", "site": "none", "seeded": True, "half": "new"}
+        real = self.recon.run
+
+        def fake(cmd, **kw):
+            if cmd[0] != "docker":
+                return real(cmd, **kw)
+            if "G" in cmd:
+                out = [a for a in cmd if a.endswith(":/out")][0].rsplit(":", 1)[0]
+                write(os.path.join(out, "r1.xml"), junit([("test_t", "test_ok", "passed", "")]))
+            return subprocess.CompletedProcess(cmd, 0, "Contracts: 1 kept, 0 broken." if "L" in cmd else "", "")
+        self.recon.run = fake
+        self.addCleanup(setattr, self.recon, "run", real)
+        entry = {"run": "r1", "task": "t", "cond": "L", "workspace": self.d, "seeded_files": seeded}
+        r = self.recon.grade_one(self.spec, entry, task, set())
+        self.assertEqual(r["changed"], [])
+        self.assertEqual((r["rule_id"], r["site"], r["seeded"], r["half"], r["agent_model"]),
+                         ("R1", "none", True, "new", "haiku"))
+        write(os.path.join(self.d, "src", "app", "a", "x.ts"), "export const x = 3;\n")  # the agent edits the seeded file
+        write(os.path.join(self.d, "src", "app", "a", "y.ts"), "export const y = 1;\n")
+        r = self.recon.grade_one(self.spec, entry, task, set())
+        self.assertEqual(r["changed"], ["src/app/a/x.ts", "src/app/a/y.ts"])
+
+    def test_squashed_base_hides_the_seed_and_counts_every_kind_of_change(self):
+        def git(*a):
+            return subprocess.run(["git", "-C", self.d, *a], capture_output=True, text=True, check=True).stdout
+        write(os.path.join(self.d, "src", "app", "a", "x.ts"), "export const x = 2;\n")  # the seed, uncommitted
+        base = self.recon.squash_base(self.d)
+        self.assertEqual(git("status", "--porcelain"), "")
+        self.assertEqual(git("log", "--format=%an <%ae> %s %at").splitlines(), ["dev <dev@example.com> Initial import 946684800"])
+        self.assertEqual(git("rev-parse", "HEAD").strip(), base)
+        self.assertEqual(self.recon.changed_since(self.d, base), [])
+        write(os.path.join(self.d, "src", "app", "a", "x.ts"), "export const x = 3;\n")
+        git("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qam", "agent commits despite instructions")
+        write(os.path.join(self.d, "staged.ts"), "1\n")
+        git("add", "staged.ts")
+        write(os.path.join(self.d, "src", "app", "a", "new.ts"), "2\n")
+        os.remove(os.path.join(self.d, "model.ucn"))
+        self.assertEqual(self.recon.changed_since(self.d, base),
+                         ["model.ucn", "src/app/a/new.ts", "src/app/a/x.ts", "staged.ts"])
+        real = self.recon.run
+
+        def fake(cmd, **kw):
+            if cmd[0] != "docker":
+                return real(cmd, **kw)
+            if "G" in cmd:
+                out = [a for a in cmd if a.endswith(":/out")][0].rsplit(":", 1)[0]
+                write(os.path.join(out, "r1.xml"), junit([("test_t", "test_ok", "passed", "")]))
+            return subprocess.CompletedProcess(cmd, 0, "Contracts: 1 kept, 0 broken." if "L" in cmd else "", "")
+        self.recon.run = fake
+        self.addCleanup(setattr, self.recon, "run", real)
+        entry = {"run": "r1", "task": "t", "cond": "L", "workspace": self.d, "base_commit": base}
+        r = self.recon.grade_one(self.spec, entry, {"dir": os.path.join(self.d, "_task")}, set())
+        self.assertEqual(r["changed"], ["src/app/a/new.ts", "src/app/a/x.ts", "staged.ts"])  # model.ucn is filtered as before
+
+    def test_squashed_base_without_agent_changes_is_clean(self):
+        base = self.recon.squash_base(self.d)
+        entry = {"run": "r1", "task": "t", "cond": "L", "workspace": self.d, "base_commit": base}
+        real = self.recon.run
+
+        def fake(cmd, **kw):
+            if cmd[0] != "docker":
+                return real(cmd, **kw)
+            return subprocess.CompletedProcess(cmd, 0, "Contracts: 1 kept, 0 broken.", "")
+        self.recon.run = fake
+        self.addCleanup(setattr, self.recon, "run", real)
+        r = self.recon.grade_one(self.spec, entry, {"dir": os.path.join(self.d, "_task")}, set())
+        self.assertEqual((r["changed"], r["tampered"]), ([], []))
+
+    def test_existing_specs_add_no_labels(self):
+        r = self.grade("Contracts: 4 kept, 0 broken.")
+        self.assertFalse({"agent_model", "rule_id", "site", "seeded", "half"} & set(r))
+
+
+class Prove(unittest.TestCase):
+    def setUp(self):
+        import prove
+        self.prove = prove
+
+    def cases(self, **status):
+        return [{"classname": "", "name": n, "file": "", "status": s} for n, s in status.items()]
+
+    def test_base_needs_every_behavior_test_to_fail(self):
+        self.assertTrue(self.prove.judge("base", self.cases(test_behavior_a="failed", test_rule_a="passed"))[0])
+        self.assertFalse(self.prove.judge("base", self.cases(test_behavior_a="failed", test_behavior_b="passed"))[0])
+        self.assertFalse(self.prove.judge("base", [])[0])
+
+    def test_reference_needs_everything_to_pass(self):
+        self.assertTrue(self.prove.judge("reference", self.cases(test_behavior_a="passed", test_rule_a="passed"))[0])
+        ok, bad, _ = self.prove.judge("reference", self.cases(test_behavior_a="passed", test_rule_a="failed"))
+        self.assertEqual((ok, bad), (False, ["test_rule_a"]))
+
+    def test_naive_builds_the_behavior_and_breaks_a_rule(self):
+        self.assertTrue(self.prove.judge("naive", self.cases(test_behavior_a="passed", test_rule_a="failed"))[0])
+        self.assertFalse(self.prove.judge("naive", self.cases(test_behavior_a="passed", test_rule_a="passed"))[0])
+        self.assertFalse(self.prove.judge("naive", self.cases(test_behavior_a="failed", test_rule_a="failed"))[0])
+
+    def test_seed_tests_must_pass(self):
+        self.assertTrue(self.prove.judge("seed", self.cases(test_x="passed"))[0])
+        self.assertFalse(self.prove.judge("seed", self.cases(test_x="failed"))[0])
+
+    def test_missing_patch_is_reported_and_proof_written(self):
+        d = tempfile.mkdtemp()
+        self.addCleanup(rmtree, d)
+        write(os.path.join(d, "meta.json"), "{}")
+        pv = self.prove
+
+        class FakePg:
+            args = []
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                pass
+        saved = (pv.Postgres, pv.checkout, pv.run_grader)
+        self.addCleanup(lambda: (setattr(pv, "Postgres", saved[0]), setattr(pv, "checkout", saved[1]),
+                                 setattr(pv, "run_grader", saved[2])))
+        pv.Postgres, pv.checkout = FakePg, lambda repo, rev, task, dest: os.makedirs(dest)
+        pv.run_grader = lambda *a: self.cases(test_behavior_a="failed")
+        proof = pv.prove(d, "repo", "rev")
+        self.assertTrue(proof["base"]["passed"])
+        self.assertEqual(proof["naive"]["note"], "naive.patch is missing")
+        self.assertFalse(proof["ok"])
+        self.assertFalse(json.loads(read(os.path.join(d, "proof.json")))["ok"])
+
+
+class StudyAEval(unittest.TestCase):
+    def setUp(self):
+        import studya_eval
+        self.ev = studya_eval
+
+    def rows(self, rates, rules=6, n=8):
+        out = []
+        for i in range(rules):
+            for site, k in rates.items():
+                out += [{"rule_id": f"R{i}", "site": site, "violations": int(j < k), "agent_model": "m",
+                         "half": "new", "seeded": False} for j in range(n)]
+        return out
+
+    def test_skips_and_counts_runs_without_rule_test(self):
+        rows = self.rows({"consistent": 1, "none": 4, "contradicting": 7}) + [
+            {"rule_id": "R0", "site": "none", "violations": None}]
+        res = self.ev.analyse(rows)
+        self.assertEqual((res["analysed"], res["skipped_no_rule_test"]), (144, 1))
+
+    def test_strong_effect_is_supported_and_deterministic(self):
+        rows = self.rows({"consistent": 1, "none": 4, "contradicting": 7, "control": 1})
+        a, b = self.ev.analyse(rows), self.ev.analyse(rows)
+        self.assertEqual(a, b)
+        c = a["contrasts"][0]
+        self.assertAlmostEqual(c["diff"], 0.75)
+        self.assertGreater(c["ci"][0], 0)
+        self.assertLess(c["p"], 0.01)
+        self.assertEqual(a["decision"], {"contradicting": "SUPPORTED", "none": "SUPPORTED"})
+        self.assertEqual(len(a["leave_one_rule_out"]["none"]), 6)
+        self.assertAlmostEqual(a["control_vs_consistent"]["diff"], 0.0)
+        self.assertFalse(a["mixed_model"]["run"])
+
+    def test_no_difference_is_refuted(self):
+        res = self.ev.analyse(self.rows({"consistent": 4, "none": 4, "contradicting": 4}))
+        self.assertEqual(res["decision"], {"contradicting": "REFUTED", "none": "REFUTED"})
+
+    def test_ceiling_and_floor_are_inconclusive(self):
+        res = self.ev.analyse(self.rows({"consistent": 0, "none": 0, "contradicting": 1}))
+        self.assertTrue(res["decision"]["none"].startswith("INCONCLUSIVE"))
+        res = self.ev.analyse(self.rows({"consistent": 8, "none": 8, "contradicting": 8}))
+        self.assertTrue(res["decision"]["contradicting"].startswith("INCONCLUSIVE"))
+
+    def test_markdown_renders(self):
+        md = self.ev.markdown(self.ev.analyse(self.rows({"consistent": 1, "none": 4, "contradicting": 7})))
+        self.assertIn("contradicting - consistent", md)
+        self.assertIn("Not run", md)
+
+
+class SmallTools(unittest.TestCase):
+    def test_hash_tree_is_sorted_markdown(self):
+        import hash_tree
+        d = tempfile.mkdtemp()
+        self.addCleanup(rmtree, d)
+        with open(os.path.join(d, "b.txt"), "wb") as fh:
+            fh.write(b"b\n")
+        os.makedirs(os.path.join(d, "a"))
+        with open(os.path.join(d, "a", "z.txt"), "wb") as fh:
+            fh.write(b"abc")
+        lines = hash_tree.table([d]).splitlines()
+        self.assertEqual(lines[:2], ["| Path | SHA-256 |", "|---|---|"])
+        self.assertTrue(lines[2].endswith("a/z.txt | ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad |"))
+        self.assertIn("b.txt", lines[3])
+
+    def test_gitattributes_pins_study_a_line_endings(self):
+        self.assertIn("research/trials/studyA/** text eol=lf", read(os.path.join(ROOT, ".gitattributes")).splitlines())
+
 
 class Pilot(unittest.TestCase):
     def data(self, light, ucn, n=40, tempting=None, upkeep=(30, 1000), absent=0):

@@ -1,0 +1,184 @@
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
+index 5313057..d848c9a 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
+@@ -25,16 +25,32 @@ from ...core.types import BulkStockError, NonNullList
+ from ...core.utils import WebhookEventInfo
+ from ...utils import get_user_or_app_from_context
+ from ...warehouse.dataloaders import StocksByProductVariantIdLoader
+-from ...warehouse.types import Warehouse
++from ...warehouse.types import Stock, Warehouse
+ from ..mutations.product.product_create import StockInput
+ from ..types import ProductVariant
+ from ..utils import create_stocks
+ 
+ 
++def get_low_stock_warnings(variant, warehouses, site_settings):
++    threshold = site_settings.low_stock_warning_threshold
++    if threshold is None:
++        return []
++    return list(
++        variant.stocks.filter(warehouse__in=warehouses, quantity__lt=threshold)
++    )
++
++
+ class ProductVariantStocksCreate(BaseMutation):
+     product_variant = graphene.Field(
+         ProductVariant, description="Updated product variant."
+     )
++    low_stock_warnings = NonNullList(
++        Stock,
++        description=(
++            "Stocks written by this mutation whose quantity is below the "
++            "`lowStockWarningThreshold` shop setting."
++        ),
++    )
+ 
+     class Arguments:
+         variant_id = graphene.ID(
+@@ -90,6 +106,7 @@ class ProductVariantStocksCreate(BaseMutation):
+         variant = cls.get_node_or_error(
+             info, data["variant_id"], only_type=ProductVariant
+         )
++        low_stock_warnings: list = []
+         if stocks:
+             warehouses = cls.clean_stocks_input(variant, stocks, errors)
+             if errors:
+@@ -115,11 +132,14 @@ class ProductVariantStocksCreate(BaseMutation):
+                     new_stocks,
+                     site_settings,
+                 )
++            low_stock_warnings = get_low_stock_warnings(
++                variant, warehouses, site_settings
++            )
+ 
+         StocksByProductVariantIdLoader(info.context).clear(variant.id)
+ 
+         variant = ChannelContext(node=variant, channel_slug=None)
+-        return cls(product_variant=variant)
++        return cls(product_variant=variant, low_stock_warnings=low_stock_warnings)
+ 
+     @classmethod
+     def clean_stocks_input(cls, variant, stocks_data, errors):
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
+index 133df3d..09e3b95 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
+@@ -33,7 +33,10 @@ from ...warehouse.dataloaders import StocksByProductVariantIdLoader
+ from ...warehouse.types import Warehouse
+ from ..mutations.product.product_create import StockInput
+ from ..types import ProductVariant
+-from .product_variant_stocks_create import ProductVariantStocksCreate
++from .product_variant_stocks_create import (
++    ProductVariantStocksCreate,
++    get_low_stock_warnings,
++)
+ 
+ 
+ class ProductVariantStocksUpdate(ProductVariantStocksCreate):
+@@ -145,6 +148,7 @@ class ProductVariantStocksUpdate(ProductVariantStocksCreate):
+                     }
+                 )
+ 
++        low_stock_warnings: list = []
+         if stocks:
+             warehouse_ids = [stock["warehouse"] for stock in stocks]
+             cls.check_for_duplicates(warehouse_ids, errors)
+@@ -159,11 +163,14 @@ class ProductVariantStocksUpdate(ProductVariantStocksCreate):
+             cls.update_or_create_variant_stocks(
+                 variant, stocks, warehouses, site_settings, requestor
+             )
++            low_stock_warnings = get_low_stock_warnings(
++                variant, warehouses, site_settings
++            )
+ 
+         StocksByProductVariantIdLoader(info.context).clear(variant.id)
+ 
+         variant = ChannelContext(node=variant, channel_slug=None)
+-        return cls(product_variant=variant)
++        return cls(product_variant=variant, low_stock_warnings=low_stock_warnings)
+ 
+     @classmethod
+     @traced_atomic_transaction()
+diff --git a/saleor/graphql/shop/mutations/shop_settings_update.py b/saleor/graphql/shop/mutations/shop_settings_update.py
+index e6ec285..0b2dc1d 100644
+--- a/saleor/graphql/shop/mutations/shop_settings_update.py
++++ b/saleor/graphql/shop/mutations/shop_settings_update.py
+@@ -68,6 +68,12 @@ class ShopSettingsInput(graphene.InputObjectType):
+             f"value is {DEFAULT_LIMIT_QUANTITY_PER_CHECKOUT}."
+         )
+     )
++    low_stock_warning_threshold = graphene.Int(
++        description=(
++            "Stock quantity below which stock mutations report a low stock "
++            "warning. Enter null to disable."
++        )
++    )
+ 
+     enable_account_confirmation_by_email = graphene.Boolean(
+         description="Enable automatic account confirmation by email."
+diff --git a/saleor/graphql/shop/types.py b/saleor/graphql/shop/types.py
+index e9fa925..eed2160 100644
+--- a/saleor/graphql/shop/types.py
++++ b/saleor/graphql/shop/types.py
+@@ -377,6 +377,14 @@ class Shop(graphene.ObjectType):
+         ),
+         permissions=[SitePermissions.MANAGE_SETTINGS],
+     )
++    low_stock_warning_threshold = PermissionsField(
++        graphene.Int,
++        description=(
++            "Stock quantity below which stock mutations report a low stock "
++            "warning, or null when warnings are disabled."
++        ),
++        permissions=[SitePermissions.MANAGE_SETTINGS],
++    )
+     company_address = graphene.Field(
+         Address, description="Company address.", required=False
+     )
+@@ -698,6 +706,11 @@ class Shop(graphene.ObjectType):
+     def resolve_limit_quantity_per_checkout(_, _info, site):
+         return site.settings.limit_quantity_per_checkout
+ 
++    @staticmethod
++    @load_site_callback
++    def resolve_low_stock_warning_threshold(_, _info, site):
++        return site.settings.low_stock_warning_threshold
++
+     @staticmethod
+     def resolve_staff_notification_recipients(_, info):
+         return account_models.StaffNotificationRecipient.objects.using(
+diff --git a/saleor/site/migrations/0054_sitesettings_low_stock_warning_threshold.py b/saleor/site/migrations/0054_sitesettings_low_stock_warning_threshold.py
+new file mode 100644
+index 0000000..2b4ec18
+--- /dev/null
++++ b/saleor/site/migrations/0054_sitesettings_low_stock_warning_threshold.py
+@@ -0,0 +1,15 @@
++from django.db import migrations, models
++
++
++class Migration(migrations.Migration):
++    dependencies = [
++        ("site", "0053_merge_20260730_0700"),
++    ]
++
++    operations = [
++        migrations.AddField(
++            model_name="sitesettings",
++            name="low_stock_warning_threshold",
++            field=models.PositiveIntegerField(blank=True, null=True),
++        ),
++    ]
+diff --git a/saleor/site/models.py b/saleor/site/models.py
+index 710b03a..e3ae7cb 100644
+--- a/saleor/site/models.py
++++ b/saleor/site/models.py
+@@ -93,6 +93,8 @@ class SiteSettings(ModelWithMetadata):
+         validators=[MinValueValidator(1)],
+     )
+ 
++    low_stock_warning_threshold = models.PositiveIntegerField(blank=True, null=True)
++
+     # gift card settings
+     gift_card_expiry_type = models.CharField(
+         max_length=32,

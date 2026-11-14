@@ -1,0 +1,60 @@
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_activate.py b/saleor/graphql/giftcard/mutations/gift_card_activate.py
+index 0be2fe9..7b67006 100644
+--- a/saleor/graphql/giftcard/mutations/gift_card_activate.py
++++ b/saleor/graphql/giftcard/mutations/gift_card_activate.py
+@@ -44,6 +44,9 @@ class GiftCardActivate(BaseMutation):
+         clean_gift_card(gift_card)
+         # create event only when is_active value has changed
+         create_event = not gift_card.is_active
++        if gift_card.current_balance_amount < 0:
++            gift_card.current_balance_amount = 0
++            gift_card.save(update_fields=["current_balance_amount"])
+         activate_gift_card(gift_card)
+         if create_event:
+             app = get_app_promise(info.context).get()
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py b/saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py
+index ccf3f83..94b425f 100644
+--- a/saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py
++++ b/saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py
+@@ -7,7 +7,6 @@ from ....core.tracing import traced_atomic_transaction
+ from ....core.utils.events import call_event
+ from ....giftcard import events
+ from ....giftcard.error_codes import GiftCardErrorCode
+-from ....giftcard.lock_objects import gift_card_qs_select_for_update
+ from ....permission.enums import GiftcardPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+ from ...app.dataloaders import get_app_promise
+@@ -85,25 +84,24 @@ class GiftCardBalanceAdjust(BaseMutation):
+         app = get_app_promise(info.context).get()
+ 
+         with traced_atomic_transaction():
+-            locked = gift_card_qs_select_for_update().get(pk=gift_card.pk)
+-            old_current = locked.current_balance_amount
+-            old_initial = locked.initial_balance_amount
++            old_current = gift_card.current_balance_amount
++            old_initial = gift_card.initial_balance_amount
+ 
+             new_current = old_current + amount
+             if new_current < Decimal(0):
+                 new_current = Decimal(0)
+-            locked.current_balance_amount = new_current
++            gift_card.current_balance_amount = new_current
+             update_fields = ["current_balance_amount"]
+             if new_current > old_initial:
+-                locked.initial_balance_amount = new_current
++                gift_card.initial_balance_amount = new_current
+                 update_fields.append("initial_balance_amount")
+-            locked.save(update_fields=update_fields)
++            gift_card.save(update_fields=update_fields)
+ 
+             events.gift_card_balance_adjusted_event(
+-                locked, old_current, old_initial, user, app
++                gift_card, old_current, old_initial, user, app
+             )
+ 
+         manager = get_plugin_manager_promise(info.context).get()
+-        call_event(manager.gift_card_updated, locked)
++        call_event(manager.gift_card_updated, gift_card)
+ 
+-        return cls(gift_card=locked, errors=[])
++        return cls(gift_card=gift_card, errors=[])

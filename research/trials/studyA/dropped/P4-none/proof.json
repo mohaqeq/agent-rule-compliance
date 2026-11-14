@@ -1,0 +1,23 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_gift_card_bulk_delete_removes_tags_used_by_nothing_else",
+   "test_behavior_gift_card_delete_removes_tags_used_by_nothing_else"
+  ],
+  "seconds": 459.0
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 418.8
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_no_new_delete_signal_receivers"
+  ],
+  "seconds": 431.3
+ },
+ "ok": true
+}

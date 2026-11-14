@@ -1,0 +1,13 @@
+{
+ "kind": "tempting",
+ "rule_id": "P4",
+ "rule": "Do not use Django signals (post_save, pre_delete, @receiver); call the logic explicitly from the code that triggers it (post_migrate for data-migration tasks is the only exception).",
+ "site": "contradicting",
+ "seeded": false,
+ "half": "phase1",
+ "naive": "Copies the product/apps.py signal pattern: a pre_delete receiver on ProductType in product/apps.py + signals.py that deletes the unassigned attributes.",
+ "seed_tests": [
+  "saleor/graphql/product/tests/mutations/test_product_type_delete.py",
+  "saleor/graphql/product/tests/test_bulk_delete.py"
+ ]
+}

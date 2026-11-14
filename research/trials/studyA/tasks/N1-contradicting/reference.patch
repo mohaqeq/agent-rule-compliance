@@ -1,0 +1,30 @@
+diff --git a/saleor/graphql/meta/extra_methods.py b/saleor/graphql/meta/extra_methods.py
+index b4dc40c..8ba2e35 100644
+--- a/saleor/graphql/meta/extra_methods.py
++++ b/saleor/graphql/meta/extra_methods.py
+@@ -1,4 +1,5 @@
+ from ...checkout.actions import call_checkout_events
++from ...core.utils.events import call_event
+ from ...order.actions import call_order_event
+ from ...webhook.event_types import WebhookEventAsyncType
+ from ..core import ResolveInfo
+@@ -22,6 +23,11 @@ def extra_checkout_actions(instance, info: ResolveInfo, **data):
+     )
+ 
+ 
++def extra_category_actions(instance, info: ResolveInfo, **data):
++    manager = get_plugin_manager_promise(info.context).get()
++    call_event(manager.category_updated, instance)
++
++
+ def extra_channel_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
+     manager.channel_metadata_updated(instance)
+@@ -104,6 +110,7 @@ def extra_shop_actions(instance, info: ResolveInfo, **data):
+ 
+ 
+ TYPE_EXTRA_METHODS = {
++    "Category": extra_category_actions,
+     "Checkout": extra_checkout_actions,
+     "Collection": extra_collection_actions,
+     "Fulfillment": extra_fulfillment_actions,

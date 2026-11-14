@@ -1,0 +1,81 @@
+diff --git a/saleor/giftcard/utils.py b/saleor/giftcard/utils.py
+index 2303f8c..24d45f2 100644
+--- a/saleor/giftcard/utils.py
++++ b/saleor/giftcard/utils.py
+@@ -25,7 +25,7 @@ from ..payment.models import Payment, TransactionItem
+ from ..site import GiftCardSettingsExpiryType
+ from . import GiftCardEvents, GiftCardLineData, events
+ from .lock_objects import gift_card_qs_select_for_update
+-from .models import GiftCard, GiftCardEvent
++from .models import GiftCard, GiftCardEvent, GiftCardTag
+ from .notifications import send_gift_card_notification
+ 
+ if TYPE_CHECKING:
+@@ -417,3 +417,20 @@ def get_user_gift_cards(user: "User") -> "QuerySet":
+         | Q(used_by=user)
+         | Q(created_by=user)
+     )
++
++
++def get_gift_card_tag_ids(gift_cards) -> list[int]:
++    """Return ids of the tags assigned to the given gift cards.
++
++    Must be called before the gift cards are deleted.
++    """
++    return list(
++        GiftCardTag.objects.filter(gift_cards__in=gift_cards)
++        .values_list("pk", flat=True)
++        .distinct()
++    )
++
++
++def delete_unused_gift_card_tags(tag_ids: Iterable[int]) -> None:
++    """Delete the given tags that are not assigned to any gift card."""
++    GiftCardTag.objects.filter(pk__in=list(tag_ids), gift_cards__isnull=True).delete()
+diff --git a/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_delete.py b/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_delete.py
+index ac6614b..f7c4b22 100644
+--- a/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_delete.py
++++ b/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_delete.py
+@@ -2,6 +2,7 @@ import graphene
+ from django.conf import settings
+ 
+ from ....giftcard import models
++from ....giftcard.utils import delete_unused_gift_card_tags, get_gift_card_tag_ids
+ from ....permission.enums import GiftcardPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+ from ....webhook.utils import get_webhooks_for_event
+@@ -41,7 +42,9 @@ class GiftCardBulkDelete(ModelBulkDeleteMutation):
+     @classmethod
+     def bulk_action(cls, info: ResolveInfo, queryset, /):
+         instances = list(queryset)
++        tag_ids = get_gift_card_tag_ids(queryset)
+         queryset.delete()
++        delete_unused_gift_card_tags(tag_ids)
+         webhooks = get_webhooks_for_event(WebhookEventAsyncType.GIFT_CARD_DELETED)
+         manager = get_plugin_manager_promise(info.context).get()
+         for instance in instances:
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_delete.py b/saleor/graphql/giftcard/mutations/gift_card_delete.py
+index 5d1703f..c8a7a54 100644
+--- a/saleor/graphql/giftcard/mutations/gift_card_delete.py
++++ b/saleor/graphql/giftcard/mutations/gift_card_delete.py
+@@ -1,6 +1,7 @@
+ import graphene
+ 
+ from ....giftcard import models
++from ....giftcard.utils import delete_unused_gift_card_tags, get_gift_card_tag_ids
+ from ....permission.enums import GiftcardPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+ from ...core import ResolveInfo
+@@ -29,7 +30,12 @@ class GiftCardDelete(ModelDeleteMutation):
+             )
+         ]
+ 
++    @classmethod
++    def clean_instance(cls, _info: ResolveInfo, instance, /):
++        instance._tag_ids = get_gift_card_tag_ids([instance])
++
+     @classmethod
+     def post_save_action(cls, info: ResolveInfo, instance, cleaned_input):
++        delete_unused_gift_card_tags(instance._tag_ids)
+         manager = get_plugin_manager_promise(info.context).get()
+         cls.call_event(manager.gift_card_deleted, instance)

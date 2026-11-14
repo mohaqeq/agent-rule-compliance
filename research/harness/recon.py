@@ -12,7 +12,11 @@ SPEC.json:
    "tasks": "dir with one sub-dir per task: task.md, grader/test_*.py, meta.json {kind, rule}",
    "conditions": {"C": 1, "L": 2, "B": 2}, "budget": 2500,
    "grader_image": "ucn-sqlfluff-tests", "lint_image": "ucn-il", "validator": "path to tools/ucn_validate.py",
-   "usage": "optional JSON {run_id: [tokens, seconds, tool_calls]}"}
+   "usage": "optional JSON {run_id: [tokens, seconds, tool_calls]}", "model_name": "optional label, e.g. haiku",
+   "squash_base": "optional bool: each workspace gets a fresh .git with one commit of the prepared tree (hides the seed)"}
+A task dir may hold seed.patch (applied to every workspace right after checkout; it is part of the base, never of the
+agent's change) and meta.json may carry rule_id, site, seeded, half: grade copies them (and model_name as
+agent_model) into each row of results.json.
 Conditions: C = no agent docs; L = the project's AGENTS.md + its import-linter in the loop;
             B = UCN projection (context.ucn) + the validator in the loop.
 """
@@ -66,6 +70,67 @@ def run(cmd, **kw):
     return subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", **kw)
 
 
+def apply_seed(ws, task_dir):
+    """Apply the task's seed.patch (if any) to a fresh checkout. Returns {path: sha256 or None (deleted)} of the files
+    the seed touched, so grading can tell the seed from the agent's change."""
+    patch = os.path.join(task_dir, "seed.patch")
+    if not os.path.exists(patch):
+        return {}
+    r = run(["git", "-C", ws, "apply", "--whitespace=nowarn", os.path.abspath(patch)])
+    if r.returncode != 0:
+        raise SystemExit(f"seed.patch does not apply in {ws}: {r.stderr.strip()[-300:]}")
+    return status_paths(ws, hashes=True)
+
+
+def status_paths(ws, hashes=False):
+    st = run(["git", "-C", ws, "status", "--porcelain", "--untracked-files=all"]).stdout
+    paths = [l[3:].strip().strip('"') for l in st.splitlines() if l.strip()]
+    if not hashes:
+        return paths
+    return {c: (sha(os.path.join(ws, c)) if os.path.isfile(os.path.join(ws, c)) else None) for c in paths}
+
+
+def not_seed(paths, ws, seeded):
+    """Drop the paths whose state is still exactly the seeded one."""
+    def same(c):
+        if c not in seeded:
+            return False
+        p = os.path.join(ws, c)
+        return (sha(p) if os.path.isfile(p) else None) == seeded[c]
+    return [c for c in paths if not same(c)]
+
+
+SQUASH_ENV = {"GIT_AUTHOR_NAME": "dev", "GIT_AUTHOR_EMAIL": "dev@example.com", "GIT_COMMITTER_NAME": "dev",
+              "GIT_COMMITTER_EMAIL": "dev@example.com", "GIT_AUTHOR_DATE": "2000-01-01T00:00:00+0000",
+              "GIT_COMMITTER_DATE": "2000-01-01T00:00:00+0000"}
+
+
+def squash_base(ws):
+    """Replace ws/.git with a fresh repository holding one commit of the prepared tree (no seed diff, no history).
+    Returns the commit id."""
+    def onexc(func, path, exc):  # git marks object files read-only on Windows
+        os.chmod(path, 0o700)
+        func(path)
+    gd = os.path.join(ws, ".git")
+    if os.path.isdir(gd):
+        shutil.rmtree(gd, onerror=onexc)
+    env = dict(os.environ, **SQUASH_ENV)
+    g = ["git", "-c", "core.autocrlf=false", "-c", "core.safecrlf=false", "-c", "core.longpaths=true", "-C", ws]
+    for cmd in (["init", "-q"], ["config", "core.autocrlf", "false"], ["add", "-A"],
+                ["commit", "-q", "--allow-empty", "-m", "Initial import"]):
+        r = run(g + cmd, env=env)
+        if r.returncode != 0:
+            raise SystemExit(f"squash_base failed in {ws}: git {cmd[0]}: {r.stderr.strip()[-300:]}")
+    return run(g + ["rev-parse", "HEAD"]).stdout.strip()
+
+
+def changed_since(ws, commit):
+    """Paths that differ from `commit`: committed, staged, unstaged and untracked changes all count."""
+    tracked = run(["git", "-C", ws, "diff", "--name-only", "-z", commit]).stdout
+    untracked = run(["git", "-C", ws, "ls-files", "--others", "--exclude-standard", "-z"]).stdout
+    return sorted({p for p in (tracked + untracked).split("\0") if p})
+
+
 def tasks_of(spec):
     out = []
     for name in sorted(os.listdir(spec["tasks"])):
@@ -116,6 +181,12 @@ def prepare(spec, out):
                 if not os.path.exists(ws):
                     run(["git", "-c", "core.symlinks=false", "-c", "core.longpaths=true", "clone", "-q", "--no-tags", spec["repo"], ws])
                     run(["git", "-C", ws, "checkout", "-q", spec["rev"]])
+                    seeded = apply_seed(ws, t["dir"])
+                    with open(os.path.join(out, f"{rid}.seed.json"), "w") as fh:
+                        json.dump(seeded, fh)
+                else:
+                    sf = os.path.join(out, f"{rid}.seed.json")
+                    seeded = json.load(open(sf)) if os.path.exists(sf) else {}
                 if cond in ("C", "B", "S"):
                     for d, _, names in os.walk(ws):
                         if ".git" in d.split(os.sep):
@@ -137,12 +208,14 @@ def prepare(spec, out):
                         raise SystemExit(f"{rid}: projection failed: {errs}")
                     with open(os.path.join(ws, "context.ucn"), "w", encoding="utf-8", newline="\n") as fh:
                         fh.write(text)
+                base_commit = squash_base(ws) if spec.get("squash_base") else None
                 guarded = {n: sha(os.path.join(ws, n)) for n in ("context.ucn", "context.md") if os.path.exists(os.path.join(ws, n))}
                 prompt = (f"You are a developer working in the git repository at {ws.replace(chr(92), '/')} (Windows; use forward "
-                          f"slashes). {instructions(cond, ws, spec)}\n\nTask: {t['text']}\n\n{SUFFIX}")
+                          f"slashes). {instructions(cond, ws, spec)}\n\nTask: {t['text']}\n\n{spec.get('suffix', SUFFIX)}")
                 with open(os.path.join(out, f"{rid}.prompt.txt"), "w", encoding="utf-8", newline="\n") as fh:
                     fh.write(prompt)
-                index.append({"run": rid, "task": t["id"], "cond": cond, "workspace": ws, "guarded": guarded,
+                index.append({"run": rid, "task": t["id"], "cond": cond, "workspace": ws, "guarded": guarded, "seeded_files": seeded,
+                              **({"base_commit": base_commit} if base_commit else {}),
                               "validator_sha": sha(spec["validator"]) if os.path.exists(spec["validator"]) else None})
     json.dump(index, open(os.path.join(out, "index.json"), "w"), indent=1)
     return index
@@ -151,6 +224,12 @@ def prepare(spec, out):
 def grade_one(spec, entry, task, baseline):
     ws = entry["workspace"]
     res = {"run": entry["run"], "task": entry["task"], "cond": entry["cond"]}
+    for k in ("rule_id", "site", "seeded", "half"):
+        if k in task:
+            res[k] = task[k]
+    if spec.get("model_name"):
+        res["agent_model"] = spec["model_name"]
+    seeded = entry.get("seeded_files", {})
     # 1. hidden grader (behavior)
     junit_dir = os.path.join(os.path.dirname(ws), "_junit")
     os.makedirs(junit_dir, exist_ok=True)
@@ -195,8 +274,10 @@ def grade_one(spec, entry, task, baseline):
     res["validator_new"] = sorted(found - baseline)
     res["violations"] = int(bool(res["validator_new"]) or broken > 0 or bool(res["rule_failed"]))
     # 4. tampering and scope
-    st = run(["git", "-C", ws, "status", "--porcelain", "--untracked-files=all"]).stdout
-    changed = [l[3:] for l in st.splitlines() if l.strip()]
+    if entry.get("base_commit"):  # squashed base: everything that differs from that one commit is the agent's
+        changed = changed_since(ws, entry["base_commit"])
+    else:
+        changed = not_seed(status_paths(ws), ws, seeded)  # the seed is part of the base, not the agent's change
     res["changed"] = [c for c in changed if c not in ("model.ucn", "context.ucn") and not c.endswith("AGENTS.md") and c != "CLAUDE.md"]
     tampered = [c for c in changed if c.rsplit("/", 1)[-1] in CONTRACT_FILES]  # the project's own contracts, any arm
     if entry["cond"] == "B":
@@ -219,19 +300,27 @@ def grade(spec, out):
     spec = dict(spec, validator=os.path.abspath(spec["validator"]))
     index = json.load(open(os.path.join(out, "index.json")))
     tasks = {t["id"]: t for t in tasks_of(spec)}
-    base_ws = os.path.join(out, "_baseline")
-    if not os.path.exists(base_ws):
-        run(["git", "clone", "-q", "--no-tags", spec["repo"], base_ws])
-        run(["git", "-C", base_ws, "checkout", "-q", spec["rev"]])
-    gm = os.path.join(base_ws, "_m.ucn")
-    shutil.copy(spec["model"], gm)
-    b = ucn_validate.validate(gm, today=spec.get("today"))
-    b.pop("_model")
-    baseline = {f["message"] for f in b["findings"] if f["class"] in ("VIOLATION", "CONFLICT")}
+    baselines = {}
+
+    def baseline_of(task):  # validator findings on the (seeded) base; one per task that has a seed
+        key = task["id"] if os.path.exists(os.path.join(task["dir"], "seed.patch")) else ""
+        if key not in baselines:
+            base_ws = os.path.join(out, "_baseline" + (f"-{key}" if key else ""))
+            if not os.path.exists(base_ws):
+                run(["git", "-c", "core.longpaths=true", "clone", "-q", "--no-tags", spec["repo"], base_ws])
+                run(["git", "-C", base_ws, "checkout", "-q", spec["rev"]])
+                apply_seed(base_ws, task["dir"])
+            gm = os.path.join(base_ws, "_m.ucn")
+            shutil.copy(spec["model"], gm)
+            b = ucn_validate.validate(gm, today=spec.get("today"))
+            b.pop("_model")
+            os.remove(gm)
+            baselines[key] = {f["message"] for f in b["findings"] if f["class"] in ("VIOLATION", "CONFLICT")}
+        return baselines[key]
     usage = json.load(open(spec["usage"])) if spec.get("usage") and os.path.exists(spec["usage"]) else {}
     results = []
     for e in index:
-        res = grade_one(spec, e, tasks[e["task"]], baseline)
+        res = grade_one(spec, e, tasks[e["task"]], baseline_of(tasks[e["task"]]))
         if e["run"] in usage:
             res["tokens"], res["seconds"], res["tool_calls"] = usage[e["run"]]
         res["kind"] = tasks[e["task"]].get("kind", "change")

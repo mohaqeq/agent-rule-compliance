@@ -1,0 +1,119 @@
+diff --git a/saleor/graphql/product/types/categories.py b/saleor/graphql/product/types/categories.py
+index d59589a..e14795e 100644
+--- a/saleor/graphql/product/types/categories.py
++++ b/saleor/graphql/product/types/categories.py
+@@ -10,7 +10,6 @@ from ....thumbnail import ThumbnailSizeRounding
+ from ....thumbnail.utils import (
+     get_image_or_proxy_url,
+     get_thumbnail_format,
+-    get_thumbnail_size,
+ )
+ from ...channel.dataloaders.by_self import ChannelBySlugLoader
+ from ...channel.utils import get_default_channel_slug_or_graphql_error
+@@ -39,6 +38,7 @@ from ..dataloaders import (
+ from ..filters.product import ProductFilterInput, ProductWhereInput
+ from ..sorters import ProductOrder, ProductOrderField
+ from .products import ProductCountableConnection
++from .thumbnails import resolve_thumbnail_size
+ 
+ 
+ @federated_entity("id")
+@@ -138,7 +138,7 @@ class Category(ModelObjectType[models.Category]):
+             return Image(url=root.background_image.url, alt=alt)
+ 
+         format = get_thumbnail_format(format)
+-        selected_size = get_thumbnail_size(size, size_rounding)
++        selected_size = resolve_thumbnail_size(size, size_rounding)
+ 
+         def _resolve_background_image(thumbnail):
+             url = get_image_or_proxy_url(
+diff --git a/saleor/graphql/product/types/collections.py b/saleor/graphql/product/types/collections.py
+index f85b4d3..24c6151 100644
+--- a/saleor/graphql/product/types/collections.py
++++ b/saleor/graphql/product/types/collections.py
+@@ -11,7 +11,6 @@ from ....thumbnail import ThumbnailSizeRounding
+ from ....thumbnail.utils import (
+     get_image_or_proxy_url,
+     get_thumbnail_format,
+-    get_thumbnail_size,
+ )
+ from ...channel.dataloaders.by_self import ChannelBySlugLoader
+ from ...core import ResolveInfo
+@@ -47,6 +46,7 @@ from ..filters.product import ProductFilterInput, ProductWhereInput
+ from ..sorters import ProductOrder, ProductOrderField
+ from .channels import CollectionChannelListing
+ from .products import ProductCountableConnection
++from .thumbnails import resolve_thumbnail_size
+ 
+ 
+ @federated_entity("id channel")
+@@ -131,7 +131,7 @@ class Collection(ChannelContextType[models.Collection]):
+             return Image(url=node.background_image.url, alt=alt)
+ 
+         format = get_thumbnail_format(format)
+-        selected_size = get_thumbnail_size(size, size_rounding)
++        selected_size = resolve_thumbnail_size(size, size_rounding)
+ 
+         def _resolve_background_image(thumbnail):
+             url = get_image_or_proxy_url(
+diff --git a/saleor/graphql/product/types/products.py b/saleor/graphql/product/types/products.py
+index f0f92d1..4470f93 100644
+--- a/saleor/graphql/product/types/products.py
++++ b/saleor/graphql/product/types/products.py
+@@ -34,7 +34,6 @@ from ....thumbnail.utils import (
+     get_image_or_proxy_url,
+     get_original_image_proxy_url,
+     get_thumbnail_format,
+-    get_thumbnail_size,
+ )
+ from ....warehouse.reservations import is_reservation_enabled
+ from ...account import types as account_types
+@@ -173,6 +172,7 @@ from ..resolvers import (
+ )
+ from ..sorters import MediaSortingInput, ProductVariantSortingInput
+ from .channels import ProductChannelListing, ProductVariantChannelListing
++from .thumbnails import resolve_thumbnail_size
+ 
+ destination_address_argument = graphene.Argument(
+     account_types.AddressInput,
+@@ -1132,7 +1132,7 @@ class Product(ChannelContextType[models.Product]):
+         format: str | None = None,
+     ):
+         format = get_thumbnail_format(format)
+-        size = get_thumbnail_size(size, size_rounding)
++        size = resolve_thumbnail_size(size, size_rounding)
+ 
+         def return_first_thumbnail(product_media):
+             if not product_media:
+@@ -2008,7 +2008,7 @@ class ProductMedia(ModelObjectType[models.ProductMedia]):
+ 
+         # Else, return proxy URL for thumbnail.
+         format = get_thumbnail_format(format)
+-        selected_size = get_thumbnail_size(size, size_rounding)
++        selected_size = resolve_thumbnail_size(size, size_rounding)
+ 
+         def _resolve_url(thumbnail) -> str:
+             url = get_image_or_proxy_url(
+@@ -2075,7 +2075,7 @@ class ProductImage(BaseObjectType):
+             return build_absolute_uri(root.image.url)
+ 
+         format = get_thumbnail_format(format)
+-        selected_size = get_thumbnail_size(size, size_rounding)
++        selected_size = resolve_thumbnail_size(size, size_rounding)
+ 
+         def _resolve_url(thumbnail):
+             url = get_image_or_proxy_url(
+diff --git a/saleor/graphql/product/types/thumbnails.py b/saleor/graphql/product/types/thumbnails.py
+new file mode 100644
+index 0000000..482ab21
+--- /dev/null
++++ b/saleor/graphql/product/types/thumbnails.py
+@@ -0,0 +1,8 @@
++from ....thumbnail import ThumbnailSizeRounding
++from ....thumbnail.utils import get_thumbnail_size
++
++
++def resolve_thumbnail_size(
++    size: int | None, size_rounding: ThumbnailSizeRounding | None
++) -> int:
++    return get_thumbnail_size(size, size_rounding)

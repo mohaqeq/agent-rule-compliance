@@ -1,0 +1,7 @@
+{
+  "package": "saleor/invoice",
+  "follow": 0,
+  "break": 0,
+  "precedents": [],
+  "note": "Recount: no pk/id model references in non-test code of saleor/invoice. Condition met."
+}

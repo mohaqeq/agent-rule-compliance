@@ -1,0 +1,1049 @@
+{
+ "N1-consistent": {
+  "key": "Sb0fdc0f0",
+  "dir": {
+   "follow": 9,
+   "break": 0
+  },
+  "app": {
+   "follow": 13,
+   "break": 0,
+   "package": "saleor/graphql/giftcard"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_activate.py:56",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_add_note.py:80",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_assign_user.py:103",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py:107",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_create.py:278",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_deactivate.py:54",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_delete.py:35",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_unassign_user.py:69",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_update.py:144",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_activate.py:62",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_create.py:179",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_deactivate.py:53",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_delete.py:48",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": ""
+ },
+ "N1-contradicting": {
+  "key": "Sfbb7f8c0",
+  "dir": {
+   "follow": 0,
+   "break": 15
+  },
+  "app": {
+   "follow": 0,
+   "break": 15,
+   "package": "saleor/graphql/meta"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:27",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:32",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:37",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:42",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:59",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:60",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:68",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:69",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:74",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:79",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:87",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:88",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:93",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:98",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/meta/extra_methods.py:103",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   }
+  ],
+  "doubts": "extra_checkout_actions and extra_order_actions use call_checkout_events/call_order_event helpers (not counted either way); direct manager calls run via perform_model_extra_actions with no call_event."
+ },
+ "N1-none": {
+  "key": "Sec6db2dd",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 0,
+   "package": "saleor/graphql/tax"
+  },
+  "precedents": [],
+  "doubts": "No webhook event dispatch in graphql/tax."
+ },
+ "N2-consistent": {
+  "key": "Sb66b79eb",
+  "dir": {
+   "follow": 5,
+   "break": 0
+  },
+  "app": {
+   "follow": 5,
+   "break": 0,
+   "package": "saleor/graphql/product"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/product/types/categories.py:141",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/collections.py:134",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/products.py:1135",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/products.py:2011",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/products.py:2078",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   }
+  ],
+  "doubts": ""
+ },
+ "N2-contradicting": {
+  "key": "Sae682efd",
+  "dir": {
+   "follow": 0,
+   "break": 3
+  },
+  "app": {
+   "follow": 0,
+   "break": 3,
+   "package": "saleor/graphql/app"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/app/types.py:362",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/app/types.py:407",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/app/types.py:378",
+    "follows": false,
+    "scope": "dir",
+    "dead": true
+   }
+  ],
+  "doubts": "get_logo_cache_size (378) has no caller so marked dead; manifest resolver at 362 also ignores size_rounding."
+ },
+ "N2-control": {
+  "key": "S34a244c6",
+  "dir": {
+   "follow": 5,
+   "break": 0
+  },
+  "app": {
+   "follow": 5,
+   "break": 0,
+   "package": "saleor/graphql/product"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/product/types/categories.py:141",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/collections.py:134",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/products.py:1135",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/products.py:2011",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/types/products.py:2078",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   }
+  ],
+  "doubts": "After patch the 5 resolvers call resolve_thumbnail_size, a pass-through wrapper of get_thumbnail_size(size, size_rounding); counted as follows."
+ },
+ "N2-none": {
+  "key": "Sd65dee6c",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 0,
+   "package": "saleor/graphql/shop"
+  },
+  "precedents": [],
+  "doubts": "No thumbnail-size resolution in graphql/shop."
+ },
+ "N3-consistent": {
+  "key": "S7ef7aa93",
+  "dir": {
+   "follow": 11,
+   "break": 2
+  },
+  "app": {
+   "follow": 11,
+   "break": 2,
+   "package": "saleor/account"
+  },
+  "precedents": [
+   {
+    "at": "saleor/account/models.py:46",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/models.py:48",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/models.py:301",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/models.py:307",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/tasks.py:38",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/tasks.py:90",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/throttling.py:56",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/utils.py:36",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/utils.py:54",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/utils.py:55",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/utils.py:121",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/utils.py:170",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/account/utils.py:196",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   }
+  ],
+  "doubts": "String refs such as OuterRef pk/id and order_by pk excluded."
+ },
+ "N3-contradicting": {
+  "key": "S35b44fab",
+  "dir": {
+   "follow": 1,
+   "break": 24
+  },
+  "app": {
+   "follow": 1,
+   "break": 24,
+   "package": "saleor/graphql/channel"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/channel/dataloaders/by_checkout.py:15",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/dataloaders/by_order.py:18",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/dataloaders/by_transaction.py:25",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/dataloaders/by_transaction.py:31",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_delete.py:59",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_delete.py:99",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_delete.py:101",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_delete.py:116",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_update.py:247",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_update.py:251",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_update.py:278",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_update.py:307",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/channel_update.py:309",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:373",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:379",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:391",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:410",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:426",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:446",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:487",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/types.py:489",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/utils.py:122",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/utils.py:133",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/resolvers.py:15",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/channel/mutations/utils.py:122",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   }
+  ],
+  "doubts": "Counted .id, id__in, id= on model instances and querysets; FK attnames, values() dict keys, string field names and graphene args excluded; root.id in GraphQL types counted as a model instance."
+ },
+ "N3-none": {
+  "key": "S89da6b8d",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 0,
+   "package": "saleor/invoice"
+  },
+  "precedents": [],
+  "doubts": "Only Meta.ordering pk strings (models.py:55,87), not counted; no .pk/.id on instances."
+ },
+ "P1-consistent": {
+  "key": "Secb52d6f",
+  "dir": {
+   "follow": 2,
+   "break": 0
+  },
+  "app": {
+   "follow": 5,
+   "break": 0,
+   "package": "saleor/graphql/account"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/account/bulk_mutations/customer_bulk_delete.py:66",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/bulk_mutations/staff_bulk_delete.py:79",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/account/account_delete.py:92",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/staff/customer_delete.py:54",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/staff/staff_delete.py:52",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "saleor/core/management/commands/cleardb.py:105 deletes users without the call but is outside the scope."
+ },
+ "P1-contradicting": {
+  "key": "S1c755797",
+  "dir": {
+   "follow": 0,
+   "break": 2
+  },
+  "app": {
+   "follow": 2,
+   "break": 3,
+   "package": "saleor/graphql/account"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/account/bulk_mutations/customer_bulk_delete.py:63",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/bulk_mutations/staff_bulk_delete.py:76",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/account/account_delete.py:92",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/staff/staff_delete.py:52",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/staff/customer_delete.py:51",
+    "follows": false,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "Patch removes deactivate_assigned_gift_cards from customer_bulk_delete, staff_bulk_delete and customer_delete (also sets SET_NULL in giftcard/models.py); those paths now break. customer_delete breaks in clean_instance, the delete itself is in the base mutation. cleardb.py is outside scope."
+ },
+ "P1-control": {
+  "key": "S19c4d8d2",
+  "dir": {
+   "follow": 2,
+   "break": 0
+  },
+  "app": {
+   "follow": 5,
+   "break": 0,
+   "package": "saleor/graphql/account"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/account/bulk_mutations/customer_bulk_delete.py:65",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/bulk_mutations/staff_bulk_delete.py:78",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/account/account_delete.py:91",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/staff/customer_delete.py:53",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/account/mutations/staff/staff_delete.py:51",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "After patch the 5 deleters call prepare_users_for_deletion, which calls deactivate_assigned_gift_cards; counted as follows via the helper. saleor/core/management/commands/cleardb.py:105 deletes users without the call but is outside the scope."
+ },
+ "P1-none": {
+  "key": "S64e8019b",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 0,
+   "package": "saleor/account"
+  },
+  "precedents": [],
+  "doubts": "No user-deleting code in saleor/account (only address delete); the deleters are in saleor/graphql/account."
+ },
+ "P3-consistent": {
+  "key": "Se909cc2f",
+  "dir": {
+   "follow": 7,
+   "break": 0
+  },
+  "app": {
+   "follow": 9,
+   "break": 0,
+   "package": "saleor/graphql/shop"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/shop/mutations/gift_card_settings_update.py:48",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/refund_reason_reference_type_clear.py:30",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/refund_settings_update.py:62",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/return_reason_reference_type_clear.py:30",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/return_settings_update.py:62",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/shop_address_update.py:34",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/shop_settings_update.py:256",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/types.py:529",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/utils.py:37",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": ""
+ },
+ "P3-contradicting": {
+  "key": "S71bbeaae",
+  "dir": {
+   "follow": 0,
+   "break": 3
+  },
+  "app": {
+   "follow": 1,
+   "break": 4,
+   "package": "saleor/graphql/product"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:111",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py:126",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:157",
+    "follows": false,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/filters/product_helpers.py:169",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/product/mutations/product_variant/product_variant_update.py:344",
+    "follows": false,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "All four patched mutations now read settings.SITE_ID; only product_helpers still uses get_current."
+ },
+ "P3-control": {
+  "key": "Sff23c0b1",
+  "dir": {
+   "follow": 7,
+   "break": 0
+  },
+  "app": {
+   "follow": 9,
+   "break": 0,
+   "package": "saleor/graphql/shop"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/shop/mutations/gift_card_settings_update.py:48",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/refund_reason_reference_type_clear.py:30",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/refund_settings_update.py:62",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/return_reason_reference_type_clear.py:30",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/return_settings_update.py:62",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/shop_address_update.py:34",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/mutations/shop_settings_update.py:256",
+    "follows": true,
+    "scope": "dir",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/types.py:530",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/shop/utils.py:41",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "After patch calls go through get_current_site(info) wrapping get_site_promise; counted as follows; wrapper body at utils.py:9 not counted."
+ },
+ "P3-none": {
+  "key": "S840f8ddd",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 0,
+   "package": "saleor/graphql/giftcard"
+  },
+  "precedents": [],
+  "doubts": "No site resolution in graphql/giftcard."
+ },
+ "P5-consistent": {
+  "key": "Sdcaf6ce9",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 3,
+   "break": 0,
+   "package": "saleor/graphql/giftcard"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_activate.py:52",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py:88",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_update.py:133",
+    "follows": true,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "Each caller delegates to the locked apply_balance_change helper (definition not counted). Update still lets the general update mutation reset the balance (balance_amount input), but it now goes through the locked op and no longer via cleaned_input current_balance_amount, so counted a follow; a strict reading of the dedicated-operation clause would make it a break. Creates not counted; dir empty."
+ },
+ "P5-contradicting": {
+  "key": "S807c837f",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 3,
+   "package": "saleor/graphql/giftcard"
+  },
+  "precedents": [
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_activate.py:47",
+    "follows": false,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py:87",
+    "follows": false,
+    "scope": "app",
+    "dead": false
+   },
+   {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_update.py:82",
+    "follows": false,
+    "scope": "app",
+    "dead": false
+   }
+  ],
+  "doubts": "Patch edits mutations/, not bulk_mutations, so dir is empty; in app the patched adjust loses its lock and activate adds an unlocked read-clamp-write. Creates not counted."
+ },
+ "P5-none": {
+  "key": "S56ab94bd",
+  "dir": {
+   "follow": 0,
+   "break": 0
+  },
+  "app": {
+   "follow": 0,
+   "break": 0,
+   "package": "saleor/graphql/order"
+  },
+  "precedents": [],
+  "doubts": "No gift card balance writes in graphql/order; balance logic is in saleor/order/utils.py."
+ }
+}

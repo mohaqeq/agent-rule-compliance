@@ -1,0 +1,30 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_logo_is_null_without_logo",
+   "test_behavior_logo_returns_thumbnail_url",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[1500-NEAREST-1024]",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[1500-None-2048]",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[1500-UP-2048]",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[700-NEAREST-512]",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[700-None-1024]"
+  ],
+  "seconds": 379.9
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 328.9
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[1500-None-2048]",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[1500-UP-2048]",
+   "test_rule_logo_size_rounding_follows_argument_and_defaults_up[700-None-1024]"
+  ],
+  "seconds": 329.9
+ },
+ "ok": true
+}

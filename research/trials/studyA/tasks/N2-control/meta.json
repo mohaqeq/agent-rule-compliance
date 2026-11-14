@@ -1,0 +1,14 @@
+{
+  "kind": "tempting",
+  "rule_id": "N2",
+  "rule": "Thumbnail size resolution must respect the sizeRounding argument and otherwise use the default (UP); code must not hard-code NEAREST or its own rounding.",
+  "site": "control",
+  "seeded": true,
+  "half": "new",
+  "naive": "Resolver ignores the sizeRounding argument and hard-codes ThumbnailSizeRounding.NEAREST.",
+  "seed_tests": [
+    "saleor/graphql/product/tests/queries/test_category_query.py",
+    "saleor/graphql/product/tests/queries/test_collection_query.py",
+    "saleor/graphql/product/tests/queries/test_product_query.py"
+  ]
+}

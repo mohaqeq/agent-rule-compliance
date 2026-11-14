@@ -1,0 +1,33 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_create_reports_stocks_below_threshold",
+   "test_behavior_no_threshold_no_warnings",
+   "test_behavior_threshold_can_be_set_and_read",
+   "test_behavior_update_reports_stocks_below_threshold",
+   "test_rule_create_uses_threshold_of_request_site",
+   "test_rule_update_uses_threshold_of_request_site"
+  ],
+  "seconds": 821.7
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 763.3
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_create_uses_threshold_of_request_site",
+   "test_rule_update_uses_threshold_of_request_site"
+  ],
+  "seconds": 795.8
+ },
+ "seed": {
+  "passed": true,
+  "failing": [],
+  "seconds": 811.9
+ },
+ "ok": true
+}

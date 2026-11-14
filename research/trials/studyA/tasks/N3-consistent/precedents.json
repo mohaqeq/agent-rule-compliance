@@ -1,0 +1,60 @@
+{
+  "package": "saleor/account",
+  "follow": 11,
+  "break": 2,
+  "precedents": [
+    {
+      "at": "saleor/account/models.py:46",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/models.py:48",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/models.py:301",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/models.py:307",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/tasks.py:38",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/tasks.py:90",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/throttling.py:56",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/utils.py:36",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/utils.py:54",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/utils.py:55",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/utils.py:121",
+      "follows": true
+    },
+    {
+      "at": "saleor/account/utils.py:170",
+      "follows": false
+    },
+    {
+      "at": "saleor/account/utils.py:196",
+      "follows": false
+    }
+  ],
+  "note": "Recount matches the sites file: 11 follow, 2 break (85%). Condition met."
+}

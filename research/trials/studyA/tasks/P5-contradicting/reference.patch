@@ -1,0 +1,103 @@
+diff --git a/saleor/graphql/giftcard/bulk_mutations/__init__.py b/saleor/graphql/giftcard/bulk_mutations/__init__.py
+index fdcd714..f101438 100644
+--- a/saleor/graphql/giftcard/bulk_mutations/__init__.py
++++ b/saleor/graphql/giftcard/bulk_mutations/__init__.py
+@@ -2,10 +2,12 @@ from .gift_card_bulk_activate import GiftCardBulkActivate
+ from .gift_card_bulk_create import GiftCardBulkCreate
+ from .gift_card_bulk_deactivate import GiftCardBulkDeactivate
+ from .gift_card_bulk_delete import GiftCardBulkDelete
++from .gift_card_bulk_top_up import GiftCardBulkTopUp
+ 
+ __all__ = [
+     "GiftCardBulkActivate",
+     "GiftCardBulkCreate",
+     "GiftCardBulkDeactivate",
+     "GiftCardBulkDelete",
++    "GiftCardBulkTopUp",
+ ]
+diff --git a/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_top_up.py b/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_top_up.py
+new file mode 100644
+index 0000000..1a20055
+--- /dev/null
++++ b/saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_top_up.py
+@@ -0,0 +1,63 @@
++from decimal import Decimal
++
++import graphene
++from django.core.exceptions import ValidationError
++from django.db.models import F
++
++from ....core.tracing import traced_atomic_transaction
++from ....giftcard import models
++from ....giftcard.error_codes import GiftCardErrorCode
++from ....giftcard.lock_objects import gift_card_qs_select_for_update
++from ....permission.enums import GiftcardPermissions
++from ...core import ResolveInfo
++from ...core.mutations import BaseBulkMutation
++from ...core.scalars import Decimal as DecimalScalar
++from ...core.types import GiftCardError, NonNullList
++from ..types import GiftCard
++
++
++class GiftCardBulkTopUp(BaseBulkMutation):
++    class Arguments:
++        ids = NonNullList(
++            graphene.ID, required=True, description="List of gift card IDs to top up."
++        )
++        amount = DecimalScalar(
++            required=True,
++            description="Amount to add to the current balance of each gift card.",
++        )
++
++    class Meta:
++        description = "Add an amount to the current balance of gift cards."
++        model = models.GiftCard
++        object_type = GiftCard
++        permissions = (GiftcardPermissions.MANAGE_GIFT_CARD,)
++        error_type_class = GiftCardError
++
++    @classmethod
++    def perform_mutation(  # type: ignore[override]
++        cls, root, info: ResolveInfo, /, *, ids, amount
++    ):
++        if amount <= Decimal(0):
++            return 0, ValidationError(
++                {
++                    "amount": ValidationError(
++                        "Amount must be greater than zero.",
++                        code=GiftCardErrorCode.INVALID.value,
++                    )
++                }
++            )
++        return super().perform_mutation(root, info, ids=ids, amount=amount)
++
++    @classmethod
++    @traced_atomic_transaction()
++    def bulk_action(cls, _info: ResolveInfo, queryset, /, *, amount):
++        # Lock the rows in a stable order, then add the amount in the database so the
++        # new balance is computed from the locked value, not from an earlier read.
++        pks = list(
++            gift_card_qs_select_for_update()
++            .filter(pk__in=queryset.values("pk"))
++            .values_list("pk", flat=True)
++        )
++        models.GiftCard.objects.filter(pk__in=pks).update(
++            current_balance_amount=F("current_balance_amount") + amount
++        )
+diff --git a/saleor/graphql/giftcard/schema.py b/saleor/graphql/giftcard/schema.py
+index 3fdfe5a..1b616d7 100644
+--- a/saleor/graphql/giftcard/schema.py
++++ b/saleor/graphql/giftcard/schema.py
+@@ -19,6 +19,7 @@ from .bulk_mutations import (
+     GiftCardBulkCreate,
+     GiftCardBulkDeactivate,
+     GiftCardBulkDelete,
++    GiftCardBulkTopUp,
+ )
+ from .filters import GiftCardFilterInput, GiftCardTagFilterInput
+ from .mutations import (
+@@ -153,3 +154,4 @@ class GiftCardMutations(graphene.ObjectType):
+     gift_card_bulk_delete = GiftCardBulkDelete.Field()
+     gift_card_bulk_activate = GiftCardBulkActivate.Field()
+     gift_card_bulk_deactivate = GiftCardBulkDeactivate.Field()
++    gift_card_bulk_top_up = GiftCardBulkTopUp.Field()

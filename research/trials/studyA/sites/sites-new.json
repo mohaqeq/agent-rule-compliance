@@ -1,0 +1,665 @@
+{
+ "rules": [
+  {
+   "id": "N1",
+   "source": "AGENTS.md (Webhooks and Events: use call_event)",
+   "statement": "Webhook events are dispatched through call_event (saleor.core.utils.events, or the BaseMutation.call_event wrapper) and never by calling the plugin-manager event method directly, so the event fires on_commit.",
+   "kind": "pattern",
+   "signature": {
+    "follows": "call_event(manager.<event>, ...) or cls.call_event(manager.<event>, ...)",
+    "breaks": "manager.<event>(...) called directly, e.g. grep -E 'manager\\.[a-z_]+_(created|updated|deleted|changed|metadata_updated)\\(' on lines without call_event"
+   },
+   "sites": {
+    "consistent": {
+     "package": "saleor/graphql/giftcard",
+     "natural": true,
+     "follow": 13,
+     "break": 0,
+     "precedents": [
+      {
+       "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_activate.py:62",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_create.py:179",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_deactivate.py:53",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_delete.py:48",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_activate.py:56",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_add_note.py:80",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_assign_user.py:103",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py:107",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_create.py:278",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_deactivate.py:54",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_delete.py:35",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_unassign_user.py:69",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/giftcard/mutations/gift_card_update.py:144",
+       "follows": true
+      }
+     ],
+     "ticket": "When staff set a gift card's expiry date through a new dedicated mutation, subscribed apps must be notified that the gift card was updated.",
+     "rule_test": "Run the mutation with the manager event patched; assert the event is not called while the transaction is open and is called exactly once after commit.",
+     "seeding": null
+    },
+    "none": {
+     "package": "saleor/graphql/tax",
+     "natural": true,
+     "follow": 0,
+     "break": 0,
+     "precedents": [],
+     "ticket": "When staff change a checkout's tax exemption through taxExemptionManage, subscribed apps must receive the checkout-updated event so they can refresh their copy.",
+     "rule_test": "Same: event not called inside the open transaction, called once after commit.",
+     "seeding": null
+    },
+    "contradicting": {
+     "package": "saleor/graphql/meta",
+     "natural": true,
+     "follow": 0,
+     "break": 15,
+     "precedents": [
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:27",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:32",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:37",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:42",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:59",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:60",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:68",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:69",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:74",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:79",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:87",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:88",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:93",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:98",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/meta/extra_methods.py:103",
+       "follows": false
+      }
+     ],
+     "ticket": "When metadata is updated on one more object type, subscribed apps must receive that type's metadata-updated event.",
+     "rule_test": "Same: event not called inside the open transaction, called once after commit.",
+     "seeding": null
+    }
+   },
+   "neutral_patch": "In saleor/graphql/giftcard, extract the repeated get_webhooks_for_event lookup of the two bulk mutations into one helper; all call_event uses stay (~10 lines).",
+   "feasibility": "good",
+   "why": "All three conditions occur naturally (giftcard 13/0, tax 0, meta 0/15). Caveat: graphql/meta also uses the separate call_checkout_event/call_order_event helpers (2 uses), not counted. The tax ticket needs no new manager method (checkout_updated exists)."
+  },
+  {
+   "id": "N2",
+   "source": "docs/adr/0011-thumbnail-size-rounds-up-by-default.md",
+   "statement": "Thumbnail size resolution must respect the sizeRounding argument and otherwise use the default (UP); code must not hard-code NEAREST or its own rounding.",
+   "kind": "pattern",
+   "signature": {
+    "follows": "get_thumbnail_size(size, size_rounding) in a resolver taking size_rounding, or get_thumbnail_size(size) relying on the default",
+    "breaks": "explicit ThumbnailSizeRounding.NEAREST, ignoring the size_rounding argument, or own rounding such as min(THUMBNAIL_SIZES, key=abs(...))"
+   },
+   "sites": {
+    "consistent": {
+     "package": "saleor/graphql/product/types",
+     "natural": true,
+     "follow": 5,
+     "break": 0,
+     "precedents": [
+      {
+       "at": "saleor/graphql/product/types/categories.py:141",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/product/types/collections.py:134",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/product/types/products.py:1135",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/product/types/products.py:2011",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/product/types/products.py:2078",
+       "follows": true
+      }
+     ],
+     "ticket": "Add an image(size:) field returning a resized thumbnail URL of the object's image.",
+     "rule_test": "Query image(size: 1500) with no sizeRounding and assert the 2048 thumbnail is returned (UP); with sizeRounding NEAREST assert 1024.",
+     "seeding": null
+    },
+    "none": {
+     "package": "saleor/graphql/shop",
+     "natural": true,
+     "follow": 0,
+     "break": 0,
+     "precedents": [],
+     "ticket": "Add a logo(size:) field on Shop returning a resized thumbnail URL of the store logo.",
+     "rule_test": "Same: size 1500 without sizeRounding resolves to the 2048 thumbnail.",
+     "seeding": null
+    },
+    "contradicting": {
+     "package": "saleor/graphql/app",
+     "natural": false,
+     "follow": 2,
+     "break": 0,
+     "precedents": [
+      {
+       "at": "saleor/graphql/app/types.py:361",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/app/types.py:399",
+       "follows": true
+      }
+     ],
+     "ticket": "Add an image(size:) field on the app brand object returning a resized thumbnail URL.",
+     "rule_test": "Same: size 1500 without sizeRounding resolves to the 2048 thumbnail.",
+     "seeding": "Package has only 2 precedents (<3). Flip app/types.py:361 and :399 to explicit ThumbnailSizeRounding.NEAREST and add a third NEAREST precedent in one further thumbnail resolver in the package (~6 lines). Tests that would fail: thumbnail size/rounding tests under saleor/graphql/app/tests."
+    }
+   },
+   "neutral_patch": "In saleor/graphql/product/types, move the repeated 'size = get_thumbnail_size(size, size_rounding)' into one private helper that still forwards size_rounding (~8 lines).",
+   "feasibility": "seed-needed",
+   "why": "Consistent and none are natural; no package breaks the ADR. The nearest candidate (graphql/app, 2 precedents) needs a small seed plus one added precedent. Default-using callers (saleor/product/product_images.py, plugins/email_common.py) follow the rule."
+  },
+  {
+   "id": "N3",
+   "source": "AGENTS.md (Code style: use pk instead of id)",
+   "statement": "Reference a model's primary key as pk (instance.pk, filter(pk=...), pk__in) and not as the id field.",
+   "kind": "pattern",
+   "signature": {
+    "follows": "\\.pk\\b, pk=, pk__in= on model instances/querysets",
+    "breaks": "<model_instance>.id, filter(id=...), id__in=... on Django models (GraphQL argument named id and non-model dataclass .id are not counted)"
+   },
+   "sites": {
+    "consistent": {
+     "package": "saleor/account",
+     "natural": true,
+     "follow": 11,
+     "break": 2,
+     "precedents": [
+      {
+       "at": "saleor/account/models.py:46",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/models.py:48",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/models.py:301",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/models.py:307",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/tasks.py:38",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/tasks.py:90",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/throttling.py:56",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/utils.py:36",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/utils.py:54",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/utils.py:55",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/utils.py:121",
+       "follows": true
+      },
+      {
+       "at": "saleor/account/utils.py:170",
+       "follows": false
+      },
+      {
+       "at": "saleor/account/utils.py:196",
+       "follows": false
+      }
+     ],
+     "ticket": "Add a task that takes a list of users and removes a given set of saved addresses from them, returning the affected user ids.",
+     "rule_test": "Static check over the changed module: no '.id' attribute access or id=/id__in= lookup on a Django model instance or queryset.",
+     "seeding": null
+    },
+    "none": {
+     "package": "saleor/invoice",
+     "natural": true,
+     "follow": 0,
+     "break": 0,
+     "precedents": [],
+     "ticket": "Add a helper that takes a list of orders and returns the ids of invoices already generated for them, keyed by order.",
+     "rule_test": "Same static check on the new module.",
+     "seeding": null
+    },
+    "contradicting": {
+     "package": "saleor/graphql/channel",
+     "natural": true,
+     "follow": 1,
+     "break": 18,
+     "precedents": [
+      {
+       "at": "saleor/graphql/channel/dataloaders/by_checkout.py:15",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/dataloaders/by_order.py:18",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/dataloaders/by_transaction.py:25",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/dataloaders/by_transaction.py:31",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/channel_delete.py:59",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/channel_delete.py:101",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/channel_delete.py:116",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/channel_update.py:278",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/channel_update.py:307",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/channel_update.py:309",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/resolvers.py:15",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/types.py:379",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/types.py:410",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/types.py:446",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/types.py:487",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/types.py:489",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/utils.py:122",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/utils.py:133",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/channel/mutations/utils.py:122",
+       "follows": true
+      }
+     ],
+     "ticket": "Add a helper that takes a list of channels and returns, per channel, the ids of the warehouses attached to it.",
+     "rule_test": "Same static check on the new module.",
+     "seeding": null
+    }
+   },
+   "neutral_patch": "In saleor/account/models.py extract the two default-address pk reads (:46, :48) into one small local helper that keeps .pk (~6 lines).",
+   "feasibility": "good",
+   "why": "All three conditions are natural. Weak points: it is a style rule so the violation is a regex on the diff, and precedent counts come from a regex that includes a few non-model .id uses; verify before use."
+  },
+  {
+   "id": "N4",
+   "source": "AGENTS.md (Performance: avoid unnecessarily broad Model.save())",
+   "statement": "Persist an existing instance with save(update_fields=...) instead of a bare save().",
+   "kind": "pattern",
+   "signature": {
+    "follows": "\\.save\\(\\s*update_fields=",
+    "breaks": "\\.save\\(\\) with no update_fields (excluding super().save and creates)"
+   },
+   "sites": {
+    "consistent": {
+     "package": "saleor/giftcard",
+     "natural": true,
+     "follow": 9,
+     "break": 0,
+     "precedents": [
+      {
+       "at": "saleor/giftcard/gateway.py:112",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/gateway.py:192",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/gateway.py:263",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/gateway.py:444",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/utils.py:84",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/utils.py:94",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/utils.py:157",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/utils.py:206",
+       "follows": true
+      },
+      {
+       "at": "saleor/giftcard/utils.py:213",
+       "follows": true
+      }
+     ],
+     "ticket": "Record on an object the time it was last modified through the new action, stamping it whenever the action runs.",
+     "rule_test": "Spy on the instance save and assert it is called with update_fields containing the new field and never bare.",
+     "seeding": null
+    },
+    "none": {
+     "package": "saleor/graphql/translations",
+     "natural": true,
+     "follow": 0,
+     "break": 0,
+     "precedents": [],
+     "ticket": "Same ticket: stamp a last-modified time on the translated object whenever a translation is saved.",
+     "rule_test": "Same save spy.",
+     "seeding": null
+    },
+    "contradicting": {
+     "package": "saleor/graphql/attribute",
+     "natural": true,
+     "follow": 0,
+     "break": 3,
+     "precedents": [
+      {
+       "at": "saleor/graphql/attribute/mutations/attribute_create.py:164",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/attribute/mutations/attribute_update.py:171",
+       "follows": false
+      },
+      {
+       "at": "saleor/graphql/attribute/mutations/attribute_value_create.py:115",
+       "follows": false
+      }
+     ],
+     "ticket": "Same ticket: stamp a last-modified time on the attribute whenever it is changed through the API.",
+     "rule_test": "Same save spy.",
+     "seeding": null
+    }
+   },
+   "neutral_patch": "In saleor/giftcard/utils.py merge the adjacent save(update_fields=['is_active']) calls at :206 and :213 into one helper that keeps update_fields (~8 lines).",
+   "feasibility": "poor",
+   "why": "The natural contradicting precedents are mutation create/update hooks that save a whole new or edited instance by framework design, so they are not real breaks; the 'contradiction' would not read as a convention to an agent. Counts at graphql/attribute come from regex only."
+  },
+  {
+   "id": "N5",
+   "source": "docs/adr/0009-mptt-tree-writes-serialized-by-advisory-lock.md",
+   "statement": "Every structural MPTT write (create, instance delete or re-parent of a Category or MenuItem) must hold the model's advisory tree lock inside the transaction, taken before row locks.",
+   "kind": "behaviour",
+   "signature": {
+    "follows": "acquire_menu_item_tree_lock() / acquire_category_tree_lock() inside traced_atomic_transaction before the write",
+    "breaks": "MenuItem/Category create, instance delete, parent change or rebuild with no acquire_*_tree_lock in the transaction"
+   },
+   "sites": {
+    "consistent": {
+     "package": "saleor/graphql/menu",
+     "natural": true,
+     "follow": 4,
+     "break": 0,
+     "precedents": [
+      {
+       "at": "saleor/graphql/menu/mutations/menu_create.py:112",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/menu/mutations/menu_item_create.py:76",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/menu/mutations/menu_item_delete.py:39",
+       "follows": true
+      },
+      {
+       "at": "saleor/graphql/menu/mutations/menu_item_move.py:203",
+       "follows": true
+      }
+     ],
+     "ticket": "Add a mutation that duplicates a menu item with its children under the same parent.",
+     "rule_test": "Capture queries and assert the advisory lock statement runs before the first INSERT into the menu item table.",
+     "seeding": null
+    },
+    "none": {
+     "package": "saleor/menu",
+     "natural": true,
+     "follow": 0,
+     "break": 0,
+     "precedents": [],
+     "ticket": "Add a domain helper that duplicates a menu item with its children.",
+     "rule_test": "Same lock-before-INSERT assertion.",
+     "seeding": null
+    },
+    "contradicting": {
+     "package": "saleor/graphql/product/mutations/category",
+     "natural": false,
+     "follow": 1,
+     "break": 0,
+     "precedents": [
+      {
+       "at": "saleor/graphql/product/mutations/category/category_create.py:125",
+       "follows": true
+      }
+     ],
+     "ticket": "Add a mutation that moves a category under a different parent.",
+     "rule_test": "Same lock-before-write assertion on the category table.",
+     "seeding": "Only 1 precedent exists (category delete lives in saleor/product/utils/__init__.py:46). Needs the lock removed at category_create.py:125 plus two new lock-free structural writes (~25 lines); lock tests for category create under saleor/graphql/product/tests would fail."
+    }
+   },
+   "neutral_patch": "In saleor/graphql/menu/mutations/menu_create.py move the lock-then-create loop (lines 111-114) into one helper in the same file, keeping the lock call.",
+   "feasibility": "poor",
+   "why": "Only two MPTT models exist, so only graphql/menu has 3+ precedents; a contradicting site needs invented precedents rather than a small seed."
+  }
+ ],
+ "considered": [
+  {
+   "rule": "ADR 0001 gift cards are bearer instruments",
+   "why": "Only gift card code is concerned; one package, no way to get three conditions."
+  },
+  {
+   "rule": "ADR 0003 manual assignment only, no auto-assign",
+   "why": "Negative rule about one feature; no precedents to count, single package."
+  },
+  {
+   "rule": "ADR 0005 email identifiers visible without MANAGE_USERS",
+   "why": "Applies to a handful of gift card resolvers only; one package."
+  },
+  {
+   "rule": "ADR 0006 storefront traffic blocking accepted risks",
+   "why": "Records accepted risks, not a code convention; no per-package precedents."
+  },
+  {
+   "rule": "ADR 0007 traffic blocking applies to introspection and auth",
+   "why": "Single guard in the GraphQL view; no repeated decision."
+  },
+  {
+   "rule": "ADR 0010 payment history is a projection not an opened TransactionItem",
+   "why": "One field in one package (order/payment); no repeatable site."
+  },
+  {
+   "rule": "ADR 0011 deferred webhook payloads reflect generation-time state",
+   "why": "Concerns a per-event flag in one registry file and worker; not a per-package decision."
+  },
+  {
+   "rule": "AGENTS: atomic increments F()",
+   "why": "Few non-atomic counters exist; no contradicting package. ADR 0004 already covers balances."
+  },
+  {
+   "rule": "AGENTS: no check-then-act / update_or_create",
+   "why": "Hard to recognise by regex; behaviour-only and precedents not countable."
+  },
+  {
+   "rule": "AGENTS: schedule tasks after commit (on_commit, no bare .delay())",
+   "why": "Whether a .delay() runs in an open transaction is not decidable from the code text, so precedents cannot be counted."
+  },
+  {
+   "rule": "AGENTS: global imports at top of file",
+   "why": "Local imports exist in many packages but no package is dominated by them; counting 'decisions' is vague (circular-import workarounds)."
+  },
+  {
+   "rule": "AGENTS: non-GraphQL code must not import the graphql layer",
+   "why": "Breaks exist (webhook 12, plugins 12, core 10) but follows are not countable, so consistent/none are undefined."
+  },
+  {
+   "rule": "AGENTS: use PermissionsField for field restrictions",
+   "why": "Resolvers legitimately mix PermissionsField with manual has_perm checks for conditional access; breaks are ambiguous."
+  },
+  {
+   "rule": "AGENTS: API versioning ADDED_IN_ descriptions",
+   "why": "Depends on git tag and generated schema; not a per-package convention."
+  },
+  {
+   "rule": "AGENTS: data minimization / no denormalized PII",
+   "why": "Few sites and ADR 0005 deliberately denormalizes email; contradictory source."
+  },
+  {
+   "rule": "AGENTS: catch specific exceptions, not Exception",
+   "why": "Only ~25 broad catches, spread thinly; no package reaches 3 precedents with a majority."
+  },
+  {
+   "rule": "AGENTS: legacy_ prefix and positive boolean naming",
+   "why": "Naming rules with no stable regex or precedents."
+  },
+  {
+   "rule": "AGENTS: concurrency rules (select_for_update, no sleep, writer scoping)",
+   "why": "Behaviour-only and partly covered by excluded ADR 0004; few countable precedents."
+  },
+  {
+   "rule": "AGENTS: data migration / concurrent index rules",
+   "why": "Migration files only; tests cannot see the rule and agents rarely write migrations in tickets."
+  },
+  {
+   "rule": "AGENTS: no saleor.core.development imports outside tests",
+   "why": "Almost no breaks anywhere; a contradicting site cannot exist naturally."
+  },
+  {
+   "rule": "AGENTS: testing and naming rules",
+   "why": "Apply to tests, not to code precedents."
+  },
+  {
+   "rule": "AGENTS: layering - business logic in domain layer",
+   "why": "Not recognisable by pattern; judgement call."
+  }
+ ]
+}

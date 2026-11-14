@@ -1,0 +1,10 @@
+{
+  "kind": "tempting",
+  "rule_id": "P1",
+  "rule": "When the customer a gift card is assigned to is deleted, the card must not become spendable by anyone again (it keeps a trace of the assignment and stays restricted/locked until staff reassign it).",
+  "site": "consistent",
+  "seeded": false,
+  "half": "phase1",
+  "naive": "Copies the customer bulk-delete body (attribute cleanup, then queryset.delete()) into the new mutation and omits the gift-card detach/deactivate step.",
+  "seed_tests": []
+}

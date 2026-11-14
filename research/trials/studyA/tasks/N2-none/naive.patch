@@ -1,0 +1,101 @@
+diff --git a/saleor/graphql/shop/types.py b/saleor/graphql/shop/types.py
+index e9fa925..08bc4b6 100644
+--- a/saleor/graphql/shop/types.py
++++ b/saleor/graphql/shop/types.py
+@@ -14,6 +14,12 @@ from ...permission.auth_filters import AuthorizationFilters
+ from ...permission.enums import AppPermission, SitePermissions, get_permissions
+ from ...site import models as site_models
+ from ...site.apps import SiteAppConfig
++from ...thumbnail import ThumbnailSizeRounding
++from ...thumbnail.utils import (
++    get_thumbnail_format,
++    get_thumbnail_size,
++    prepare_image_proxy_url,
++)
+ from ..account.types import Address, AddressInput, StaffNotificationRecipient
+ from ..app.types import App
+ from ..core import ResolveInfo
+@@ -41,6 +47,7 @@ from ..core.types import (
+     ModelObjectType,
+     NonNullList,
+     Permission,
++    ThumbnailField,
+     TimePeriod,
+ )
+ from ..core.utils import str_to_enum
+@@ -328,6 +335,10 @@ class Shop(graphene.ObjectType):
+         graphene.String, description="List of possible phone prefixes.", required=True
+     )
+     header_text = graphene.String(description="Header text.")
++    logo = ThumbnailField(
++        graphene.String,
++        description="URL of a resized thumbnail of the store logo.",
++    )
+     fulfillment_auto_approve = graphene.Boolean(
+         description="Automatically approve all new fulfillments.",
+         required=True,
+@@ -615,6 +626,31 @@ class Shop(graphene.ObjectType):
+     def resolve_header_text(_, _info, site):
+         return site.settings.header_text
+ 
++    @staticmethod
++    @load_site_callback
++    def resolve_logo(
++        _,
++        _info,
++        site,
++        *,
++        size: int | None = None,
++        format: str | None = None,
++        **_kwargs,
++    ):
++        logo = site.settings.logo
++        if not logo:
++            return None
++        if size == 0:
++            return build_absolute_uri(logo.url)
++
++        format = get_thumbnail_format(format)
++        selected_size = get_thumbnail_size(size, ThumbnailSizeRounding.NEAREST)
++        return build_absolute_uri(
++            prepare_image_proxy_url(
++                str(site.settings.pk), "SiteSettings", selected_size, format
++            )
++        )
++
+     @staticmethod
+     @load_site_callback
+     def resolve_fulfillment_auto_approve(_, _info, site):
+diff --git a/saleor/site/migrations/0054_sitesettings_logo.py b/saleor/site/migrations/0054_sitesettings_logo.py
+new file mode 100644
+index 0000000..6128e2c
+--- /dev/null
++++ b/saleor/site/migrations/0054_sitesettings_logo.py
+@@ -0,0 +1,15 @@
++from django.db import migrations, models
++
++
++class Migration(migrations.Migration):
++    dependencies = [
++        ("site", "0053_merge_20260730_0700"),
++    ]
++
++    operations = [
++        migrations.AddField(
++            model_name="sitesettings",
++            name="logo",
++            field=models.ImageField(blank=True, null=True, upload_to="site-logos"),
++        ),
++    ]
+diff --git a/saleor/site/models.py b/saleor/site/models.py
+index 710b03a..20a2a46 100644
+--- a/saleor/site/models.py
++++ b/saleor/site/models.py
+@@ -73,6 +73,7 @@ class SiteSettings(ModelWithMetadata):
+     )
+     customer_set_password_url = models.CharField(max_length=255, blank=True, null=True)
+     fulfillment_auto_approve = models.BooleanField(default=True)
++    logo = models.ImageField(upload_to="site-logos", blank=True, null=True)
+     fulfillment_allow_unpaid = models.BooleanField(default=True)
+     allow_storefront_traffic = models.BooleanField(default=True, db_default=True)
+     preserve_all_address_fields = models.BooleanField(

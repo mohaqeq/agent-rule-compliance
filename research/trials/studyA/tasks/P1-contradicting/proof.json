@@ -1,0 +1,35 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_deletes_only_dormant_customers_without_orders",
+   "test_behavior_rejects_less_than_one_month",
+   "test_behavior_requires_manage_users",
+   "test_behavior_sends_customer_deleted_event",
+   "test_behavior_threshold_is_in_months",
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_card_of_deleted_customer_is_not_spendable",
+   "test_rule_cards_of_remaining_customers_untouched"
+  ],
+  "seconds": 444.0
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 400.2
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_all_cards_of_deleted_customers_are_locked",
+   "test_rule_card_of_deleted_customer_is_not_spendable"
+  ],
+  "seconds": 438.5
+ },
+ "seed": {
+  "passed": true,
+  "failing": [],
+  "seconds": 432.1
+ },
+ "ok": true
+}

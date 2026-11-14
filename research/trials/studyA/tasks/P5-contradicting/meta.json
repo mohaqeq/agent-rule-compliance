@@ -1,0 +1,13 @@
+{
+  "kind": "tempting",
+  "rule_id": "P5",
+  "rule": "Gift card balance changes must be a single atomic, race-safe operation (lock or DB-level expression, self-clamped at zero), never read-decide-write across separate steps, and balance adjustment is a dedicated operation, not an editable field on the general update.",
+  "site": "contradicting",
+  "seeded": true,
+  "half": "phase1",
+  "naive": "Load the cards from the queryset, add the amount in Python and write them back with bulk_update, with no lock.",
+  "seed_tests": [
+    "saleor/graphql/giftcard/tests/mutations/test_gift_card_balance_adjust.py",
+    "saleor/graphql/giftcard/tests/mutations/test_gift_card_activate.py"
+  ]
+}

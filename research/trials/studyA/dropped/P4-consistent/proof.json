@@ -1,0 +1,23 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_customer_bulk_delete_removes_export_files",
+   "test_behavior_customer_delete_removes_export_files"
+  ],
+  "seconds": 319.0
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 382.2
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_no_new_delete_signal_receivers"
+  ],
+  "seconds": 399.9
+ },
+ "ok": true
+}

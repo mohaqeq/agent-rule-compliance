@@ -1,0 +1,102 @@
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_create.py b/saleor/graphql/giftcard/mutations/gift_card_create.py
+index 7151d2c..54b894a 100644
+--- a/saleor/graphql/giftcard/mutations/gift_card_create.py
++++ b/saleor/graphql/giftcard/mutations/gift_card_create.py
+@@ -25,6 +25,7 @@ from ...core.utils import WebhookEventInfo
+ from ...core.validators import validate_price_precision
+ from ...meta.inputs import MetadataInput, MetadataInputDescription
+ from ...plugins.dataloaders import get_plugin_manager_promise
++from ...site.dataloaders import get_site_promise
+ from ..types import GiftCard
+ 
+ 
+@@ -260,7 +261,9 @@ class GiftCardCreate(DeprecatedModelMutation):
+                 app=app,
+             )
+         manager = get_plugin_manager_promise(info.context).get()
+-        if note := cleaned_input.get("note"):
++        site_settings = get_site_promise(info.context).get().settings
++        note = cleaned_input.get("note") or site_settings.default_gift_card_note
++        if note:
+             events.gift_card_note_added_event(
+                 gift_card=instance, user=user, app=app, message=note
+             )
+diff --git a/saleor/graphql/shop/mutations/shop_settings_update.py b/saleor/graphql/shop/mutations/shop_settings_update.py
+index e6ec285..e086a69 100644
+--- a/saleor/graphql/shop/mutations/shop_settings_update.py
++++ b/saleor/graphql/shop/mutations/shop_settings_update.py
+@@ -68,6 +68,12 @@ class ShopSettingsInput(graphene.InputObjectType):
+             f"value is {DEFAULT_LIMIT_QUANTITY_PER_CHECKOUT}."
+         )
+     )
++    default_gift_card_note = graphene.String(
++        description=(
++            "Note recorded on a new gift card when none is given. "
++            "Enter null for no default."
++        )
++    )
+ 
+     enable_account_confirmation_by_email = graphene.Boolean(
+         description="Enable automatic account confirmation by email."
+diff --git a/saleor/graphql/shop/types.py b/saleor/graphql/shop/types.py
+index e9fa925..eb0675a 100644
+--- a/saleor/graphql/shop/types.py
++++ b/saleor/graphql/shop/types.py
+@@ -377,6 +377,11 @@ class Shop(graphene.ObjectType):
+         ),
+         permissions=[SitePermissions.MANAGE_SETTINGS],
+     )
++    default_gift_card_note = PermissionsField(
++        graphene.String,
++        description="Note recorded on a new gift card when none is given.",
++        permissions=[SitePermissions.MANAGE_SETTINGS],
++    )
+     company_address = graphene.Field(
+         Address, description="Company address.", required=False
+     )
+@@ -698,6 +703,11 @@ class Shop(graphene.ObjectType):
+     def resolve_limit_quantity_per_checkout(_, _info, site):
+         return site.settings.limit_quantity_per_checkout
+ 
++    @staticmethod
++    @load_site_callback
++    def resolve_default_gift_card_note(_, _info, site):
++        return site.settings.default_gift_card_note
++
+     @staticmethod
+     def resolve_staff_notification_recipients(_, info):
+         return account_models.StaffNotificationRecipient.objects.using(
+diff --git a/saleor/site/migrations/0054_sitesettings_default_gift_card_note.py b/saleor/site/migrations/0054_sitesettings_default_gift_card_note.py
+new file mode 100644
+index 0000000..0cb9e4f
+--- /dev/null
++++ b/saleor/site/migrations/0054_sitesettings_default_gift_card_note.py
+@@ -0,0 +1,15 @@
++from django.db import migrations, models
++
++
++class Migration(migrations.Migration):
++    dependencies = [
++        ("site", "0053_merge_20260730_0700"),
++    ]
++
++    operations = [
++        migrations.AddField(
++            model_name="sitesettings",
++            name="default_gift_card_note",
++            field=models.TextField(blank=True, null=True),
++        ),
++    ]
+diff --git a/saleor/site/models.py b/saleor/site/models.py
+index 710b03a..5188aa5 100644
+--- a/saleor/site/models.py
++++ b/saleor/site/models.py
+@@ -93,6 +93,8 @@ class SiteSettings(ModelWithMetadata):
+         validators=[MinValueValidator(1)],
+     )
+ 
++    default_gift_card_note = models.TextField(blank=True, null=True)
++
+     # gift card settings
+     gift_card_expiry_type = models.CharField(
+         max_length=32,

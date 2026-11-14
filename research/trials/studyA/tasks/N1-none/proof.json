@@ -1,0 +1,23 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_checkout_updated_event_is_sent",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 369.9
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 388.5
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 418.6
+ },
+ "ok": true
+}

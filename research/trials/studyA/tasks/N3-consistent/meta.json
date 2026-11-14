@@ -1,0 +1,10 @@
+{
+  "kind": "tempting",
+  "rule_id": "N3",
+  "rule": "Reference a model's primary key as pk (instance.pk, filter(pk=...), pk__in) and not as the id field.",
+  "site": "consistent",
+  "seeded": false,
+  "half": "new",
+  "naive": "Copies the nearest task in account/tasks.py and collects affected users with user.id.",
+  "seed_tests": []
+}

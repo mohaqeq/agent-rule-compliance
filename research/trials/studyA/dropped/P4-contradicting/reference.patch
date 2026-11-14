@@ -1,0 +1,90 @@
+diff --git a/saleor/attribute/cleanup.py b/saleor/attribute/cleanup.py
+new file mode 100644
+index 0000000..26f7346
+--- /dev/null
++++ b/saleor/attribute/cleanup.py
+@@ -0,0 +1,31 @@
++from collections.abc import Iterable
++
++from django.db.models import Exists, OuterRef
++
++from .models import Attribute, AttributePage, AttributeProduct, AttributeVariant
++
++
++def get_product_type_attribute_ids(product_type_pks: Iterable[int]) -> list[int]:
++    """Return ids of attributes assigned to the given product types.
++
++    Must be called before the product types are deleted.
++    """
++    pks = list(product_type_pks)
++    product_attrs = AttributeProduct.objects.filter(product_type_id__in=pks)
++    variant_attrs = AttributeVariant.objects.filter(product_type_id__in=pks)
++    return list(
++        Attribute.objects.filter(
++            Exists(product_attrs.filter(attribute_id=OuterRef("pk")))
++            | Exists(variant_attrs.filter(attribute_id=OuterRef("pk")))
++        ).values_list("pk", flat=True)
++    )
++
++
++def delete_unassigned_attributes(attribute_ids: Iterable[int]) -> None:
++    """Delete the given attributes that no product type or page type uses."""
++    Attribute.objects.filter(
++        ~Exists(AttributeProduct.objects.filter(attribute_id=OuterRef("pk"))),
++        ~Exists(AttributeVariant.objects.filter(attribute_id=OuterRef("pk"))),
++        ~Exists(AttributePage.objects.filter(attribute_id=OuterRef("pk"))),
++        pk__in=list(attribute_ids),
++    ).delete()
+diff --git a/saleor/graphql/product/bulk_mutations/product_type_bulk_delete.py b/saleor/graphql/product/bulk_mutations/product_type_bulk_delete.py
+index 8584c9c..801176e 100644
+--- a/saleor/graphql/product/bulk_mutations/product_type_bulk_delete.py
++++ b/saleor/graphql/product/bulk_mutations/product_type_bulk_delete.py
+@@ -6,6 +6,10 @@ from django.db.models.expressions import Exists, OuterRef
+ 
+ from ....attribute import AttributeInputType
+ from ....attribute import models as attribute_models
++from ....attribute.cleanup import (
++    delete_unassigned_attributes,
++    get_product_type_attribute_ids,
++)
+ from ....core.tracing import traced_atomic_transaction
+ from ....permission.enums import ProductTypePermissions
+ from ....product import models
+@@ -50,7 +54,10 @@ class ProductTypeBulkDelete(ModelBulkDeleteMutation):
+         except ValidationError as error:
+             return 0, error
+         cls.delete_assigned_attribute_values(pks)
+-        return super().perform_mutation(_root, info, ids=ids)
++        attribute_ids = get_product_type_attribute_ids(pks)
++        result = super().perform_mutation(_root, info, ids=ids)
++        delete_unassigned_attributes(attribute_ids)
++        return result
+ 
+     @classmethod
+     def bulk_action(cls, info: ResolveInfo, queryset, /):
+diff --git a/saleor/graphql/product/mutations/product_type/product_type_delete.py b/saleor/graphql/product/mutations/product_type/product_type_delete.py
+index 3029975..55333d6 100644
+--- a/saleor/graphql/product/mutations/product_type/product_type_delete.py
++++ b/saleor/graphql/product/mutations/product_type/product_type_delete.py
+@@ -4,6 +4,10 @@ from django.db.models.expressions import Exists, OuterRef
+ 
+ from .....attribute import AttributeInputType
+ from .....attribute import models as attribute_models
++from .....attribute.cleanup import (
++    delete_unassigned_attributes,
++    get_product_type_attribute_ids,
++)
+ from .....core.tracing import traced_atomic_transaction
+ from .....order import OrderStatus
+ from .....order import models as order_models
+@@ -48,8 +52,10 @@ class ProductTypeDelete(ModelDeleteMutation):
+             ).values_list("pk", flat=True)
+         )
+         cls.delete_assigned_attribute_values(product_type_pk)
++        attribute_ids = get_product_type_attribute_ids([product_type_pk])
+ 
+         response = super().perform_mutation(_root, info, id=id)
++        delete_unassigned_attributes(attribute_ids)
+ 
+         # delete order lines for deleted variants
+         order_models.OrderLine.objects.filter(pk__in=order_line_pks).delete()

@@ -1,0 +1,19 @@
+diff --git a/saleor/invoice/utils.py b/saleor/invoice/utils.py
+new file mode 100644
+index 0000000..7e22b3f
+--- /dev/null
++++ b/saleor/invoice/utils.py
+@@ -0,0 +1,13 @@
++from ..core import JobStatus
++from .models import Invoice
++
++
++def get_generated_invoice_ids_by_order(orders):
++    """Map each order's id to the ids of its already generated invoices."""
++    result = {order.pk: [] for order in orders}
++    invoices = Invoice.objects.filter(
++        order__in=orders, status=JobStatus.SUCCESS
++    ).order_by("pk")
++    for invoice in invoices:
++        result[invoice.order_id].append(invoice.pk)
++    return result

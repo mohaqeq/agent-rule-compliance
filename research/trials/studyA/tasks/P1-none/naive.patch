@@ -1,0 +1,88 @@
+diff --git a/saleor/account/migrations/0107_user_delete_requested_at.py b/saleor/account/migrations/0107_user_delete_requested_at.py
+new file mode 100644
+index 0000000..1c2742e
+--- /dev/null
++++ b/saleor/account/migrations/0107_user_delete_requested_at.py
+@@ -0,0 +1,15 @@
++from django.db import migrations, models
++
++
++class Migration(migrations.Migration):
++    dependencies = [
++        ("account", "0106_merge_20260807_0748"),
++    ]
++
++    operations = [
++        migrations.AddField(
++            model_name="user",
++            name="delete_requested_at",
++            field=models.DateTimeField(blank=True, null=True),
++        ),
++    ]
+diff --git a/saleor/account/models.py b/saleor/account/models.py
+index 79da5bd..849cc95 100644
+--- a/saleor/account/models.py
++++ b/saleor/account/models.py
+@@ -183,6 +183,7 @@ class User(
+     date_joined = models.DateTimeField(default=timezone.now, editable=False)
+     updated_at = models.DateTimeField(auto_now=True, db_index=True)
+     last_password_reset_request = models.DateTimeField(null=True, blank=True)
++    delete_requested_at = models.DateTimeField(null=True, blank=True)
+     default_shipping_address = models.ForeignKey(
+         Address, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
+     )
+diff --git a/saleor/account/tasks.py b/saleor/account/tasks.py
+index 2f62fff..6ebb310 100644
+--- a/saleor/account/tasks.py
++++ b/saleor/account/tasks.py
+@@ -1,19 +1,23 @@
+ import logging
++from datetime import timedelta
+ from typing import cast
+ from urllib.parse import urlencode
+ 
+ from django.utils import timezone
+ 
++from ..attribute.utils import delete_user_unique_attribute_values
+ from ..celeryconf import app
+ from ..core.db.connection import allow_writer
+ from ..core.tokens import (
+     account_confirm_token_generator,
+     password_reset_token_generator,
+ )
++from ..core.tracing import traced_atomic_transaction
+ from ..core.utils.events import call_event
+ from ..core.utils.url import prepare_url
+ from ..graphql.plugins.dataloaders import get_plugin_manager_promise
+ from ..graphql.site.dataloaders import get_site_promise
++from ..plugins.manager import get_plugins_manager
+ from . import events, notifications, search
+ from .models import User
+ from .notifications import send_password_reset_notification
+@@ -120,3 +124,26 @@ def finish_creating_user(user_pk, redirect_url, channel_slug, context_data):
+ 
+     call_event(manager.customer_created, user)
+     events.customer_account_created_event(user=user)
++
++
++ERASURE_GRACE_PERIOD = timedelta(days=30)
++
++
++@app.task()
++@allow_writer()
++def delete_requested_customers_task() -> int:
++    """Delete customers who asked for erasure at least 30 days ago."""
++    threshold = timezone.now() - ERASURE_GRACE_PERIOD
++    instances = list(
++        User.objects.filter(is_staff=False, delete_requested_at__lte=threshold)
++    )
++    if not instances:
++        return 0
++    queryset = User.objects.filter(pk__in=[user.pk for user in instances])
++    with traced_atomic_transaction():
++        delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
++        queryset.delete()
++    manager = get_plugins_manager(allow_replica=False)
++    for instance in instances:
++        call_event(manager.customer_deleted, instance)
++    return len(instances)

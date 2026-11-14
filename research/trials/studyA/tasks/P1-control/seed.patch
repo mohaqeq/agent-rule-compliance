@@ -1,0 +1,194 @@
+diff --git a/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py b/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
+index 808ffa2..c22a73d 100644
+--- a/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
++++ b/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
+@@ -2,9 +2,7 @@ import graphene
+ from django.conf import settings
+ 
+ from ....account import models
+-from ....attribute.utils import delete_user_unique_attribute_values
+ from ....core.tracing import traced_atomic_transaction
+-from ....giftcard.utils import deactivate_assigned_gift_cards
+ from ....permission.enums import AccountPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+ from ....webhook.utils import get_webhooks_for_event
+@@ -16,6 +14,7 @@ from ...core.utils import WebhookEventInfo
+ from ...plugins.dataloaders import get_plugin_manager_promise
+ from ..mutations.base import CustomerDeleteMixin
+ from ..types import User
++from ..utils import prepare_users_for_deletion
+ 
+ 
+ class UserBulkDelete(ModelBulkDeleteMutation):
+@@ -63,8 +62,7 @@ class CustomerBulkDelete(CustomerDeleteMixin, UserBulkDelete):
+             # Required before deleting the users: GiftCard.assigned_to is
+             # on_delete=PROTECT, so restricted cards must be detached and
+             # deactivated first, atomically with the deletion.
+-            deactivate_assigned_gift_cards(queryset)
+-            delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
++            prepare_users_for_deletion(queryset)
+             queryset.delete()
+         webhooks = get_webhooks_for_event(WebhookEventAsyncType.CUSTOMER_DELETED)
+         manager = get_plugin_manager_promise(info.context).get()
+diff --git a/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py b/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py
+index bf63555..115c9e7 100644
+--- a/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py
++++ b/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py
+@@ -4,9 +4,7 @@ from django.conf import settings
+ from django.core.exceptions import ValidationError
+ 
+ from ....account import models
+-from ....attribute.utils import delete_user_unique_attribute_values
+ from ....core.tracing import traced_atomic_transaction
+-from ....giftcard.utils import deactivate_assigned_gift_cards
+ from ....permission.enums import AccountPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+ from ....webhook.utils import get_webhooks_for_event
+@@ -18,6 +16,7 @@ from ...plugins.dataloaders import get_plugin_manager_promise
+ from ..mutations.base import StaffDeleteMixin
+ from ..types import User
+ from .customer_bulk_delete import UserBulkDelete
++from ..utils import prepare_users_for_deletion
+ 
+ 
+ class StaffBulkDelete(StaffDeleteMixin, UserBulkDelete):
+@@ -76,8 +75,7 @@ class StaffBulkDelete(StaffDeleteMixin, UserBulkDelete):
+             # Required before deleting the users: GiftCard.assigned_to is
+             # on_delete=PROTECT, so restricted cards must be detached and
+             # deactivated first, atomically with the deletion.
+-            deactivate_assigned_gift_cards(queryset)
+-            delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
++            prepare_users_for_deletion(queryset)
+             queryset.delete()
+         manager = get_plugin_manager_promise(info.context).get()
+         webhooks = get_webhooks_for_event(WebhookEventAsyncType.STAFF_DELETED)
+diff --git a/saleor/graphql/account/mutations/account/account_delete.py b/saleor/graphql/account/mutations/account/account_delete.py
+index ea7bed4..7bc6c58 100644
+--- a/saleor/graphql/account/mutations/account/account_delete.py
++++ b/saleor/graphql/account/mutations/account/account_delete.py
+@@ -5,14 +5,12 @@ from django.core.exceptions import ValidationError
+ 
+ from .....account import models
+ from .....account.error_codes import AccountErrorCode
+-from .....attribute.utils import delete_user_unique_attribute_values
+ from .....core.tokens import (
+     account_delete_token_generator,
+     legacy_account_delete_token_generator,
+     try_generators,
+ )
+ from .....core.tracing import traced_atomic_transaction
+-from .....giftcard.utils import deactivate_assigned_gift_cards
+ from .....permission.auth_filters import AuthorizationFilters
+ from .....webhook.event_types import WebhookEventAsyncType
+ from ....core import ResolveInfo
+@@ -23,6 +21,7 @@ from ....core.utils import WebhookEventInfo
+ from ....plugins.dataloaders import get_plugin_manager_promise
+ from ...types import User
+ from ..base import INVALID_TOKEN
++from ...utils import prepare_users_for_deletion
+ 
+ 
+ class AccountDelete(ModelDeleteMutation):
+@@ -89,8 +88,7 @@ class AccountDelete(ModelDeleteMutation):
+             # Required before deleting the user: GiftCard.assigned_to is
+             # on_delete=PROTECT, so restricted cards must be detached and
+             # deactivated first, atomically with the deletion.
+-            deactivate_assigned_gift_cards([user])
+-            delete_user_unique_attribute_values([user.pk])
++            prepare_users_for_deletion([user])
+             user.delete()
+         # After the instance is deleted, set its ID to the original database's
+         # ID so that the success response contains ID of the deleted object.
+diff --git a/saleor/graphql/account/mutations/staff/customer_delete.py b/saleor/graphql/account/mutations/staff/customer_delete.py
+index 8a59ffc..49d3741 100644
+--- a/saleor/graphql/account/mutations/staff/customer_delete.py
++++ b/saleor/graphql/account/mutations/staff/customer_delete.py
+@@ -1,9 +1,7 @@
+ import graphene
+ 
+ from .....account import models
+-from .....attribute.utils import delete_user_unique_attribute_values
+ from .....core.tracing import traced_atomic_transaction
+-from .....giftcard.utils import deactivate_assigned_gift_cards
+ from .....permission.enums import AccountPermissions
+ from .....webhook.event_types import WebhookEventAsyncType
+ from ....account.types import User
+@@ -14,6 +12,7 @@ from ....core.utils import WebhookEventInfo
+ from ....plugins.dataloaders import get_plugin_manager_promise
+ from ..base import CustomerDeleteMixin
+ from .base import UserDelete
++from ...utils import prepare_users_for_deletion
+ 
+ 
+ class CustomerDelete(CustomerDeleteMixin, UserDelete):
+@@ -51,8 +50,7 @@ class CustomerDelete(CustomerDeleteMixin, UserDelete):
+         super().clean_instance(info, instance)
+         # Runs inside the deletion transaction, right before the user is
+         # removed. Required because GiftCard.assigned_to is on_delete=PROTECT.
+-        deactivate_assigned_gift_cards([instance])
+-        delete_user_unique_attribute_values([instance.pk])
++        prepare_users_for_deletion([instance])
+ 
+     @classmethod
+     def post_save_action(cls, info: ResolveInfo, instance, cleaned_input):
+diff --git a/saleor/graphql/account/mutations/staff/staff_delete.py b/saleor/graphql/account/mutations/staff/staff_delete.py
+index 824e336..3312e89 100644
+--- a/saleor/graphql/account/mutations/staff/staff_delete.py
++++ b/saleor/graphql/account/mutations/staff/staff_delete.py
+@@ -1,9 +1,7 @@
+ import graphene
+ 
+ from .....account import models
+-from .....attribute.utils import delete_user_unique_attribute_values
+ from .....core.tracing import traced_atomic_transaction
+-from .....giftcard.utils import deactivate_assigned_gift_cards
+ from .....permission.enums import AccountPermissions
+ from .....webhook.event_types import WebhookEventAsyncType
+ from ....account.types import User
+@@ -14,6 +12,7 @@ from ....core.utils import WebhookEventInfo
+ from ....plugins.dataloaders import get_plugin_manager_promise
+ from ..base import StaffDeleteMixin
+ from .base import UserDelete
++from ...utils import prepare_users_for_deletion
+ 
+ 
+ class StaffDelete(StaffDeleteMixin, UserDelete):
+@@ -49,8 +48,7 @@ class StaffDelete(StaffDeleteMixin, UserDelete):
+             # Required before deleting the user: GiftCard.assigned_to is
+             # on_delete=PROTECT, so restricted cards must be detached and
+             # deactivated first, atomically with the deletion.
+-            deactivate_assigned_gift_cards([instance])
+-            delete_user_unique_attribute_values([instance.pk])
++            prepare_users_for_deletion([instance])
+             instance.delete()
+         # After the instance is deleted, set its ID to the original database's
+         # ID so that the success response contains ID of the deleted object.
+diff --git a/saleor/graphql/account/utils.py b/saleor/graphql/account/utils.py
+index f1e30de..7ea6706 100644
+--- a/saleor/graphql/account/utils.py
++++ b/saleor/graphql/account/utils.py
+@@ -7,7 +7,9 @@ from django.db.models.functions import Concat
+ from graphene.utils.str_converters import to_camel_case
+ 
+ from ...account.models import Group, User
++from ...attribute.utils import delete_user_unique_attribute_values
+ from ...core.exceptions import PermissionDenied
++from ...giftcard.utils import deactivate_assigned_gift_cards
+ from ...permission.auth_filters import AuthorizationFilters
+ from ...permission.enums import AccountPermissions
+ from ...permission.utils import has_one_of_permissions
+@@ -400,3 +402,14 @@ def get_user_accessible_channels(info, user: User | None):
+         if user is not None
+         else []
+     )
++
++
++def prepare_users_for_deletion(users) -> None:
++    """Do the clean-up that has to happen before users are deleted.
++
++    Call inside the deletion transaction, right before deleting the users.
++    ``users`` may be any iterable or queryset of users.
++    """
++    pks = [user.pk for user in users]
++    deactivate_assigned_gift_cards(pks)
++    delete_user_unique_attribute_values(pks)

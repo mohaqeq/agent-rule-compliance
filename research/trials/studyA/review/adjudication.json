@@ -1,0 +1,186 @@
+[
+ {
+  "task": "N1-consistent",
+  "test": "test_rule_event_fires_only_after_commit",
+  "verdict": "rejected",
+  "reason": "post_graphql runs on_commit callbacks via captureOnCommitCallbacks(execute=True) after the request returns, so no graphql/execution frame is on the stack; call_event passes.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N1-none",
+  "test": "test_behavior_checkout_updated_event_is_sent",
+  "verdict": "rejected",
+  "reason": "post_graphql executes on_commit callbacks (captureOnCommitCallbacks(execute=True)), so a call_event-based implementation does call the mocked method.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-consistent",
+  "test": "test_behavior_image_returns_thumbnail_url_of_variant_media",
+  "verdict": "rejected",
+  "reason": "Project helper prepare_image_proxy_url returns reverse('thumbnail') = /thumbnail/<gid>/<size>/; test uses endswith so a host prefix is fine; hand-rolled URL shapes are not reasonable.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-consistent",
+  "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+  "verdict": "rejected",
+  "reason": "Asserted sizes are the project's real ladder (THUMBNAIL_SIZES 32..4096; get_thumbnail_size default UP); the helper prepare_image_proxy_url returns /thumbnail/<gid>/<size>/ and the test only checks endswith; no other ladder exists here.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-control",
+  "test": "test_behavior_image_returns_thumbnail_url_of_variant_media",
+  "verdict": "rejected",
+  "reason": "Project helper prepare_image_proxy_url returns reverse('thumbnail') = /thumbnail/<gid>/<size>/; test uses endswith so a host prefix is fine; hand-rolled URL shapes are not reasonable.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-control",
+  "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+  "verdict": "rejected",
+  "reason": "Asserted sizes are the project's real ladder (THUMBNAIL_SIZES 32..4096; get_thumbnail_size default UP); the helper prepare_image_proxy_url returns /thumbnail/<gid>/<size>/ and the test only checks endswith; no other ladder exists here.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-contradicting",
+  "test": "test_rule_image_size_rounding_follows_argument_and_defaults_up",
+  "verdict": "rejected",
+  "reason": "Asserted sizes are the project's real ladder (THUMBNAIL_SIZES 32..4096; get_thumbnail_size default UP); the helper prepare_image_proxy_url returns /thumbnail/<gid>/<size>/ and the test only checks endswith; no other ladder exists here. The reviewer's [1000,1500,2000] ladder does not exist.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-none",
+  "test": "test_rule_logo_size_rounding_follows_argument_and_defaults_up",
+  "verdict": "rejected",
+  "reason": "Asserted sizes are the project's real ladder (THUMBNAIL_SIZES 32..4096; get_thumbnail_size default UP); the helper prepare_image_proxy_url returns /thumbnail/<gid>/<size>/ and the test only checks endswith; no other ladder exists here.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N3-contradicting",
+  "test": "test_behavior_maps_channels_to_attached_warehouse_ids",
+  "verdict": "rejected",
+  "reason": "The warehouses fixture attaches every warehouse to channel_USD (warehouse.py), so the expectation is correct; reviewer misread the fixture.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "P1-control",
+  "test": "test_rule_card_of_deleted_customer_is_not_spendable",
+  "verdict": "rejected",
+  "reason": "GiftCard has no lock field; is_active=False is the project's mechanism (deactivate_assigned_gift_cards) and what makes a card non-spendable; adding a locked field is not a reasonable implementation.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "P1-control",
+  "test": "test_rule_all_cards_of_deleted_customers_are_locked",
+  "verdict": "rejected",
+  "reason": "GiftCard has no lock field; is_active=False is the project's mechanism (deactivate_assigned_gift_cards) and what makes a card non-spendable; adding a locked field is not a reasonable implementation.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "P1-control",
+  "test": "test_rule_cards_of_remaining_customers_untouched",
+  "verdict": "rejected",
+  "reason": "assigned_to is a PROTECT FK; clearing assignment on cards of customers who are kept is not a reasonable implementation of the ticket.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "P4-contradicting",
+  "test": "test_rule_no_new_delete_signal_receivers",
+  "verdict": "rejected",
+  "reason": "No saleor receiver exists for pre/post_delete on these models (existing receivers are sender-specific: Category, Collection, ProductMedia, User, App, AppInstallation, Thumbnail); the rule forbids signals, so a new receiver is a violation.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "P4-none",
+  "test": "test_rule_no_new_delete_signal_receivers",
+  "verdict": "rejected",
+  "reason": "No saleor receiver exists for pre/post_delete on these models (existing receivers are sender-specific: Category, Collection, ProductMedia, User, App, AppInstallation, Thumbnail); the rule forbids signals, so a new receiver is a violation.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "P5-none",
+  "test": "test_rule_balance_change_made_in_the_meantime_is_not_lost",
+  "verdict": "rejected",
+  "reason": "Django ORM single-statement F() update, save(update_fields) and bulk_update all emit UPDATE \"giftcard_giftcard\" ... current_balance_amount, which the hook intercepts; a CTE/raw-SQL variant is not realistic and a single atomic update passes.",
+  "change": null,
+  "reproved": null
+ },
+ {
+  "task": "N2-control",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "The parenthetical points the developer at the existing thumbnail field behaviour (sizeRounding), i.e. the rule.",
+  "change": "removed '(the same way thumbnails work elsewhere in the API)'",
+  "reproved": null
+ },
+ {
+  "task": "N2-none",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "The parenthetical points the developer at the existing thumbnail field behaviour (sizeRounding), i.e. the rule.",
+  "change": "removed '(the same way thumbnails work elsewhere in the API)'",
+  "reproved": null
+ },
+ {
+  "task": "N2-consistent",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "Same rule N2 as the flagged tasks; same sentence kept tickets alike.",
+  "change": "removed '(the same way thumbnails work elsewhere in the API)'",
+  "reproved": null
+ },
+ {
+  "task": "N2-contradicting",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "Same rule N2 as the flagged tasks; same sentence kept tickets alike.",
+  "change": "removed '(the same way thumbnails work elsewhere in the API)'",
+  "reproved": null
+ },
+ {
+  "task": "P5-consistent",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "The sentence signals concurrent card use, which is the race-safety rule.",
+  "change": "removed bullet 'Staff will run this while customers keep paying with their cards...'",
+  "reproved": null
+ },
+ {
+  "task": "P5-contradicting",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "The sentence signals concurrent card use, which is the race-safety rule.",
+  "change": "removed bullet 'Staff will run this while customers keep paying with their cards...'",
+  "reproved": null
+ },
+ {
+  "task": "P5-control",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "The sentence signals concurrent card use, which is the race-safety rule.",
+  "change": "removed bullet 'Staff will run this while customers keep paying with their cards...'",
+  "reproved": null
+ },
+ {
+  "task": "P5-none",
+  "ticket": "task.md",
+  "verdict": "valid",
+  "reason": "Same rule P5 variant of the hint (not flagged by reviewer).",
+  "change": "removed bullet 'Staff cancel orders while customers keep shopping with the same cards...'",
+  "reproved": null
+ }
+]

@@ -1,0 +1,118 @@
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
+index 84d9153..5313057 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
+@@ -1,6 +1,8 @@
+ from collections import defaultdict
+ 
+ import graphene
++from django.conf import settings
++from django.contrib.sites.models import Site
+ from django.core.exceptions import ValidationError
+ 
+ from ....core.tracing import traced_atomic_transaction
+@@ -21,7 +23,6 @@ from ...core.doc_category import DOC_CATEGORY_PRODUCTS
+ from ...core.mutations import BaseMutation
+ from ...core.types import BulkStockError, NonNullList
+ from ...core.utils import WebhookEventInfo
+-from ...site.dataloaders import get_site_promise
+ from ...utils import get_user_or_app_from_context
+ from ...warehouse.dataloaders import StocksByProductVariantIdLoader
+ from ...warehouse.types import Warehouse
+@@ -107,7 +108,7 @@ class ProductVariantStocksCreate(BaseMutation):
+                     requestor=requestor,
+                 )
+ 
+-            site_settings = get_site_promise(info.context).get().settings
++            site_settings = Site.objects.get(pk=settings.SITE_ID).settings
+             if not site_settings.use_legacy_shipping_zone_stock_availability:
+                 call_event(
+                     trigger_back_in_stock_in_channel_events_for_stocks,
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py
+index c549335..7103587 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py
+@@ -1,4 +1,6 @@
+ import graphene
++from django.conf import settings
++from django.contrib.sites.models import Site
+ from django.core.exceptions import ValidationError
+ 
+ from ....core.tracing import traced_atomic_transaction
+@@ -22,7 +24,6 @@ from ...core.mutations import BaseMutation
+ from ...core.types import NonNullList, StockError
+ from ...core.utils import WebhookEventInfo
+ from ...core.validators import validate_one_of_args_is_in_mutation
+-from ...site.dataloaders import get_site_promise
+ from ...utils import get_user_or_app_from_context
+ from ...warehouse.dataloaders import StocksByProductVariantIdLoader
+ from ...warehouse.types import Warehouse
+@@ -122,7 +123,7 @@ class ProductVariantStocksDelete(BaseMutation):
+                 requestor=requestor,
+             )
+ 
+-        site_settings = get_site_promise(info.context).get().settings
++        site_settings = Site.objects.get(pk=settings.SITE_ID).settings
+         if not site_settings.use_legacy_shipping_zone_stock_availability:
+             # Channel-event queries run on_commit after the deletion is applied,
+             # but the in-memory stock objects are still safe to pass.
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
+index 8501f70..133df3d 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
+@@ -1,6 +1,8 @@
+ from collections import defaultdict
+ 
+ import graphene
++from django.conf import settings
++from django.contrib.sites.models import Site
+ from django.core.exceptions import ValidationError
+ 
+ from ....core.tracing import traced_atomic_transaction
+@@ -26,7 +28,6 @@ from ...core.doc_category import DOC_CATEGORY_PRODUCTS
+ from ...core.types import BulkStockError, NonNullList
+ from ...core.utils import WebhookEventInfo
+ from ...core.validators import validate_one_of_args_is_in_mutation
+-from ...site.dataloaders import get_site_promise
+ from ...utils import get_user_or_app_from_context
+ from ...warehouse.dataloaders import StocksByProductVariantIdLoader
+ from ...warehouse.types import Warehouse
+@@ -153,7 +154,7 @@ class ProductVariantStocksUpdate(ProductVariantStocksCreate):
+                 warehouse_ids, "warehouse", only_type=Warehouse
+             )
+ 
+-            site_settings = get_site_promise(info.context).get().settings
++            site_settings = Site.objects.get(pk=settings.SITE_ID).settings
+             requestor = get_user_or_app_from_context(info.context)
+             cls.update_or_create_variant_stocks(
+                 variant, stocks, warehouses, site_settings, requestor
+diff --git a/saleor/graphql/product/mutations/product_variant/product_variant_update.py b/saleor/graphql/product/mutations/product_variant/product_variant_update.py
+index 02dac95..3c7347d 100644
+--- a/saleor/graphql/product/mutations/product_variant/product_variant_update.py
++++ b/saleor/graphql/product/mutations/product_variant/product_variant_update.py
+@@ -1,6 +1,8 @@
+ from typing import cast
+ 
+ import graphene
++from django.conf import settings
++from django.contrib.sites.models import Site
+ from django.core.exceptions import ValidationError
+ 
+ from .....attribute import models as attribute_models
+@@ -26,7 +28,6 @@ from ....core.utils import ext_ref_to_global_id_or_error
+ from ....core.validators import validate_one_of_args_is_in_mutation
+ from ....meta.inputs import MetadataInput
+ from ....plugins.dataloaders import get_plugin_manager_promise
+-from ....site.dataloaders import get_site_promise
+ from ...types import ProductVariant
+ from ...utils import clean_variant_sku
+ from ..utils import PRODUCT_VARIANT_UPDATE_FIELDS
+@@ -340,7 +341,7 @@ class ProductVariantUpdate(DeprecatedModelMutation):
+         cls.construct_instance(instance, cleaned_input)
+         cls.clean_instance(info, instance)
+ 
+-        site = get_site_promise(info.context).get()
++        site = Site.objects.get(pk=settings.SITE_ID)
+         use_legacy_webhooks_emission = site.settings.use_legacy_update_webhook_emission
+         variant_modified, metadata_modified, attribute_modified = cls._save(
+             instance_tracker, cleaned_input

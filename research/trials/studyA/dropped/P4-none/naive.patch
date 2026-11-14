@@ -1,0 +1,44 @@
+diff --git a/saleor/giftcard/apps.py b/saleor/giftcard/apps.py
+new file mode 100644
+index 0000000..172cfba
+--- /dev/null
++++ b/saleor/giftcard/apps.py
+@@ -0,0 +1,21 @@
++from django.apps import AppConfig
++from django.db.models.signals import post_delete, pre_delete
++
++
++class GiftCardAppConfig(AppConfig):
++    name = "saleor.giftcard"
++
++    def ready(self):
++        from .models import GiftCard
++        from .signals import delete_unused_tags, remember_tags
++
++        pre_delete.connect(
++            remember_tags,
++            sender=GiftCard,
++            dispatch_uid="remember_gift_card_tags",
++        )
++        post_delete.connect(
++            delete_unused_tags,
++            sender=GiftCard,
++            dispatch_uid="delete_gift_card_unused_tags",
++        )
+diff --git a/saleor/giftcard/signals.py b/saleor/giftcard/signals.py
+new file mode 100644
+index 0000000..baa8b62
+--- /dev/null
++++ b/saleor/giftcard/signals.py
+@@ -0,0 +1,11 @@
++from .models import GiftCardTag
++
++
++def remember_tags(sender, instance, **kwargs):
++    instance._tag_ids = list(instance.tags.values_list("pk", flat=True))
++
++
++def delete_unused_tags(sender, instance, **kwargs):
++    GiftCardTag.objects.filter(
++        pk__in=instance._tag_ids, gift_cards__isnull=True
++    ).delete()

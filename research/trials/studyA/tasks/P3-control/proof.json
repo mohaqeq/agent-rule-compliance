@@ -1,0 +1,32 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_admin_sets_and_storefront_reads",
+   "test_behavior_default_is_empty",
+   "test_behavior_value_can_be_cleared",
+   "test_rule_each_site_reads_its_own_value",
+   "test_rule_update_on_one_site_leaves_the_other"
+  ],
+  "seconds": 300.2
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 268.5
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_each_site_reads_its_own_value",
+   "test_rule_update_on_one_site_leaves_the_other"
+  ],
+  "seconds": 266.9
+ },
+ "seed": {
+  "passed": true,
+  "failing": [],
+  "seconds": 279.2
+ },
+ "ok": true
+}

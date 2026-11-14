@@ -20,6 +20,7 @@ the claims that later evidence corrected. Read them in order, or start with the
 | 9 | [09 Review synthesis v0.6](docs/09-review-synthesis-v0.6.md) | Two independent reviews. "Supported" was close to vacuous; bugs fixed; new features frozen |
 | 10 | [10 saleor screen](docs/10-saleor-screen.md) | A customer-facing, ADR-driven repository. 20 verified tasks; agents with no docs kept the rules, so the screen failed |
 | 11 | [11 Next phase](docs/11-next-phase.md) | Plan, not yet run: where agents break rules (the code around the change) and what prevents it cheaply. Reviewed by a second model |
+| 12 | [Study A pre-registration](trials/studyA/PREREGISTRATION.md) | Pinned before any run: 6 rules, 21 tasks at consistent, none and contradicting sites, proven graders, blind precedent counts, two non-Claude grader reviews |
 
 ## Data and code
 

@@ -1,0 +1,14 @@
+[
+  {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py:88",
+    "follows": true
+  },
+  {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_update.py:133",
+    "follows": true
+  },
+  {
+    "at": "saleor/graphql/giftcard/mutations/gift_card_activate.py:52",
+    "follows": true
+  }
+]

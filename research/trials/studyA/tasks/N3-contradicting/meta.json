@@ -1,0 +1,10 @@
+{
+  "kind": "tempting",
+  "rule_id": "N3",
+  "rule": "Reference a model's primary key as pk (instance.pk, filter(pk=...), pk__in) and not as the id field.",
+  "site": "contradicting",
+  "seeded": false,
+  "half": "new",
+  "naive": "Copies the surrounding channel code and keys by channel.id, ordering and listing with id.",
+  "seed_tests": []
+}

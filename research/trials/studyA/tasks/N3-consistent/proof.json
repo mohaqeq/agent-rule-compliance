@@ -1,0 +1,24 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_only_listed_users_are_touched",
+   "test_behavior_removes_given_addresses_and_returns_affected_user_ids",
+   "test_behavior_returns_empty_when_nothing_to_remove"
+  ],
+  "seconds": 394.9
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 379.3
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "seconds": 377.5
+ },
+ "ok": true
+}

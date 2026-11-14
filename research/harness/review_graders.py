@@ -25,7 +25,12 @@ RULE (from the project's docs; may be "none"): {rule}
 TESTS:
 {tests}
 
-Answer with JSON only: {{"over_specified": [{{"test": "<name>", "why": "<one sentence>"}}], "ok": ["<names>"]}}"""
+A flag only counts with a concrete COUNTER-EXAMPLE: one sentence describing a reasonable implementation that satisfies
+the ticket (and, for test_rule_*, the rule) and would still fail the test. Also say whether the TICKET itself hints at
+the rule or at how to implement it.
+
+Answer with JSON only: {{"over_specified": [{{"test": "<name>", "why": "<one sentence>", "counter_example": "<one
+sentence>"}}], "ok": ["<names>"], "ticket_hints_rule": false, "hint": "<quote, or empty>"}}"""
 
 
 def ask(key, model, text):
