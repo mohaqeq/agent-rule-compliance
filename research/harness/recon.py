@@ -178,6 +178,10 @@ def prepare(spec, out):
             for r in range(1, k + 1):
                 rid = f"{t['id']}-{cond}{r}"
                 ws = os.path.abspath(os.path.join(out, rid))
+                if spec.get("anonymous_workspaces"):  # the path must not tell the agent its task or condition
+                    import hashlib
+                    ws = os.path.abspath(os.path.join(out, "ws", "w" + hashlib.sha256(rid.encode()).hexdigest()[:10]))
+                    os.makedirs(os.path.dirname(ws), exist_ok=True)
                 if not os.path.exists(ws):
                     run(["git", "-c", "core.symlinks=false", "-c", "core.longpaths=true", "clone", "-q", "--no-tags", spec["repo"], ws])
                     run(["git", "-C", ws, "checkout", "-q", spec["rev"]])

@@ -121,6 +121,13 @@ All computed by [harness/studya_eval.py](../../harness/studya_eval.py):
 - **Six clusters:** intervals from six rules are wide. No per-rule claim will be made.
 - **No test runs:** agents cannot run the project's tests, as in phase 1. Study B changes this.
 
+## Changes after pinning, before any run
+
+- **Neutral workspace names** (same day, before the first agent started): a workspace folder was named after its
+  task, so an agent's own path contained its condition ("contradicting"). `recon.py` got the option
+  `anonymous_workspaces`, and `spec.json` sets it. The hashes of `recon.py` and `spec.json` below are the pinned ones;
+  the change is in the commit that adds this paragraph. No task, grader, patch or seed changed.
+
 ## Sites
 
 Precedents are the blind counter's, over the feature package ([sites/blind-counts.json](sites/blind-counts.json)).
