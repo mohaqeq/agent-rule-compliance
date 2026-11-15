@@ -1,0 +1,37 @@
+{
+ "P3-contradicting-C1": {
+  "reported": [
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:131 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}",
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:161 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}"
+  ],
+  "new_without_line_numbers": []
+ },
+ "P3-contradicting-C2": {
+  "reported": [
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:130 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}",
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:161 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}"
+  ],
+  "new_without_line_numbers": []
+ },
+ "P3-contradicting-C3": {
+  "reported": [
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:130 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}",
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:161 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}"
+  ],
+  "new_without_line_numbers": []
+ },
+ "P3-contradicting-C4": {
+  "reported": [
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:130 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}",
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:161 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}"
+  ],
+  "new_without_line_numbers": []
+ },
+ "P3-contradicting-C5": {
+  "reported": [
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py:131 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}",
+   "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py:161 uses /settings\\.SITE_ID\\b|getattr\\(settings,\\s*[\"']SITE_ID/, but NoSiteIdReads allows it only in saleor/{site/patch_sites.py,graphql/site/dataloaders.py,**/tests/**}"
+  ],
+  "new_without_line_numbers": []
+ }
+}

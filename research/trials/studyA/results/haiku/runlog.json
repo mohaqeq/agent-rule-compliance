@@ -1,0 +1,855 @@
+{
+ "N2-consistent-C5": {
+  "agent_id": "a02d62037c0e52829",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "N2-control-C4": {
+  "agent_id": "a02ddba80c37ff69a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 50,
+  "outside": []
+ },
+ "P5-none-C4": {
+  "agent_id": "a039659308cb72d28",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 54,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude-schema-edit.py",
+   "Bash: c:/users/<user>/appdata/local/temp/claude-test-edit.py"
+  ]
+ },
+ "P5-consistent-C1": {
+  "agent_id": "a088e7091c8ff64a1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 82,
+  "outside": []
+ },
+ "P3-none-C5": {
+  "agent_id": "a08ef3e7c96b84b76",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 81,
+  "outside": []
+ },
+ "P1-control-C3": {
+  "agent_id": "a094ef73497afa0fd",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 47,
+  "outside": []
+ },
+ "N1-none-C1": {
+  "agent_id": "a0b49cf846fa1ef51",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "P1-contradicting-C1": {
+  "agent_id": "a0d9cd9a8dd4dd1a9",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 27,
+  "outside": []
+ },
+ "P3-control-C4": {
+  "agent_id": "a1652fb770ccbbd89",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 65,
+  "outside": []
+ },
+ "N3-consistent-C3": {
+  "agent_id": "a1e4c71c65469d675",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "P5-contradicting-C1": {
+  "agent_id": "a1f57c0a155b8baa8",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 27,
+  "outside": []
+ },
+ "N2-none-C3": {
+  "agent_id": "a1fcb1019e2a5c73e",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 126,
+  "outside": []
+ },
+ "N2-contradicting-C5": {
+  "agent_id": "a20242dfcf1b30bf1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ },
+ "N1-contradicting-C3": {
+  "agent_id": "a21ac36602fbcbc11",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 36,
+  "outside": []
+ },
+ "P5-contradicting-C3": {
+  "agent_id": "a251985543a471f8c",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "N2-consistent-C2": {
+  "agent_id": "a277c588cb22491f2",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 49,
+  "outside": []
+ },
+ "P1-control-C1": {
+  "agent_id": "a27ee779419819804",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "N1-consistent-C4": {
+  "agent_id": "a29750110d046c0cd",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 75,
+  "outside": []
+ },
+ "N3-contradicting-C3": {
+  "agent_id": "a2c4eb93ddc43977c",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "P3-control-C1": {
+  "agent_id": "a2c80bcd52b7c9eec",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 69,
+  "outside": []
+ },
+ "P3-none-C1": {
+  "agent_id": "a2ccdf379769940eb",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 79,
+  "outside": []
+ },
+ "P3-contradicting-C3": {
+  "agent_id": "a2d20d87555e8aad1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 124,
+  "outside": []
+ },
+ "P5-none-C3": {
+  "agent_id": "a2db7d28f099f9e34",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 58,
+  "outside": []
+ },
+ "N2-none-C4": {
+  "agent_id": "a2dcb040c1b863890",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 49,
+  "outside": []
+ },
+ "P1-none-C2": {
+  "agent_id": "a2fc113e28b2a6db8",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 45,
+  "outside": []
+ },
+ "N1-consistent-C5": {
+  "agent_id": "a31bb7b6b057e2c81",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "N3-consistent-C1": {
+  "agent_id": "a32187bfcf234c10f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "P1-control-C2": {
+  "agent_id": "a33e60f06ef49050f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 61,
+  "outside": []
+ },
+ "P3-control-C3": {
+  "agent_id": "a34b47a218acfe8a4",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 63,
+  "outside": []
+ },
+ "N1-consistent-C1": {
+  "agent_id": "a3586c3f1d1f7b158",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 43,
+  "outside": []
+ },
+ "N3-contradicting-C2": {
+  "agent_id": "a3aba316d91c674e3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "N2-consistent-C3": {
+  "agent_id": "a3bf3a1ef61bad0bd",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 63,
+  "outside": []
+ },
+ "P3-consistent-C4": {
+  "agent_id": "a3e51f0e72879a44e",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 47,
+  "outside": []
+ },
+ "N2-contradicting-C4": {
+  "agent_id": "a3ec5ee8d6afd75ea",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ },
+ "N3-contradicting-C4": {
+  "agent_id": "a434e51818cde20b5",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "N3-contradicting-C5": {
+  "agent_id": "a47323e900597b122",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 25,
+  "outside": []
+ },
+ "P1-none-C1": {
+  "agent_id": "a49df2429179fd2b9",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 36,
+  "outside": []
+ },
+ "P5-contradicting-C5": {
+  "agent_id": "a520dedc8c9e0d878",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "N2-none-C5": {
+  "agent_id": "a592c27655229824d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 121,
+  "outside": []
+ },
+ "P3-control-C5": {
+  "agent_id": "a5cd16a7e271575f6",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 57,
+  "outside": []
+ },
+ "N2-control-C3": {
+  "agent_id": "a5f2cc4bf6155ba1f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 47,
+  "outside": []
+ },
+ "N1-consistent-C3": {
+  "agent_id": "a656811308da353be",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P1-consistent-C3": {
+  "agent_id": "a6622f02160596a0f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ },
+ "N3-none-C2": {
+  "agent_id": "a66e7b97a91cd3e95",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "P3-none-C3": {
+  "agent_id": "a6ad8622b77493e51",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 70,
+  "outside": []
+ },
+ "P1-consistent-C5": {
+  "agent_id": "a6e65de7565588e2f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "P1-control-C5": {
+  "agent_id": "a725349dd9bacb300",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 34,
+  "outside": []
+ },
+ "P5-consistent-C2": {
+  "agent_id": "a756520297c754d0b",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "P3-none-C2": {
+  "agent_id": "a7575a448dbd141bf",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 71,
+  "outside": []
+ },
+ "P3-none-C4": {
+  "agent_id": "a75b49f727f4fc9b8",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 61,
+  "outside": []
+ },
+ "P3-consistent-C5": {
+  "agent_id": "a7bc219965603e99a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 90,
+  "outside": []
+ },
+ "P3-contradicting-C2": {
+  "agent_id": "a7ee1a3ebc055568b",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 102,
+  "outside": []
+ },
+ "P3-contradicting-C1": {
+  "agent_id": "a7f2295d88294b7d2",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 47,
+  "outside": []
+ },
+ "N1-none-C4": {
+  "agent_id": "a82e646f4e6775915",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 34,
+  "outside": []
+ },
+ "N2-consistent-C1": {
+  "agent_id": "a88215edb6e10d028",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 63,
+  "outside": []
+ },
+ "N3-none-C3": {
+  "agent_id": "a896c2280aa310110",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "N1-contradicting-C4": {
+  "agent_id": "a8a19cfacb4a62112",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P5-consistent-C3": {
+  "agent_id": "a8a5e568907c1c059",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 43,
+  "outside": []
+ },
+ "P5-none-C2": {
+  "agent_id": "a8d6bbd3dcee1cf88",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 45,
+  "outside": []
+ },
+ "P5-contradicting-C2": {
+  "agent_id": "a8e53cfc7209421dc",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "N2-control-C2": {
+  "agent_id": "a91ea74f9e1e7bbf3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 52,
+  "outside": []
+ },
+ "N3-contradicting-C1": {
+  "agent_id": "a9349434907e54d20",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 10,
+  "outside": []
+ },
+ "P1-none-C4": {
+  "agent_id": "a97c4f3065519eaff",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 34,
+  "outside": []
+ },
+ "P3-consistent-C1": {
+  "agent_id": "a98574e3146e735d1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 68,
+  "outside": []
+ },
+ "P5-none-C5": {
+  "agent_id": "a9d163609ad1f281d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 72,
+  "outside": []
+ },
+ "P1-none-C3": {
+  "agent_id": "aa2cd853af0aa3cd2",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "N2-control-C1": {
+  "agent_id": "aa353b3895bd4f9fb",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 56,
+  "outside": []
+ },
+ "N2-none-C1": {
+  "agent_id": "aa5ad660d2f3a6d1d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "P3-contradicting-C5": {
+  "agent_id": "aa6ffa294b3abc7d9",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 94,
+  "outside": []
+ },
+ "P5-none-C1": {
+  "agent_id": "aa84f9e2e5bf4579c",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 29,
+  "outside": []
+ },
+ "N2-none-C2": {
+  "agent_id": "aaa59b9c4fe483525",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 94,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/apply_schema.py",
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad"
+  ]
+ },
+ "N3-none-C5": {
+  "agent_id": "aadd870143a01f75d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 10,
+  "outside": []
+ },
+ "P1-consistent-C2": {
+  "agent_id": "aae034499a9b095b3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 36,
+  "outside": []
+ },
+ "N3-none-C4": {
+  "agent_id": "aafe9e83160981bc1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "N2-contradicting-C1": {
+  "agent_id": "ab339ee6c70d1c5c3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 30,
+  "outside": []
+ },
+ "P3-consistent-C3": {
+  "agent_id": "ab3e372d8e1b79881",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 65,
+  "outside": []
+ },
+ "N2-contradicting-C2": {
+  "agent_id": "abd0d91a8099ab731",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 28,
+  "outside": []
+ },
+ "N2-consistent-C4": {
+  "agent_id": "abd1608221827e91f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "N1-consistent-C2": {
+  "agent_id": "abdb60a6219c44e3a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 61,
+  "outside": []
+ },
+ "P5-consistent-C4": {
+  "agent_id": "abf1af325a25c147e",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 31,
+  "outside": []
+ },
+ "N3-consistent-C4": {
+  "agent_id": "ac3d9f970cb0bacb0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "P3-control-C2": {
+  "agent_id": "ac5e214b9a546c15f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 76,
+  "outside": []
+ },
+ "P3-consistent-C2": {
+  "agent_id": "acb8bea3695911689",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 49,
+  "outside": []
+ },
+ "N3-consistent-C5": {
+  "agent_id": "acbd62f4bc8097a52",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/task"
+  ]
+ },
+ "N3-none-C1": {
+  "agent_id": "acc773fa107784282",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "P1-contradicting-C4": {
+  "agent_id": "ad6f50a986354828d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 41,
+  "outside": []
+ },
+ "P3-contradicting-C4": {
+  "agent_id": "ad75fba7ca4184000",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 31,
+  "outside": []
+ },
+ "N1-none-C2": {
+  "agent_id": "ad82d7f31a4412d42",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ },
+ "P1-control-C4": {
+  "agent_id": "ad85f91d9c3f0a69e",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ },
+ "N1-none-C3": {
+  "agent_id": "adafa98c5acb5caad",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ },
+ "P5-contradicting-C4": {
+  "agent_id": "adda67e078557e940",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 63,
+  "outside": []
+ },
+ "N2-control-C5": {
+  "agent_id": "ade5a52e5839b16d9",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 43,
+  "outside": []
+ },
+ "N1-contradicting-C2": {
+  "agent_id": "adfbc97fd585645e0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "N3-consistent-C2": {
+  "agent_id": "ae465221d3014953f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "N1-contradicting-C1": {
+  "agent_id": "ae57dc00e5340fb7f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 28,
+  "outside": []
+ },
+ "P1-contradicting-C2": {
+  "agent_id": "ae828264457dd7e4f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 27,
+  "outside": []
+ },
+ "P1-contradicting-C5": {
+  "agent_id": "ae8b3194744cfdfa9",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 42,
+  "outside": []
+ },
+ "P1-none-C5": {
+  "agent_id": "ae8f259fc1c7b2386",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ },
+ "N2-contradicting-C3": {
+  "agent_id": "ae99404678fca0966",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 46,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad",
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/patc"
+  ]
+ },
+ "N1-contradicting-C5": {
+  "agent_id": "aeb6ef3007f214ee5",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 25,
+  "outside": []
+ },
+ "P1-consistent-C1": {
+  "agent_id": "aedff4e3bc82abfb3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 50,
+  "outside": []
+ },
+ "P1-contradicting-C3": {
+  "agent_id": "af05be52655844344",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 64,
+  "outside": []
+ },
+ "P1-consistent-C4": {
+  "agent_id": "af6811a2cc9512f97",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "P5-consistent-C5": {
+  "agent_id": "afa755ca2be21835b",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 62,
+  "outside": [
+   "Read: d:/dummy"
+  ]
+ },
+ "N1-none-C5": {
+  "agent_id": "afca5664b1ad92ef3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ }
+}

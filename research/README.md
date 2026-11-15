@@ -21,6 +21,7 @@ the claims that later evidence corrected. Read them in order, or start with the
 | 10 | [10 saleor screen](docs/10-saleor-screen.md) | A customer-facing, ADR-driven repository. 20 verified tasks; agents with no docs kept the rules, so the screen failed |
 | 11 | [11 Next phase](docs/11-next-phase.md) | Plan, not yet run: where agents break rules (the code around the change) and what prevents it cheaply. Reviewed by a second model |
 | 12 | [Study A pre-registration](trials/studyA/PREREGISTRATION.md) | Pinned before any run: 6 rules, 21 tasks at consistent, none and contradicting sites, proven graders, blind precedent counts, two non-Claude grader reviews |
+| 13 | [12 Study A results](docs/12-study-a-results.md) | 210 runs, two models: code that breaks a rule near the change causes violations in 87% (Haiku) and 97% (Sonnet) of runs, against 17% at consistent sites. A site with no precedent is not a risk |
 
 ## Data and code
 
@@ -30,6 +31,7 @@ the claims that later evidence corrected. Read them in order, or start with the
 | [trials/excalidraw](trials/excalidraw/), [trials/cosmicpython](trials/cosmicpython/) | Models and results of the other two trials |
 | [trials/pilot](trials/pilot/PREREGISTRATION.md) | Pre-registration, 12 tasks with graders, results, contexts, tool-call logs of all 60 runs |
 | [trials/saleor](trials/saleor/NOTES.md) | Model of 12 ADRs, pre-registration with task hashes, 20 tasks with graders, non-Claude grader review, screening results |
+| [trials/studyA](trials/studyA/PREREGISTRATION.md) | Pre-registration, 21 tasks with graders, site counts, grader reviews, results of 210 runs with analysis and tool-call logs |
 | [trials/containers](trials/containers/README.md) | Dockerfiles: import-linter, dependency-cruiser, and the test and grader runners |
 | [harness](harness/) | `recon.py` (prepare and grade reconstruction tests), `pilot_eval.py`, `review_graders.py` (OpenRouter), `replay.py` (upkeep over history) |
 | [reviews](reviews/) | The raw external reviews |

@@ -1,0 +1,847 @@
+{
+ "N3-none-C3": {
+  "agent_id": "a0204576c5fe0379c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 4,
+  "outside": []
+ },
+ "N2-consistent-C3": {
+  "agent_id": "a021c584921c65af4",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 47,
+  "outside": []
+ },
+ "P1-contradicting-C2": {
+  "agent_id": "a047285d3f40a72f2",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 23,
+  "outside": []
+ },
+ "P1-consistent-C4": {
+  "agent_id": "a0525ae4d10022992",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 70,
+  "outside": []
+ },
+ "N2-consistent-C5": {
+  "agent_id": "a059aa8c96ec77b02",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 34,
+  "outside": []
+ },
+ "P1-consistent-C5": {
+  "agent_id": "a098c17048b291056",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 72,
+  "outside": []
+ },
+ "N2-control-C3": {
+  "agent_id": "a0a12d5c3ac23482a",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "N2-control-C4": {
+  "agent_id": "a0aeea78af8d0b24d",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "N3-consistent-C3": {
+  "agent_id": "a0f070fb1857c5cc6",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "N3-none-C1": {
+  "agent_id": "a0f0e46f112e95539",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 4,
+  "outside": []
+ },
+ "N3-consistent-C4": {
+  "agent_id": "a11c916ab4db4f276",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 6,
+  "outside": []
+ },
+ "N1-consistent-C2": {
+  "agent_id": "a16654c52eb99c326",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "P3-none-C1": {
+  "agent_id": "a17a9fc087da82b52",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "N1-contradicting-C5": {
+  "agent_id": "a18cdb8ec6c659baa",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 32,
+  "outside": []
+ },
+ "P5-contradicting-C1": {
+  "agent_id": "a18f48e6112d2cefb",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P3-none-C2": {
+  "agent_id": "a19e26bea6560115c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "N2-contradicting-C2": {
+  "agent_id": "a1b0619b73af824f0",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 22,
+  "outside": []
+ },
+ "N3-contradicting-C5": {
+  "agent_id": "a1b732105099ead1e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "P3-none-C3": {
+  "agent_id": "a1f596d9299d4f488",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 63,
+  "outside": []
+ },
+ "N3-consistent-C1": {
+  "agent_id": "a21ee03f5c674a683",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 5,
+  "outside": []
+ },
+ "N2-consistent-C4": {
+  "agent_id": "a24217832dbc03ad8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "P3-consistent-C2": {
+  "agent_id": "a26cbb152bc6bdaf5",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "N2-none-C1": {
+  "agent_id": "a2a9247adcf39a489",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 23,
+  "outside": []
+ },
+ "N2-contradicting-C5": {
+  "agent_id": "a2b8ca5491d6918cc",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "N1-contradicting-C2": {
+  "agent_id": "a30e270d87bc17555",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ },
+ "P1-none-C2": {
+  "agent_id": "a342fc27561c58b1f",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 7,
+  "outside": []
+ },
+ "P3-contradicting-C2": {
+  "agent_id": "a34ffd18f00aa0af5",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "N2-control-C5": {
+  "agent_id": "a3e31aa677802eb38",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P1-control-C4": {
+  "agent_id": "a40f9b86a11b2a1ce",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ },
+ "N2-contradicting-C3": {
+  "agent_id": "a44fea8892b62b6ff",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 22,
+  "outside": []
+ },
+ "P1-control-C3": {
+  "agent_id": "a477b4b9e225e0ac4",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "N3-contradicting-C1": {
+  "agent_id": "a4b791bfd332f34ec",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 6,
+  "outside": []
+ },
+ "N2-control-C1": {
+  "agent_id": "a4ccacf5d8afc3e29",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "N1-consistent-C1": {
+  "agent_id": "a513278a35d36d9d7",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "N2-none-C2": {
+  "agent_id": "a51b092494d7f85aa",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 42,
+  "outside": []
+ },
+ "P1-consistent-C2": {
+  "agent_id": "a5305afd93fa2ee26",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "P3-none-C5": {
+  "agent_id": "a5a1ecdf523e47e0f",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "P3-consistent-C5": {
+  "agent_id": "a5ca6fbc13bf51a7e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 6,
+  "outside": []
+ },
+ "N1-contradicting-C1": {
+  "agent_id": "a5e4d5054e9f68805",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "P5-consistent-C5": {
+  "agent_id": "a5efe328702c6ae70",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 62,
+  "outside": []
+ },
+ "N2-none-C5": {
+  "agent_id": "a60b6f858305771a9",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 22,
+  "outside": []
+ },
+ "N1-none-C5": {
+  "agent_id": "a62d9fabda25c1869",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "N1-consistent-C5": {
+  "agent_id": "a63962951b5bf3275",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P5-contradicting-C2": {
+  "agent_id": "a656ed1f301ed402a",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "N1-none-C3": {
+  "agent_id": "a662cc0fbf0f1ee06",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "N2-consistent-C2": {
+  "agent_id": "a6644da122212fcc8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 49,
+  "outside": []
+ },
+ "P3-control-C4": {
+  "agent_id": "a66c88b699601018c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "N3-contradicting-C2": {
+  "agent_id": "a6876456196adff65",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "P3-consistent-C4": {
+  "agent_id": "a6deac0d341eb9e39",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "N2-contradicting-C1": {
+  "agent_id": "a700f4c10df7420f0",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 22,
+  "outside": []
+ },
+ "N2-consistent-C1": {
+  "agent_id": "a728c56528063d0b0",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 35,
+  "outside": []
+ },
+ "N3-contradicting-C4": {
+  "agent_id": "a752e8faa8d077817",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "N1-none-C4": {
+  "agent_id": "a7c962e860904cbf3",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "N1-contradicting-C3": {
+  "agent_id": "a7eec41f97d9d6742",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P5-none-C2": {
+  "agent_id": "a8442a792036f0329",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 50,
+  "outside": []
+ },
+ "P5-consistent-C4": {
+  "agent_id": "a8512780e6f9abd67",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "P1-contradicting-C4": {
+  "agent_id": "a85de2b04c565a361",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 40,
+  "outside": []
+ },
+ "P5-none-C3": {
+  "agent_id": "a8a4ee4801e698fb1",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "P3-none-C4": {
+  "agent_id": "a8ab5eb423d0734d0",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "N3-consistent-C2": {
+  "agent_id": "a8d90e81f2afee4d5",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 6,
+  "outside": []
+ },
+ "P1-none-C5": {
+  "agent_id": "a93c77005bb0561bb",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "P3-contradicting-C5": {
+  "agent_id": "a9d508ec5a4f82d49",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 102,
+  "outside": []
+ },
+ "P5-consistent-C1": {
+  "agent_id": "aa1adaa7b80acb28b",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P3-control-C2": {
+  "agent_id": "aa53c1524f68e3135",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "P3-consistent-C3": {
+  "agent_id": "aa7a126cc1cf0c9e8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 48,
+  "outside": []
+ },
+ "N3-none-C4": {
+  "agent_id": "aa8a8e84fc940cdfb",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 4,
+  "outside": []
+ },
+ "P5-contradicting-C3": {
+  "agent_id": "aafb8cfbe14628c0c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "P1-none-C3": {
+  "agent_id": "ab0c43ea83bbee597",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "P5-none-C1": {
+  "agent_id": "ab2dd3e9e86a3a869",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "P1-contradicting-C1": {
+  "agent_id": "ab3e405d8959e74e8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 94,
+  "outside": []
+ },
+ "N1-none-C2": {
+  "agent_id": "abc9945902ae6b0c5",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "N2-none-C3": {
+  "agent_id": "abcb9168a6067af20",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 21,
+  "outside": []
+ },
+ "P5-none-C5": {
+  "agent_id": "abe7a144d5e99441c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 66,
+  "outside": []
+ },
+ "N3-none-C5": {
+  "agent_id": "abe9f4c58660ba160",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "P1-contradicting-C5": {
+  "agent_id": "abed1f8aa08031263",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 82,
+  "outside": []
+ },
+ "P5-none-C4": {
+  "agent_id": "ac70a1bf36134489b",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 66,
+  "outside": []
+ },
+ "P3-consistent-C1": {
+  "agent_id": "acb673046e2a20f6b",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "P1-control-C1": {
+  "agent_id": "acd111642d96f231c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P5-consistent-C3": {
+  "agent_id": "acd4bb360c509f1cb",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "P5-contradicting-C5": {
+  "agent_id": "ace082f8e8bc1910e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "N3-contradicting-C3": {
+  "agent_id": "acfa39bcb043aaece",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 7,
+  "outside": []
+ },
+ "P3-control-C3": {
+  "agent_id": "ad4a7c01148e4099a",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 7,
+  "outside": []
+ },
+ "P3-control-C1": {
+  "agent_id": "ad6dc960a6de11bc5",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "P1-none-C4": {
+  "agent_id": "ada8911b0abcca9d1",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "N1-consistent-C4": {
+  "agent_id": "adbbe91f7634e743c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P3-contradicting-C1": {
+  "agent_id": "adc4a3c28a9eea78c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "P1-control-C5": {
+  "agent_id": "adde6c10929d8d92d",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 56,
+  "outside": []
+ },
+ "N3-none-C2": {
+  "agent_id": "adee43a8aeba7df19",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 5,
+  "outside": []
+ },
+ "N3-consistent-C5": {
+  "agent_id": "adfd53e744e87a6f4",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 6,
+  "outside": []
+ },
+ "N2-control-C2": {
+  "agent_id": "ae13ba67b6933ecf3",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "P1-none-C1": {
+  "agent_id": "ae6331df7f6b61fc9",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 7,
+  "outside": []
+ },
+ "P3-control-C5": {
+  "agent_id": "ae665391579f390d8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "P3-contradicting-C4": {
+  "agent_id": "ae6c757172be713dd",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 42,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/appl",
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/t.py"
+  ]
+ },
+ "P1-consistent-C1": {
+  "agent_id": "ae87fb9d2022a0af5",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 58,
+  "outside": []
+ },
+ "P3-contradicting-C3": {
+  "agent_id": "aeaa81fc228039452",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/edit"
+  ]
+ },
+ "N1-none-C1": {
+  "agent_id": "aeac56f66628d2447",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 10,
+  "outside": []
+ },
+ "N2-none-C4": {
+  "agent_id": "af1d8c762f7c0a2d6",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "N2-contradicting-C4": {
+  "agent_id": "af3af2993792180ae",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 29,
+  "outside": []
+ },
+ "P1-control-C2": {
+  "agent_id": "af875a2d681ecb266",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "P1-contradicting-C3": {
+  "agent_id": "af9ae1798e94f67dc",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 56,
+  "outside": []
+ },
+ "P5-contradicting-C4": {
+  "agent_id": "afb72226d36016163",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "N1-consistent-C3": {
+  "agent_id": "afcdb02592a30cd65",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "P1-consistent-C3": {
+  "agent_id": "afdce7b2dda369b84",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "N1-contradicting-C4": {
+  "agent_id": "aff16c55e581f97bb",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P5-consistent-C2": {
+  "agent_id": "aff4d425f884615ac",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ }
+}
