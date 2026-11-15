@@ -1,0 +1,10 @@
+{
+ "rule_id": "N3",
+ "ucn_rule": "PkNotId",
+ "rule_test_path": "saleor/graphql/channel/tests/test_warehouse_ids_rule.py",
+ "prose_source": "AGENTS.md:554-571",
+ "proof": {
+  "reference": "passed",
+  "naive": "failed: test_rule_helper_does_not_read_the_id_attribute, test_rule_helper_does_not_use_the_id_field_in_queries"
+ }
+}

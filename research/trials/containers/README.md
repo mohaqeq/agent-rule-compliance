@@ -17,3 +17,27 @@ docker run --rm -v "$REPO:/repo:ro" -v "$CFGDIR:/cfg:ro" ucn-dc packages --confi
 ```
 
 On Windows with Git Bash, set `MSYS_NO_PATHCONV=1` so volume paths are not rewritten.
+
+## Fast saleor test runs for agents (Study B)
+
+`research/harness/agent_tests.py` runs saleor tests for coding agents. A run without preparation took about 255 seconds.
+Measurements showed the cause: Django created the test database and applied all migrations (273 of 276 seconds).
+
+Build the image once. It holds Postgres with the migrated test database of the base revision:
+
+```sh
+python research/trials/containers/saleor-tests-db/build.py --repo "$SALEOR_CLONE" --rev 1d707dc
+```
+
+The build needs the image `ucn-saleor-tests` (folder `saleor-tests`) and takes about 5 minutes. It creates the image
+`ucn-saleor-pg-base`. Build it again when the base revision changes.
+
+`agent_tests.py` uses the image by itself. Each invocation starts a new container from the image and runs
+`pytest --reuse-db`. Django then applies only the migrations that the agent added. Without the image, the tool
+falls back to the slow method, which is still correct.
+
+The tool also sends the workspace to the test container as a tar stream. A read-only bind mount took 140 seconds for
+the saleor tree on Windows. The stream takes about 2 seconds.
+
+Measured on one machine, for one test file with 7 tests: 255 seconds before, 41 seconds after (49 seconds with two
+runs in parallel).

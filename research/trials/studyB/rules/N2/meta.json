@@ -1,0 +1,10 @@
+{
+ "rule_id": "N2",
+ "ucn_rule": "ThumbnailRoundsUp",
+ "rule_test_path": "saleor/graphql/app/tests/queries/test_app_brand_image_rule.py",
+ "prose_source": "docs/adr/0011-thumbnail-size-rounds-up-by-default.md:1-19",
+ "proof": {
+  "reference": "passed",
+  "naive": "failed: test_rule_app_brand_image_respects_size_rounding[None-2048], test_rule_app_brand_image_respects_size_rounding[UP-2048], test_rule_app_brand_image_default_rounding_never_returns_fewer_pixels"
+ }
+}
