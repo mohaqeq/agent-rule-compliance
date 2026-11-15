@@ -1,53 +1,27 @@
 # Research record
 
-This folder holds the record of a research project. It asked whether a formal, compact context language can make AI
-coding agents follow a project's requirements and architecture. The documents are kept as they were written, including
-the claims that later evidence corrected. Read them in order, or start with the
-[article](../article/agents-already-read-the-code.md).
+This folder contains the plan, the pre-registrations, the tasks, the tools and the results of phase 2.
+The record of phase 1 (documents 01 to 10, the pilot and the first trials) is in the
+[unified-context-notation](https://github.com/mohaqeq/unified-context-notation/tree/phase1-and-study-a/research) project.
 
-## Timeline
+## Documents
 
-| # | Document | What happened |
+| # | Document | Contents |
 |---|---|---|
-| 1 | [01 Problem statement](docs/01-problem-statement.md) | The goals: one notation for requirements, architecture and code logic, compact enough to use as agent context |
-| 2 | [02 Investigation](docs/02-investigation.md) | Survey of SysML v2, C4, EARS, ADRs, KDM and LLM-context work. Nothing combines unification, provenance, budgets and checks |
-| 3 | [03 Proposal](docs/03-proposal.md) | The UCN specification (format, projection, validation, governance) |
-| 4 | [04 Review synthesis v0.1](docs/04-review-synthesis.md) | First external reviews (two models) |
-| 5 | [05 Usefulness and tooling](docs/05-usefulness-and-tooling.md) | Re-framing as a checked layer, with tooling made fast and deterministic |
-| 6 | [06 Review synthesis v0.3](docs/06-review-synthesis-v0.3.md) | Second reviews; governance (authority, deviations, conflicts) |
-| 7 | [07 Trials](docs/07-trial-results.md) | sqlfluff, excalidraw and cosmicpython: real findings, upkeep over 600 commits, first agent experiments, results identical to import-linter and dependency-cruiser |
-| 8 | [08 Pilot](docs/08-pilot.md) | Pre-registered: 60 agent runs on sqlfluff with independent tasks and hidden graders. UCN matched AGENTS.md + import-linter at a ceiling |
-| 9 | [09 Review synthesis v0.6](docs/09-review-synthesis-v0.6.md) | Two independent reviews. "Supported" was close to vacuous; bugs fixed; new features frozen |
-| 10 | [10 saleor screen](docs/10-saleor-screen.md) | A customer-facing, ADR-driven repository. 20 verified tasks; agents with no docs kept the rules, so the screen failed |
-| 11 | [11 Next phase](docs/11-next-phase.md) | Plan, not yet run: where agents break rules (the code around the change) and what prevents it cheaply. Reviewed by a second model |
+| 11 | [11 Next phase](docs/11-next-phase.md) | The plan of phase 2: where agents break rules (the code around the change) and what prevents it at a low cost. A second model reviewed it |
 | 12 | [Study A pre-registration](trials/studyA/PREREGISTRATION.md) | Pinned before any run: 6 rules, 21 tasks at consistent, none and contradicting sites, proven graders, blind precedent counts, two non-Claude grader reviews |
 | 13 | [12 Study A results](docs/12-study-a-results.md) | 210 runs, two models: code that breaks a rule near the change causes violations in 87% (Haiku) and 97% (Sonnet) of runs, against 17% at consistent sites. A site with no precedent is not a risk |
 
-## Data and code
+## Data and tools
 
 | Path | Contents |
 |---|---|
-| [trials/sqlfluff](trials/sqlfluff/) | Models (allow-list and deny-list), generated configs, upkeep history, agent experiment |
-| [trials/excalidraw](trials/excalidraw/), [trials/cosmicpython](trials/cosmicpython/) | Models and results of the other two trials |
-| [trials/pilot](trials/pilot/PREREGISTRATION.md) | Pre-registration, 12 tasks with graders, results, contexts, tool-call logs of all 60 runs |
-| [trials/saleor](trials/saleor/NOTES.md) | Model of 12 ADRs, pre-registration with task hashes, 20 tasks with graders, non-Claude grader review, screening results |
 | [trials/studyA](trials/studyA/PREREGISTRATION.md) | Pre-registration, 21 tasks with graders, site counts, grader reviews, results of 210 runs with analysis and tool-call logs |
-| [trials/containers](trials/containers/README.md) | Dockerfiles: import-linter, dependency-cruiser, and the test and grader runners |
-| [harness](harness/) | `recon.py` (prepare and grade reconstruction tests), `pilot_eval.py`, `review_graders.py` (OpenRouter), `replay.py` (upkeep over history) |
-| [reviews](reviews/) | The raw external reviews |
+| [trials/saleor](trials/saleor/NOTES.md) | Model of 12 ADRs of saleor, the phase 1 saleor tasks and their screening results |
+| [trials/containers](trials/containers/README.md) | Container images |
+| [harness](harness/) | `recon.py` (workspaces and grading), `prove.py` (grader proof), `studya_eval.py` (analysis), `studya_pin.py` (pinning), and smaller tools |
 
-## Method, in one paragraph
+## Note about links
 
-- **Tasks:** written by a model that never saw UCN.
-- **Hidden graders:** proven to fail on the unchanged code and pass on a reference solution. On saleor a naive shortcut
-  also had to break a rule test.
-- **Pinning:** tasks and decision rules were committed before any run (on saleor with SHA-256 hashes).
-- **Grader review:** a model from a different family reviewed the graders; flagged tests were excluded, not edited.
-- **Containers:** everything third-party ran in containers.
-- **Published:** results and the agents' tool-call logs.
-
-## Known limits
-
-- The task authors, agents and most reviewers were Claude models.
-- Each experiment used one repository.
-- Agents could not run the projects' test suites.
+Some links in these documents go to the unified-context-notation project at the tag `phase1-and-study-a`.
+Those files are part of the phase 1 record, and they are not copied here.

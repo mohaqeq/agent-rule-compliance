@@ -6,7 +6,7 @@ reader questions on the article into one plan.
 ## 11.1 What we know, and what changed the question
 
 Phase 1 asked: *does a formal context language make agents follow a project's rules better?* The answer was no
-([08](08-pilot.md), [10](10-saleor-screen.md)). Three observations from it shape the next question:
+([08](https://github.com/mohaqeq/unified-context-notation/blob/phase1-and-study-a/research/docs/08-pilot.md), [10](https://github.com/mohaqeq/unified-context-notation/blob/phase1-and-study-a/research/docs/10-saleor-screen.md)). Three observations from it shape the next question:
 
 1. **Agents copy the code next to their change.** With no docs, they kept the rules in 27 of 33 measurable runs.
 2. **The 6 violations were not random.** In all three tasks with violations, the right pattern was *not* next to the
@@ -209,6 +209,10 @@ study A is sized by budget and its confidence intervals are reported as they com
 
 **Decision: study A is prepared and run from this repository. If H1 survives, phase 2 moves to a new repository,
 split from a tagged commit.**
+
+**Update, 2026-11-15:** H1 survived for contradicting sites. The split is done. This document is now in the new
+repository, `agent-rule-compliance`, which starts from the tag `phase1-and-study-a` of the unified-context-notation
+project. In this section, "this repository" means that project.
 
 The first draft proposed moving at once. The review argued that this was premature, and it is right: before the
 decision on H1 there may be nothing to move, and copied scripts would drift from the originals.

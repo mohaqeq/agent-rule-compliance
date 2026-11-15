@@ -27,7 +27,8 @@ import shutil
 import subprocess
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "ucn"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ucn_dep  # noqa: E402,F401  (puts the installed ucn modules on sys.path)
 import ucn_project  # noqa: E402
 import ucn_validate  # noqa: E402
 
@@ -170,7 +171,7 @@ def instructions(cond, ws, spec):
 
 
 def prepare(spec, out):
-    spec = dict(spec, validator=os.path.abspath(spec["validator"]))  # prompts must name a path that works anywhere
+    spec = dict(spec, validator=ucn_dep.resolve(spec["validator"]))  # prompts must name a path that works anywhere
     os.makedirs(out, exist_ok=True)
     index = []
     for t in tasks_of(spec):
@@ -301,7 +302,7 @@ def grade_one(spec, entry, task, baseline):
 
 
 def grade(spec, out):
-    spec = dict(spec, validator=os.path.abspath(spec["validator"]))
+    spec = dict(spec, validator=ucn_dep.resolve(spec["validator"]))
     index = json.load(open(os.path.join(out, "index.json")))
     tasks = {t["id"]: t for t in tasks_of(spec)}
     baselines = {}

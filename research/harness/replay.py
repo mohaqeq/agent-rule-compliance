@@ -11,7 +11,8 @@ import sys
 import tarfile
 import tempfile
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "ucn"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ucn_dep  # noqa: E402,F401  (puts the installed ucn modules on sys.path)
 import ucn_validate  # noqa: E402
 
 repo, model, out = sys.argv[1], sys.argv[2], sys.argv[3]

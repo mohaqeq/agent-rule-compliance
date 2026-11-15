@@ -1,7 +1,7 @@
 # saleor experiment: pre-registration
 
 This file is committed **with the SHA-256 of every task, grader and reference patch (§ Task hashes) before any agent
-run**. Lessons from the sqlfluff pilot ([docs/09](../../docs/09-review-synthesis-v0.6.md)) are built in: tasks are
+run**. Lessons from the sqlfluff pilot ([docs/09](https://github.com/mohaqeq/unified-context-notation/blob/phase1-and-study-a/research/docs/09-review-synthesis-v0.6.md)) are built in: tasks are
 pinned, tempting tasks are screened, there is a size-matched prose control, a ceiling counts as inconclusive, and
 tool-call logs are published.
 

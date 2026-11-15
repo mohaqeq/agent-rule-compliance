@@ -1,6 +1,6 @@
 # Running the third-party checkers in containers
 
-The comparisons in [docs/07 §7.8](../../docs/07-trial-results.md) run import-linter and dependency-cruiser only inside
+The comparisons in [docs/07 §7.8](https://github.com/mohaqeq/unified-context-notation/blob/phase1-and-study-a/research/docs/07-trial-results.md) run import-linter and dependency-cruiser only inside
 these containers, with the repository under test mounted read-only.
 
 ```sh
