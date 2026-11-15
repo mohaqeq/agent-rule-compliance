@@ -23,8 +23,20 @@ prevents the violation.
 Full report: [research/docs/12-study-a-results.md](research/docs/12-study-a-results.md).
 Limits: one repository (saleor), six rules, models from one supplier.
 
-**Study B (not started).** What is the cheapest context or check that prevents a violation at a contradicting site?
-The plan is in [research/docs/11-next-phase.md](research/docs/11-next-phase.md).
+**Study B (primary part complete, 180 runs).** What prevents the violation at a site where the near code breaks the rule?
+
+| What the agent gets | Violation rate |
+|---|---|
+| Nothing | 87% |
+| The project tests to run | 83% |
+| The documentation text of the rule | 20% |
+| One test written for the rule (with or without guidance) | 0% |
+
+- Existing tests do not help: they pass, and the violation stays.
+- Text that states the rule helps much, but it is not sufficient.
+- A test that fails when the rule is broken was sufficient in all runs.
+
+Full report: [research/docs/13-study-b-results.md](research/docs/13-study-b-results.md). A replication with a stronger model is not done yet.
 
 ## Where this work comes from
 

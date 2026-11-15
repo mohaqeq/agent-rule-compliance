@@ -12,6 +12,7 @@ The record of phase 1 (documents 01 to 10, the pilot and the first trials) is in
 | 12 | [Study A pre-registration](trials/studyA/PREREGISTRATION.md) | Pinned before any run: 6 rules, 21 tasks at consistent, none and contradicting sites, proven graders, blind precedent counts, two non-Claude grader reviews |
 | 13 | [12 Study A results](docs/12-study-a-results.md) | 210 runs, two models: code that breaks a rule near the change causes violations in 87% (Haiku) and 97% (Sonnet) of runs, against 17% at consistent sites. A site with no precedent is not a risk |
 | 14 | [Study B pre-registration](trials/studyB/PREREGISTRATION.md) | Pinned before any run: six arms of guidance and checks at the six contradicting sites, visible rule tests with proofs, decision rules, hashes |
+| 15 | [13 Study B results](docs/13-study-b-results.md) | 180 Haiku runs at the contradicting sites: project tests in the loop do not prevent violations (83% against 87%), the documentation text prevents most (20%), a test for the rule prevents all (0%) |
 
 ## Data and tools
 
