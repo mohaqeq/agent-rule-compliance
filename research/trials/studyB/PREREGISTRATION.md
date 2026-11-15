@@ -155,3 +155,20 @@ Harness at the time of pinning:
 | research/harness/recon.py | 55331c43799987464600269e01237090b9a7b36ae1b0ac7f8cc508a1beb0cd0c |
 | research/harness/ucn_dep.py | 4e593ee2c78a6ca7b7aafe6f6e1650b4bf5ead31f0a1feb467df699990c11d3b |
 
+## Changes after pinning, before any run
+
+2026-11-15, before the first coding-agent run:
+
+- **Analysis script:** [studyb_eval.py](../../harness/studyb_eval.py) is added, with tests.
+- **Grading field:** `recon.py` now writes `final_rule_test_passed` for each run of a check arm. The analysis needs it
+  for "the share of runs that ended with a passing visible rule test". The preparation of workspaces and the prompts
+  did not change.
+- **H3, mixed case:** if one of the two medians (tokens, failed check runs) is lower with guidance and the other is
+  not, the result is **inconclusive**. The first text did not specify this case.
+
+New hashes:
+
+| Path | SHA-256 |
+|---|---|
+| research/harness/recon.py | 97111b0a68658476f0a4f3d542e3ba506efa96db768740a60c08e1f75a197c2e |
+| research/harness/studyb_eval.py | b64f54cbe6c42e8a44839ae82f8e9ed2cc035ec37851c3656e88d78b5193c1b2 |

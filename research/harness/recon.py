@@ -439,6 +439,12 @@ def rule_test_runs_before_first_pass(runs):
     return None
 
 
+def final_rule_test_passed(runs):
+    """True if the last invocation that ran the rule test passed. False if it failed. None if none ran it."""
+    ran = [r for r in runs if r.get("ran_rule_test")]
+    return None if not ran else ran[-1].get("exit_code") == 0
+
+
 def grade_one(spec, entry, task, baseline):
     ws = entry["workspace"]
     res = {"run": entry["run"], "task": entry["task"], "cond": entry["cond"]}
@@ -513,6 +519,7 @@ def grade_one(spec, entry, task, baseline):
         res["check_runs"] = len(runs)
         res["failed_check_runs"] = sum(r.get("exit_code") != 0 for r in runs)
         res["rule_test_runs_before_first_pass"] = rule_test_runs_before_first_pass(runs) if entry["check"] == "rule" else None
+        res["final_rule_test_passed"] = final_rule_test_passed(runs) if entry["check"] == "rule" else None
     res["changed"] = [c for c in changed if c not in ("model.ucn", "context.ucn") and not c.endswith("AGENTS.md") and c != "CLAUDE.md"]
     tampered = [c for c in changed if c.rsplit("/", 1)[-1] in CONTRACT_FILES]  # the project's own contracts, any arm
     if entry.get("guidance") == "ucn":  # the arm has no model.ucn; context.ucn must stay as written

@@ -352,6 +352,123 @@ class StudyAEval(unittest.TestCase):
         self.assertIn("Not run", md)
 
 
+class StudyBEval(unittest.TestCase):
+    def setUp(self):
+        import studyb_eval
+        self.ev = studyb_eval
+
+    def rows(self, ks, rules=6, n=8, model="haiku", **extra):
+        """ks: {arm: number of violations out of n, the same in each rule}."""
+        out = []
+        for i in range(rules):
+            for arm, k in ks.items():
+                for j in range(n):
+                    out.append({"rule_id": f"R{i}", "arm": arm, "violations": int(j < k), "success": 1, "agent_model": model,
+                                "tokens": 1000 + 10 * j, "tool_calls": 10, "check_runs": 2, "failed_check_runs": 1,
+                                "rule_test_changed": False, "final_rule_test_passed": None, **extra})
+        return out
+
+    def go(self, ks, **kw):
+        return self.ev.analyse(self.rows(ks, **kw))["models"]["haiku"]
+
+    def test_h2_refuted_when_gen_is_15_points_below_prose(self):
+        g = self.go({"none": 7, "prose": 7, "gen": 4})
+        self.assertAlmostEqual(g["contrasts"][0]["diff"], -0.375)
+        self.assertTrue(g["decision"]["H2"].startswith("REFUTED"))
+
+    def test_h2_supported_when_lower_bound_is_above_zero(self):
+        g = self.go({"none": 7, "prose": 3, "gen": 7})
+        self.assertEqual(g["decision"]["H2"], "SUPPORTED")
+
+    def test_h2_inconclusive_between(self):
+        g = self.go({"none": 7, "prose": 4, "gen": 4})
+        self.assertEqual(g["decision"]["H2"], "INCONCLUSIVE")
+
+    def test_h2_ceiling_and_floor_are_inconclusive(self):
+        self.assertIn("ceiling", self.go({"none": 8, "prose": 8, "gen": 8})["decision"]["H2"])
+        self.assertIn("ceiling", self.go({"none": 8, "prose": 0, "gen": 0})["decision"]["H2"])
+
+    def test_h2b_is_inconclusive_when_none_is_below_60_percent(self):
+        g = self.go({"none": 4, "prose": 0, "gen": 4})  # none = 50%
+        self.assertTrue(g["decision"]["H2b"]["prose"].startswith("INCONCLUSIVE"))
+        g = self.go({"none": 5, "prose": 0, "gen": 5})  # none = 62.5%
+        self.assertEqual(g["decision"]["H2b"]["prose"], "EFFECTIVE")
+        self.assertEqual(g["decision"]["H2b"]["gen"], "NOT EFFECTIVE")
+
+    def test_missing_arms_are_marked_not_errors(self):
+        g = self.go({"none": 8, "prose": 2, "gen": 6})
+        by = {c["contrast"]: c for c in g["contrasts"]}
+        self.assertTrue(by["gen - prose"]["available"])
+        self.assertFalse(by["rule - none"]["available"])
+        self.assertFalse(by["urule - prule"]["available"])
+        self.assertEqual(g["decision"]["H2b"]["rule"], "not available")
+        self.assertEqual(g["h3"]["decision"], "not available")
+        self.assertNotIn("rule", g["rates"])
+        self.assertIn("not available", self.ev.markdown(self.ev.analyse(self.rows({"none": 8, "prose": 2, "gen": 6}))))
+
+    def test_h3_and_ucn(self):
+        rows = self.rows({"none": 8, "rule": 4, "prule": 2, "urule": 1})
+        for r in rows:
+            if r["arm"] == "prule":
+                r.update(tokens=500, failed_check_runs=0)
+            if r["arm"] == "urule":
+                r.update(tokens=400, failed_check_runs=0)
+        g = self.ev.analyse(rows)["models"]["haiku"]
+        self.assertEqual(g["h3"]["decision"], "SUPPORTED")
+        self.assertEqual(g["ucn"]["tokens_diff"], -100)
+        self.assertAlmostEqual(g["ucn"]["violations"]["diff"], -0.125)
+        for r in rows:
+            if r["arm"] == "prule":
+                r.update(tokens=5000, failed_check_runs=3)
+        g = self.ev.analyse(rows)["models"]["haiku"]
+        self.assertEqual(g["h3"]["decision"], "REFUTED")
+
+    def test_sensitivities_check_use_cost_and_leave_one_out(self):
+        rows = self.rows({"none": 8, "gen": 4, "prose": 4, "rule": 4})
+        for r in rows:
+            r["success"] = int(r["violations"] == 0 or r["rule_id"] == "R0")
+            if r["arm"] == "rule":
+                r["final_rule_test_passed"] = r["violations"] == 0
+                r["rule_test_changed"] = r["violations"] == 0 and r["tokens"] < 1060
+        g = self.ev.analyse(rows)["models"]["haiku"]
+        s = g["sensitivity"]
+        self.assertEqual(s["1_success_only"]["rates"]["gen"]["n"], 4 * 5 + 8)
+        self.assertEqual(s["2_without_N2_P1"]["rates"]["none"]["n"], 6 * 8)  # no rule is named N2 or P1 here
+        self.assertGreater(s["3_rule_test_change_is_violation"]["rates"]["rule"]["violation_rate"], 0.5)
+        self.assertEqual(g["check_use"]["rule"]["share_passing"], 0.5)
+        self.assertEqual(g["check_use"]["rule"]["violation_rate_passing"], 0.0)
+        self.assertEqual(g["cost"]["gen"]["median_check_runs"], 2)
+        self.assertIsNone(g["cost"]["none"]["median_check_runs"])
+        self.assertEqual(len(g["h2_leave_one_rule_out"]), 6)
+        self.assertFalse(g["mixed_model"]["run"])
+
+    def test_rules_n2_and_p1_are_dropped_in_sensitivity_2(self):
+        rows = self.rows({"none": 8, "prose": 4}, rules=0)
+        for rule in ("N1", "N2", "P1", "P3"):
+            rows += [dict(r, rule_id=rule) for r in self.rows({"none": 8, "prose": 4}, rules=1)]
+        s = self.ev.analyse(rows)["models"]["haiku"]["sensitivity"]["2_without_N2_P1"]
+        self.assertEqual(s["rates"]["none"]["n"], 16)
+
+    def test_arm_filter_models_and_skips(self):
+        rows = self.rows({"none": 8, "prose": 2, "gen": 6}) + self.rows({"prose": 2}, model="sonnet") + [
+            {"rule_id": "R0", "arm": "none", "violations": None}, {"rule_id": "R0", "arm": "x", "violations": 1}]
+        res = self.ev.analyse(rows, arms=("none", "prose"))
+        self.assertEqual(sorted(res["models"]), ["haiku", "sonnet"])
+        self.assertEqual(res["skipped"], 6 * 8 + 2)
+        self.assertNotIn("gen", res["models"]["haiku"]["rates"])
+
+    def test_deterministic_and_cli_writes_files(self):
+        rows = self.rows({"none": 8, "prose": 3, "gen": 5})
+        self.assertEqual(self.ev.analyse(rows), self.ev.analyse(rows))
+        d = tempfile.mkdtemp()
+        self.addCleanup(rmtree, d)
+        src = os.path.join(d, "r.json")
+        write(src, json.dumps(rows))
+        self.assertEqual(self.ev.main([src, "--out", os.path.join(d, "out")]), 0)
+        self.assertTrue(os.path.isfile(os.path.join(d, "out", "studyb.json")))
+        self.assertIn("gen - prose", read(os.path.join(d, "out", "studyb.md")))
+
+
 class SmallTools(unittest.TestCase):
     def test_hash_tree_is_sorted_markdown(self):
         import hash_tree
@@ -700,6 +817,15 @@ class StudyBArms(Tmp):
                          (2, 2, None, False))
         r = self.grade("rule", log=rows[:2])
         self.assertIsNone(r["rule_test_runs_before_first_pass"])
+
+    def test_final_rule_test_passed(self):
+        ok = {"exit_code": 0, "ran_rule_test": True}
+        bad = {"exit_code": 1, "ran_rule_test": True}
+        other = {"exit_code": 1, "ran_rule_test": False}
+        self.assertIs(self.grade("rule", log=[bad, ok, other])["final_rule_test_passed"], True)
+        self.assertIs(self.grade("rule", log=[ok, bad])["final_rule_test_passed"], False)
+        self.assertIsNone(self.grade("rule", log=[other])["final_rule_test_passed"])
+        self.assertIsNone(self.grade("gen", log=[ok])["final_rule_test_passed"])
 
     def test_rule_test_change_or_delete_is_reported_apart(self):
         tp = lambda ws: os.path.join(ws, "src", "app", "a", "tests", "test_rule.py")
