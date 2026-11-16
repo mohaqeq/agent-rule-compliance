@@ -313,7 +313,9 @@ def prepare(spec, out):
                 ws = os.path.abspath(os.path.join(out, rid))
                 if spec.get("anonymous_workspaces"):  # the path must not tell the agent its task or condition
                     import hashlib
-                    ws = os.path.abspath(os.path.join(out, "ws", "w" + hashlib.sha256(rid.encode()).hexdigest()[:10]))
+                    # the runs directory is part of the hash: two runs directories must not give the same token to one run id
+                    key = os.path.abspath(out).replace("\\", "/").lower() + "|" + rid
+                    ws = os.path.abspath(os.path.join(out, "ws", "w" + hashlib.sha256(key.encode()).hexdigest()[:10]))
                     os.makedirs(os.path.dirname(ws), exist_ok=True)
                 if not os.path.exists(ws):
                     if arm:

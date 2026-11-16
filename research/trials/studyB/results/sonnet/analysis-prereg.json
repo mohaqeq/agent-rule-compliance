@@ -1,0 +1,968 @@
+{
+ "rows": 54,
+ "analysed": 54,
+ "skipped": 0,
+ "arms": [
+  "prose",
+  "gen",
+  "rule"
+ ],
+ "seed": 20260101,
+ "bootstrap_resamples": 10000,
+ "permutation_shuffles": 10000,
+ "models": {
+  "sonnet": {
+   "analysed": 54,
+   "rates": {
+    "prose": {
+     "violation_rate": 0.2222222222222222,
+     "success_rate": 0.8333333333333334,
+     "n": 18
+    },
+    "gen": {
+     "violation_rate": 0.8333333333333334,
+     "success_rate": 0.8333333333333334,
+     "n": 18
+    },
+    "rule": {
+     "violation_rate": 0.0,
+     "success_rate": 1.0,
+     "n": 18
+    }
+   },
+   "rates_by_rule": {
+    "N1": {
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     }
+    },
+    "N2": {
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 0.0,
+      "n": 3
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     }
+    },
+    "N3": {
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     }
+    },
+    "P1": {
+     "prose": {
+      "violation_rate": 1.0,
+      "success_rate": 0.3333333333333333,
+      "n": 3
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     }
+    },
+    "P3": {
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     }
+    },
+    "P5": {
+     "prose": {
+      "violation_rate": 0.3333333333333333,
+      "success_rate": 0.6666666666666666,
+      "n": 3
+     },
+     "gen": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 3
+     }
+    }
+   },
+   "contrasts": [
+    {
+     "contrast": "gen - prose",
+     "a": "gen",
+     "b": "prose",
+     "rules": 6,
+     "rate_a": 0.8333333333333334,
+     "rate_b": 0.2222222222222222,
+     "n_a": 18,
+     "n_b": 18,
+     "diff": 0.6111111111111112,
+     "ci": [
+      0.16666666666666669,
+      1.0
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 0.00039996000399960006,
+     "available": true
+    },
+    {
+     "contrast": "prose - none",
+     "a": "prose",
+     "b": "none",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": 0.2222222222222222,
+     "rate_b": null,
+     "rules": 0
+    },
+    {
+     "contrast": "gen - none",
+     "a": "gen",
+     "b": "none",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": 0.8333333333333334,
+     "rate_b": null,
+     "rules": 0
+    },
+    {
+     "contrast": "rule - none",
+     "a": "rule",
+     "b": "none",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": 0.0,
+     "rate_b": null,
+     "rules": 0
+    },
+    {
+     "contrast": "prule - none",
+     "a": "prule",
+     "b": "none",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": null,
+     "rate_b": null,
+     "rules": 0
+    },
+    {
+     "contrast": "urule - none",
+     "a": "urule",
+     "b": "none",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": null,
+     "rate_b": null,
+     "rules": 0
+    },
+    {
+     "contrast": "urule - prule",
+     "a": "urule",
+     "b": "prule",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": null,
+     "rate_b": null,
+     "rules": 0
+    }
+   ],
+   "decision": {
+    "H2": "SUPPORTED",
+    "H2b": {
+     "prose": "not available",
+     "gen": "not available",
+     "rule": "not available",
+     "prule": "not available",
+     "urule": "not available"
+    }
+   },
+   "h2_leave_one_rule_out": [
+    {
+     "left_out": "N1",
+     "diff": 0.5333333333333334
+    },
+    {
+     "left_out": "N2",
+     "diff": 0.5333333333333334
+    },
+    {
+     "left_out": "N3",
+     "diff": 0.5333333333333334
+    },
+    {
+     "left_out": "P1",
+     "diff": 0.7333333333333334
+    },
+    {
+     "left_out": "P3",
+     "diff": 0.5333333333333334
+    },
+    {
+     "left_out": "P5",
+     "diff": 0.8
+    }
+   ],
+   "h3": {
+    "decision": "not available"
+   },
+   "ucn": {
+    "violations": {
+     "contrast": "urule - prule",
+     "a": "urule",
+     "b": "prule",
+     "available": false,
+     "diff": null,
+     "ci": null,
+     "p": null,
+     "rate_a": null,
+     "rate_b": null,
+     "rules": 0
+    },
+    "decision": "none (no threshold)",
+    "tokens_urule": null,
+    "tokens_prule": null,
+    "tokens_diff": null,
+    "failed_check_runs_urule": null,
+    "failed_check_runs_prule": null,
+    "failed_check_runs_diff": null
+   },
+   "mixed_model": {
+    "run": false,
+    "reason": "no none arm"
+   },
+   "sensitivity": {
+    "1_success_only": {
+     "rates": {
+      "prose": {
+       "violation_rate": 0.06666666666666667,
+       "success_rate": 1.0,
+       "n": 15
+      },
+      "gen": {
+       "violation_rate": 0.8,
+       "success_rate": 1.0,
+       "n": 15
+      },
+      "rule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 18
+      }
+     },
+     "rates_by_rule": {
+      "N1": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "N2": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": null,
+        "success_rate": null,
+        "n": 0
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "N3": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P1": {
+       "prose": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 1
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P3": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P5": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 2
+       },
+       "gen": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      }
+     },
+     "contrasts": [
+      {
+       "contrast": "gen - prose",
+       "a": "gen",
+       "b": "prose",
+       "rules": 6,
+       "rate_a": 0.8,
+       "rate_b": 0.06666666666666667,
+       "n_a": 15,
+       "n_b": 15,
+       "diff": 0.7333333333333334,
+       "ci": [
+        0.3333333333333333,
+        1.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 0.00039996000399960006,
+       "available": true
+      },
+      {
+       "contrast": "prose - none",
+       "a": "prose",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.06666666666666667,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "gen - none",
+       "a": "gen",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.8,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "rule - none",
+       "a": "rule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.0,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "prule - none",
+       "a": "prule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "urule - none",
+       "a": "urule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "urule - prule",
+       "a": "urule",
+       "b": "prule",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      }
+     ],
+     "decision": {
+      "H2": "SUPPORTED",
+      "H2b": {
+       "prose": "not available",
+       "gen": "not available",
+       "rule": "not available",
+       "prule": "not available",
+       "urule": "not available"
+      }
+     }
+    },
+    "2_without_N2_P1": {
+     "rates": {
+      "prose": {
+       "violation_rate": 0.08333333333333333,
+       "success_rate": 0.9166666666666666,
+       "n": 12
+      },
+      "gen": {
+       "violation_rate": 0.75,
+       "success_rate": 1.0,
+       "n": 12
+      },
+      "rule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 12
+      }
+     },
+     "rates_by_rule": {
+      "N1": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "N3": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P3": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P5": {
+       "prose": {
+        "violation_rate": 0.3333333333333333,
+        "success_rate": 0.6666666666666666,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      }
+     },
+     "contrasts": [
+      {
+       "contrast": "gen - prose",
+       "a": "gen",
+       "b": "prose",
+       "rules": 4,
+       "rate_a": 0.75,
+       "rate_b": 0.08333333333333333,
+       "n_a": 12,
+       "n_b": 12,
+       "diff": 0.6666666666666666,
+       "ci": [
+        0.0,
+        1.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 0.004399560043995601,
+       "available": true
+      },
+      {
+       "contrast": "prose - none",
+       "a": "prose",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.08333333333333333,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "gen - none",
+       "a": "gen",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.75,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "rule - none",
+       "a": "rule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.0,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "prule - none",
+       "a": "prule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "urule - none",
+       "a": "urule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "urule - prule",
+       "a": "urule",
+       "b": "prule",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      }
+     ],
+     "decision": {
+      "H2": "INCONCLUSIVE",
+      "H2b": {
+       "prose": "not available",
+       "gen": "not available",
+       "rule": "not available",
+       "prule": "not available",
+       "urule": "not available"
+      }
+     }
+    },
+    "3_rule_test_change_is_violation": {
+     "rates": {
+      "prose": {
+       "violation_rate": 0.2222222222222222,
+       "success_rate": 0.8333333333333334,
+       "n": 18
+      },
+      "gen": {
+       "violation_rate": 0.8333333333333334,
+       "success_rate": 0.8333333333333334,
+       "n": 18
+      },
+      "rule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 18
+      }
+     },
+     "rates_by_rule": {
+      "N1": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "N2": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 0.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "N3": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P1": {
+       "prose": {
+        "violation_rate": 1.0,
+        "success_rate": 0.3333333333333333,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P3": {
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      },
+      "P5": {
+       "prose": {
+        "violation_rate": 0.3333333333333333,
+        "success_rate": 0.6666666666666666,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       }
+      }
+     },
+     "contrasts": [
+      {
+       "contrast": "gen - prose",
+       "a": "gen",
+       "b": "prose",
+       "rules": 6,
+       "rate_a": 0.8333333333333334,
+       "rate_b": 0.2222222222222222,
+       "n_a": 18,
+       "n_b": 18,
+       "diff": 0.6111111111111112,
+       "ci": [
+        0.16666666666666669,
+        1.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 0.00039996000399960006,
+       "available": true
+      },
+      {
+       "contrast": "prose - none",
+       "a": "prose",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.2222222222222222,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "gen - none",
+       "a": "gen",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.8333333333333334,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "rule - none",
+       "a": "rule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": 0.0,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "prule - none",
+       "a": "prule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "urule - none",
+       "a": "urule",
+       "b": "none",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      },
+      {
+       "contrast": "urule - prule",
+       "a": "urule",
+       "b": "prule",
+       "available": false,
+       "diff": null,
+       "ci": null,
+       "p": null,
+       "rate_a": null,
+       "rate_b": null,
+       "rules": 0
+      }
+     ],
+     "decision": {
+      "H2": "SUPPORTED",
+      "H2b": {
+       "prose": "not available",
+       "gen": "not available",
+       "rule": "not available",
+       "prule": "not available",
+       "urule": "not available"
+      }
+     }
+    }
+   },
+   "check_use": {
+    "rule": {
+     "runs": 18,
+     "ended_with_passing_rule_test": 18,
+     "share_passing": 1.0,
+     "never_ran_rule_test": 0,
+     "violation_rate_passing": 0.0,
+     "violation_rate_not_passing": null
+    }
+   },
+   "cost": {
+    "prose": {
+     "median_tokens": 59498.5,
+     "median_tool_calls": 17.0,
+     "median_check_runs": null,
+     "n": 18
+    },
+    "gen": {
+     "median_tokens": 58241.0,
+     "median_tool_calls": 18.5,
+     "median_check_runs": 1.0,
+     "n": 18
+    },
+    "rule": {
+     "median_tokens": 57812.0,
+     "median_tool_calls": 15.0,
+     "median_check_runs": 2.0,
+     "n": 18
+    }
+   }
+  }
+ }
+}

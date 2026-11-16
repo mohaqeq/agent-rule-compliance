@@ -1,8 +1,7 @@
 # 13. Study B results: a test for the rule prevents the violation, the existing tests do not
 
-Date: 2026-11-15. Pre-registration: [trials/studyB/PREREGISTRATION.md](../trials/studyB/PREREGISTRATION.md).
-Data: [trials/studyB/results](../trials/studyB/results/). This document reports the primary part (Claude Haiku, 180 runs).
-The Sonnet replication (54 runs) is not done yet.
+Date: 2026-11-15 (Haiku), 2026-11-17 (Sonnet). Pre-registration: [trials/studyB/PREREGISTRATION.md](../trials/studyB/PREREGISTRATION.md).
+Data: [trials/studyB/results](../trials/studyB/results/). This document reports the primary part (Claude Haiku, 180 runs) and the replication (Claude Sonnet, 54 runs).
 
 ## Summary
 
@@ -16,6 +15,7 @@ Study B tested what prevents this at the six contradicting sites.
 - **Hypothesis H2 is supported:** existing checks prevent fewer violations than written guidance.
 - **The rule test costs no more than the other arms.** The median tokens of a run are almost the same in all arms.
 - **The UCN context gave no measurable benefit** against the documentation text when the rule test was in the loop.
+- **The stronger model gave the same result.** Sonnet: project tests 83%, documentation text 22%, rule test 0%.
 
 ## Method in short
 
@@ -119,6 +119,43 @@ The arms with a check did not use more tokens than the arms without a check. An 
 less code to make sure of its change. The token values come from the records of the runner agents, which are not
 fully reliable for single runs. The tool-call counts come from the transcripts.
 
+## Sonnet replication
+
+Three arms (`prose`, `gen`, `rule`), 3 runs for each task and arm, Claude Sonnet: 54 runs. No run is excluded.
+The replication has no `none` arm, so only H2 has a decision. The 36 runs of the check arms are second attempts
+(see "Exclusions and incidents", item 6).
+
+| Arm | Guidance | Check | Violations | Rate | Task success |
+|---|---|---|---|---|---|
+| `prose` | documentation text | none | 4 / 18 | 22.2% | 83.3% |
+| `gen` | none | project tests | 15 / 18 | 83.3% | 83.3% |
+| `rule` | none | project tests and rule test | 0 / 18 | 0.0% | 100.0% |
+
+| Difference | Estimate | 95% cluster-bootstrap interval | Permutation p | Decision |
+|---|---|---|---|---|
+| `gen` − `prose` (H2) | +61.1 pp | +16.7 to +100.0 | 0.0004 | H2 **supported** |
+
+| Rule | `prose` | `gen` | `rule` |
+|---|---|---|---|
+| N1 webhooks through `call_event` | 0/3 (3) | 3/3 (3) | 0/3 (3) |
+| N2 thumbnail rounding default | 0/3 (3) | 3/3 (0) | 0/3 (3) |
+| N3 `pk`, not `id` | 0/3 (3) | 3/3 (3) | 0/3 (3) |
+| P1 gift card stays restricted | 3/3 (1) | 3/3 (3) | 0/3 (3) |
+| P3 no `settings.SITE_ID` | 0/3 (3) | 3/3 (3) | 0/3 (3) |
+| P5 race-safe gift card balance | 1/3 (2) | 0/3 (3) | 0/3 (3) |
+
+- The rates are almost the same as the Haiku rates (`prose` 20.0%, `gen` 83.3%, `rule` 0.0%).
+- The documentation text failed for P1 in all three runs. Haiku failed there in 3 of 5 runs. For this rule the
+  near code is a stronger signal than the text, for the two models.
+- All 18 `rule` runs ran the rule test and ended with a passing rule test. No agent changed the rule test.
+- Leave one rule out: the H2 difference is +53 to +80 pp.
+- Sensitivity 1 (only runs with task success): `prose` 6.7%, `gen` 80.0%, `rule` 0%. H2 supported (+73.3 pp, interval +33.3 to +100.0).
+- Sensitivity 2 (without N2 and P1): `prose` 8.3%, `gen` 75.0%, `rule` 0%. The difference is +66.7 pp, but the
+  interval is 0.0 to +100.0, so H2 is **inconclusive** in this analysis. Four rules with 3 runs give a wide interval.
+- Sensitivity 3: no change.
+- Cost, median for each run: `prose` 59,500 tokens and 17 tool calls; `gen` 58,200 and 18.5; `rule` 57,800 and 15.
+  The agents ran the tests 1.7 times (`gen`) and 1.8 times (`rule`) in a run, as a mean.
+
 ## Exclusions and incidents
 
 1. **Three runs read the test wrapper file** (`run_tests.py`), which names the harness repository:
@@ -141,10 +178,29 @@ fully reliable for single runs. The tool-call counts come from the transcripts.
    the grading script now reports each run for which the grader did not run. This is a weakness of the harness:
    a grader that does not run must be an error.
 5. **All 180 transcripts map to one run each,** and all agents used `claude-haiku-5-5`.
+6. **Sonnet: the test command ran on the wrong workspace, and 36 runs were done again.** This is a deviation from
+   the pre-registration, which permits a second attempt only for a wrong prompt.
+   - Cause: the harness made the workspace name from the run id only. The Haiku and Sonnet runs have the same run ids,
+     so they had the same workspace names. The test command searched the Haiku runs first.
+   - Effect: in the first Sonnet attempts of the `gen` and `rule` arms, each test run examined the completed Haiku
+     code of the same run id, not the code of the Sonnet agent. The manipulation of these arms was not valid.
+   - The 18 `prose` runs have no test command and are not affected. The Haiku runs are not affected, because the
+     Haiku workspaces were the only ones at that time. The test command does not change a workspace.
+   - How it was found: the Sonnet runs wrote no check log in their own folder.
+   - Action: the 36 workspaces were restored with `git reset` and `git clean`, the test command was corrected and
+     proved on a Sonnet workspace, and the 36 runs were started again with the same prompts.
+   - The decision to repeat was made after the first attempts were graded. Their rates were `gen` 17 of 18 and
+     `rule` 1 of 18. They are not used in any analysis. Their results and check log are in
+     [first-attempts](../trials/studyB/results/sonnet/first-attempts/).
+   - The harness now makes the workspace name from the runs folder and the run id, and the test command stops
+     when one name is in two runs folders.
+7. **Sonnet checks.** All 54 transcripts map to one run each, and all agents used `claude-sonnet-5-5`. No second
+   attempt read the test wrapper file. Eight runs used a temporary folder of the agent session for test output.
+   Two runs started the test command from the folder above the tools folder and read nothing there.
 
 ## Limits
 
-- The Sonnet replication is not done. Study A showed no benefit of the stronger model, but that is not evidence for Study B.
+- The Sonnet replication has 3 runs for each cell and no `none` arm. Its check arms are second attempts (incident 6).
 - One repository, six rules, one model supplier. The interval is over six rules.
 - The rule test was written with knowledge of the ticket. It examines the rule for the new feature, not for all code.
   A project must write such a test before the change, or have a general check for the rule.
@@ -175,4 +231,5 @@ fully reliable for single runs. The tool-call counts come from the transcripts.
 | `results/haiku/runlog.json` | Transcript mapping, model, tool-call count, outside paths |
 | `results/haiku/tool-calls.jsonl` | Tool name and target of each tool call |
 | `results/haiku/first-attempts/` | The first attempt of the run that got a wrong prompt |
+| `results/sonnet/` | The same files for the Sonnet replication, and `first-attempts/` with the 36 runs that are not valid |
 | `results/tools/` | Scripts for grading and for the transcript check |

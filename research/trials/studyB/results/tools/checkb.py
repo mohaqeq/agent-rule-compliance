@@ -1,6 +1,7 @@
 """Map every coding-agent transcript to its run by its exact prompt, and check model and workspace containment.
 
-  python check.py RUNS_DIR SUBAGENTS_DIR  -> RUNS_DIR/runlog.json  {run: {agent_id, model, tool_calls, outside}}
+  python check.py RUNS_DIR SUBAGENTS_DIR [SKIP_JSON]  -> RUNS_DIR/runlog.json  {run: {agent_id, model, tool_calls, outside}}
+SKIP_JSON is a list of agent ids to ignore (first attempts that were repeated).
 The runners' own batch files are not trusted for the agent-to-run mapping.
 """
 import glob
@@ -13,8 +14,11 @@ runs, sub = sys.argv[1], sys.argv[2]
 prompts = {open(p, encoding="utf-8").read().strip(): os.path.basename(p)[:-len(".prompt.txt")]
            for p in glob.glob(runs + "/*.prompt.txt")}
 ABS = re.compile(r"(?<![A-Za-z0-9:/])(?:[A-Za-z]:[\\/]|/[a-z]/)[\w.\-\\/]{3,}")
+skip = set(json.load(open(sys.argv[3], encoding="utf-8"))) if len(sys.argv) > 3 else set()
 log, dup = {}, []
 for f in glob.glob(sub + "/agent-*.jsonl"):
+    if os.path.basename(f)[6:-6] in skip:
+        continue
     rows = []
     for line in open(f, encoding="utf-8"):
         try:
