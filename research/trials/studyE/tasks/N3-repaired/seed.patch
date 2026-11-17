@@ -1,0 +1,30 @@
+diff --git a/saleor/graphql/channel/utils.py b/saleor/graphql/channel/utils.py
+index ac3ffd4..3e34634 100644
+--- a/saleor/graphql/channel/utils.py
++++ b/saleor/graphql/channel/utils.py
+@@ -119,7 +119,7 @@ def delete_invalid_warehouse_to_shipping_zone_relations(
+ 
+     # delete invalid shipping zone - warehouse relations
+     ShippingZoneWarehouse.objects.filter(
+-        id__in=shipping_zone_warehouses_to_delete
++        pk__in=shipping_zone_warehouses_to_delete
+     ).delete()
+ 
+ 
+@@ -148,13 +148,13 @@ def _get_invalid_shipping_zone_warehouses_ids(
+     shipping_zone_warehouses, warehouse_to_channel_ids, zone_to_channel_ids
+ ):
+     shipping_zone_warehouses_to_delete = []
+-    for id, zone_id, warehouse_id in shipping_zone_warehouses.values_list(
+-        "id", "shippingzone_id", "warehouse_id"
++    for pk, zone_id, warehouse_id in shipping_zone_warehouses.values_list(
++        "pk", "shippingzone_id", "warehouse_id"
+     ):
+         warehouse_channels = warehouse_to_channel_ids.get(warehouse_id, set())
+         zone_channels = zone_to_channel_ids.get(zone_id, set())
+         # if there is no common channels between shipping zone and warehouse
+         # the relation should be deleted
+         if not warehouse_channels.intersection(zone_channels):
+-            shipping_zone_warehouses_to_delete.append(id)
++            shipping_zone_warehouses_to_delete.append(pk)
+     return shipping_zone_warehouses_to_delete

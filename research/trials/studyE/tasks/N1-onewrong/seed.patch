@@ -1,0 +1,13 @@
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_update.py b/saleor/graphql/giftcard/mutations/gift_card_update.py
+index cb25f57..014d2c5 100644
+--- a/saleor/graphql/giftcard/mutations/gift_card_update.py
++++ b/saleor/graphql/giftcard/mutations/gift_card_update.py
+@@ -141,7 +141,7 @@ class GiftCardUpdate(GiftCardCreate):
+ 
+         manager = get_plugin_manager_promise(info.context).get()
+ 
+-        cls.call_event(manager.gift_card_updated, instance)
++        manager.gift_card_updated(instance)
+ 
+         return cls.success_response(instance)
+ 

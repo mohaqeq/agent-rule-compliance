@@ -1,0 +1,23 @@
+diff --git a/saleor/graphql/shop/types.py b/saleor/graphql/shop/types.py
+index e9fa925..f9be544 100644
+--- a/saleor/graphql/shop/types.py
++++ b/saleor/graphql/shop/types.py
+@@ -1,5 +1,6 @@
+ import graphene
+ from django.conf import settings
++from django.contrib.sites.models import Site
+ from django_countries import countries
+ from phonenumbers import COUNTRY_CODE_TO_REGION_CODE
+ 
+@@ -694,8 +695,9 @@ class Shop(graphene.ObjectType):
+         return site.settings.reserve_stock_duration_authenticated_user
+ 
+     @staticmethod
+-    @load_site_callback
+-    def resolve_limit_quantity_per_checkout(_, _info, site):
++    def resolve_limit_quantity_per_checkout(_, info):
++        db = get_database_connection_name(info.context)
++        site = Site.objects.using(db).get(pk=settings.SITE_ID)
+         return site.settings.limit_quantity_per_checkout
+ 
+     @staticmethod

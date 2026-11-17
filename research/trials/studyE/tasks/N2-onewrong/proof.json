@@ -1,0 +1,35 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_image_is_null_without_media",
+   "test_behavior_image_returns_thumbnail_url_of_variant_media",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[1500-NEAREST-1024]",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[1500-None-2048]",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[1500-UP-2048]",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[700-NEAREST-512]",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[700-None-1024]"
+  ],
+  "seconds": 688.5
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 1404.2
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[1500-None-2048]",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[1500-UP-2048]",
+   "test_rule_image_size_rounding_follows_argument_and_defaults_up[700-None-1024]"
+  ],
+  "seconds": 893.5
+ },
+ "seed": {
+  "passed": true,
+  "failing": [],
+  "seconds": 986.3
+ },
+ "ok": true
+}

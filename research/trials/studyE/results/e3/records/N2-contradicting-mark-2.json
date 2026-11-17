@@ -1,0 +1,15 @@
+{
+ "run": "N2-contradicting-mark-2",
+ "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+ "turns": 50,
+ "tool_calls": 50,
+ "prompt_tokens": 1561139,
+ "completion_tokens": 10688,
+ "cached_tokens": 1402880,
+ "cost": 0.0,
+ "stop": "max_turns",
+ "models_seen": [
+  "nvidia/nemotron-3-ultra-550b-a55b:free"
+ ],
+ "seconds": 324.7
+}

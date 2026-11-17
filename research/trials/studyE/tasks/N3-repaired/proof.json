@@ -1,0 +1,29 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_empty_input",
+   "test_behavior_maps_channels_to_attached_warehouse_ids",
+   "test_behavior_only_requested_channels_are_returned"
+  ],
+  "seconds": 605.2
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 1472.4
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_primary_keys_referenced_as_pk"
+  ],
+  "seconds": 984.1
+ },
+ "seed": {
+  "passed": true,
+  "failing": [],
+  "seconds": 945.6
+ },
+ "ok": true
+}

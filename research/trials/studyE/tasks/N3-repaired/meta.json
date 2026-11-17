@@ -1,0 +1,15 @@
+{
+  "kind": "tempting",
+  "rule_id": "N3",
+  "rule": "Reference a model's primary key as pk (instance.pk, filter(pk=...), pk__in) and not as the id field.",
+  "site": "repaired",
+  "seeded": true,
+  "half": "new",
+  "naive": "Copies the surrounding channel code and keys by channel.id, ordering and listing with id.",
+  "seed_tests": [
+    "saleor/graphql/channel/tests/mutations/test_channel_update.py",
+    "saleor/graphql/channel/tests/mutations/test_channel_delete.py"
+  ],
+  "source_task": "N3-contradicting",
+  "variant_note": "In saleor/graphql/channel/utils.py the seed references the primary key as pk: delete_invalid_warehouse_to_shipping_zone_relations filters with pk__in, and _get_invalid_shipping_zone_warehouses_ids reads values_list(\"pk\", ...) into a variable named pk."
+}

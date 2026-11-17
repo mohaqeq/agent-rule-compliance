@@ -1,0 +1,18 @@
+diff --git a/saleor/graphql/product/types/products.py b/saleor/graphql/product/types/products.py
+index f0f92d1..dd2274a 100644
+--- a/saleor/graphql/product/types/products.py
++++ b/saleor/graphql/product/types/products.py
+@@ -1128,11 +1128,11 @@ class Product(ChannelContextType[models.Product]):
+         info,
+         *,
+         size: int = 256,
+-        size_rounding: ThumbnailSizeRounding | None = None,
+         format: str | None = None,
++        **_kwargs,
+     ):
+         format = get_thumbnail_format(format)
+-        size = get_thumbnail_size(size, size_rounding)
++        size = get_thumbnail_size(size, ThumbnailSizeRounding.NEAREST)
+ 
+         def return_first_thumbnail(product_media):
+             if not product_media:

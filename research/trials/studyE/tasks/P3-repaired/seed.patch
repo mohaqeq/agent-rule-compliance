@@ -1,0 +1,58 @@
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py
+index c549335..7103587 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_delete.py
+@@ -1,4 +1,6 @@
+ import graphene
++from django.conf import settings
++from django.contrib.sites.models import Site
+ from django.core.exceptions import ValidationError
+ 
+ from ....core.tracing import traced_atomic_transaction
+@@ -22,7 +24,6 @@ from ...core.mutations import BaseMutation
+ from ...core.types import NonNullList, StockError
+ from ...core.utils import WebhookEventInfo
+ from ...core.validators import validate_one_of_args_is_in_mutation
+-from ...site.dataloaders import get_site_promise
+ from ...utils import get_user_or_app_from_context
+ from ...warehouse.dataloaders import StocksByProductVariantIdLoader
+ from ...warehouse.types import Warehouse
+@@ -122,7 +123,7 @@ class ProductVariantStocksDelete(BaseMutation):
+                 requestor=requestor,
+             )
+ 
+-        site_settings = get_site_promise(info.context).get().settings
++        site_settings = Site.objects.get(pk=settings.SITE_ID).settings
+         if not site_settings.use_legacy_shipping_zone_stock_availability:
+             # Channel-event queries run on_commit after the deletion is applied,
+             # but the in-memory stock objects are still safe to pass.
+diff --git a/saleor/graphql/product/mutations/product_variant/product_variant_update.py b/saleor/graphql/product/mutations/product_variant/product_variant_update.py
+index 02dac95..3c7347d 100644
+--- a/saleor/graphql/product/mutations/product_variant/product_variant_update.py
++++ b/saleor/graphql/product/mutations/product_variant/product_variant_update.py
+@@ -1,6 +1,8 @@
+ from typing import cast
+ 
+ import graphene
++from django.conf import settings
++from django.contrib.sites.models import Site
+ from django.core.exceptions import ValidationError
+ 
+ from .....attribute import models as attribute_models
+@@ -26,7 +28,6 @@ from ....core.utils import ext_ref_to_global_id_or_error
+ from ....core.validators import validate_one_of_args_is_in_mutation
+ from ....meta.inputs import MetadataInput
+ from ....plugins.dataloaders import get_plugin_manager_promise
+-from ....site.dataloaders import get_site_promise
+ from ...types import ProductVariant
+ from ...utils import clean_variant_sku
+ from ..utils import PRODUCT_VARIANT_UPDATE_FIELDS
+@@ -340,7 +341,7 @@ class ProductVariantUpdate(DeprecatedModelMutation):
+         cls.construct_instance(instance, cleaned_input)
+         cls.clean_instance(info, instance)
+ 
+-        site = get_site_promise(info.context).get()
++        site = Site.objects.get(pk=settings.SITE_ID)
+         use_legacy_webhooks_emission = site.settings.use_legacy_update_webhook_emission
+         variant_modified, metadata_modified, attribute_modified = cls._save(
+             instance_tracker, cleaned_input

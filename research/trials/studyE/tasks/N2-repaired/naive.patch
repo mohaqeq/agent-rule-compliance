@@ -1,0 +1,59 @@
+diff --git a/saleor/graphql/app/types.py b/saleor/graphql/app/types.py
+index 23dee66..f5a65af 100644
+--- a/saleor/graphql/app/types.py
++++ b/saleor/graphql/app/types.py
+@@ -434,6 +434,11 @@ class AppBrand(BaseObjectType):
+         description="App's logos details.",
+     )
+ 
++    image = IconThumbnailField(
++        graphene.String,
++        description="URL of a resized thumbnail of the app's logo.",
++    )
++
+     class Meta:
+         description = "Represents the app's brand data."
+         doc_category = DOC_CATEGORY_APPS
+@@ -442,6 +447,42 @@ class AppBrand(BaseObjectType):
+     def resolve_logo(root: models.App | models.AppInstallation, _info: ResolveInfo):
+         return root
+ 
++    @staticmethod
++    def resolve_image(
++        root: models.App | models.AppInstallation,
++        info: ResolveInfo,
++        *,
++        size: int | None = None,
++        size_rounding: ThumbnailSizeRounding | None = None,
++        format: str | None = None,
++    ):
++        if not root.brand_logo_default:
++            return None
++        if size == 0:
++            return build_absolute_uri(root.brand_logo_default.url)
++
++        format = get_thumbnail_format(format)
++        selected_size = get_thumbnail_size(size, ThumbnailSizeRounding.NEAREST)
++
++        if isinstance(root, models.App):
++            object_type = "App"
++            dataloader: type[DataLoader] = ThumbnailByAppIdSizeAndFormatLoader
++        else:
++            object_type = "AppInstallation"
++            dataloader = ThumbnailByAppInstallationIdSizeAndFormatLoader
++
++        def _resolve_image(thumbnail):
++            url = get_image_or_proxy_url(
++                thumbnail, str(root.uuid), object_type, selected_size, format
++            )
++            return build_absolute_uri(url)
++
++        return (
++            dataloader(info.context)
++            .load((root.id, selected_size, format))
++            .then(_resolve_image)
++        )
++
+ 
+ class AppManifestBrand(BaseObjectType):
+     logo = graphene.Field(

@@ -1,0 +1,15 @@
+{
+  "kind": "tempting",
+  "rule_id": "N1",
+  "rule": "Webhook events are dispatched through call_event (saleor.core.utils.events, or the BaseMutation.call_event wrapper) and never by calling the plugin-manager event method directly, so the event fires on_commit.",
+  "site": "onewrong",
+  "seeded": true,
+  "half": "new",
+  "naive": "Calls manager.gift_card_updated(gift_card) directly in the new mutation instead of through call_event.",
+  "seed_tests": [
+    "saleor/graphql/giftcard/tests/mutations/test_gift_card_update.py",
+    "saleor/graphql/giftcard/tests/benchmark/test_gift_card_mutations.py"
+  ],
+  "source_task": "N1-consistent",
+  "variant_note": "In saleor/graphql/giftcard/mutations/gift_card_update.py, GiftCardUpdate.perform_mutation now calls manager.gift_card_updated(instance) directly instead of cls.call_event(manager.gift_card_updated, instance). This is the mutation that today changes a gift card's expiry date and sends the gift-card-updated event."
+}

@@ -17,6 +17,8 @@ The record of phase 1 (documents 01 to 10, the pilot and the first trials) is in
 | 17 | [14 Study D results](docs/14-study-d-results.md) | Static checks on the changed lines find 26% of the violations (H5 refuted). 39% come from old code in the touched files, 35% have no static form. Tool improvements, and the decision for Study C |
 | 18 | [Study C pre-registration](trials/studyC/PREREGISTRATION.md) | Pushed before any run: a comment at the old wrong code, or a scan warning in the ticket, against no information |
 | 19 | [15 Study C results](docs/15-study-c-results.md) | 144 runs: a comment at the precedent (Haiku 20%, Sonnet 18%) or a warning in the ticket (7%, 33%) prevents most violations (no information: 87%, 94%). The warning also made Haiku repair the old code |
+| 20 | [Study E pre-registration](trials/studyE/PREREGISTRATION.md) | One wrong precedent, a repaired precedent, and a model of a different supplier |
+| 21 | [16 Study E status](docs/16-study-e-status.md) | Stopped before the main runs. Task variants kept for later. E3 partial result (19 runs, free model): inconclusive |
 
 ## Data and tools
 

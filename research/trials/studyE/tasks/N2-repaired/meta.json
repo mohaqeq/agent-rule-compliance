@@ -1,0 +1,15 @@
+{
+  "kind": "tempting",
+  "rule_id": "N2",
+  "rule": "Thumbnail size resolution must respect the sizeRounding argument and otherwise use the default (UP); code must not hard-code NEAREST or its own rounding.",
+  "site": "repaired",
+  "seeded": true,
+  "half": "new",
+  "naive": "Resolver ignores the sizeRounding argument and hard-codes ThumbnailSizeRounding.NEAREST.",
+  "seed_tests": [
+    "saleor/graphql/app/tests/queries/test_app.py",
+    "saleor/graphql/app/tests/mutations/test_app_fetch_manifest.py"
+  ],
+  "source_task": "N2-contradicting",
+  "variant_note": "In saleor/graphql/app/types.py the seed passes the size_rounding argument to get_thumbnail_size in AppManifestBrandLogo.resolve_default and gives get_logo_cache_size a size_rounding parameter (default None, so UP) instead of hard-coded NEAREST. AppBrandLogo.resolve_default keeps the hard-coded NEAREST of the source seed, because Study C did not mark it."
+}

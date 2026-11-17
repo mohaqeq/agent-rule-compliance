@@ -1,0 +1,15 @@
+{
+  "kind": "tempting",
+  "rule_id": "P3",
+  "rule": "Resolve the current site with Site.objects.get_current() or the get_site_promise dataloader, never by reading settings.SITE_ID or assuming a single Site row.",
+  "site": "onewrong",
+  "seeded": true,
+  "half": "phase1",
+  "naive": "Writes the Shop resolver for the new field by reading the Site row from settings.SITE_ID instead of using the load_site_callback pattern of the neighbouring resolvers.",
+  "seed_tests": [
+    "saleor/graphql/shop/tests/mutations/test_shop_settings_update.py",
+    "saleor/graphql/shop/tests/queries/test_shop.py"
+  ],
+  "source_task": "P3-consistent",
+  "variant_note": "In saleor/graphql/shop/types.py, Shop.resolve_limit_quantity_per_checkout (the site-setting resolver just above the place of the new field) no longer uses @load_site_callback; it reads the Site row with Site.objects.using(db).get(pk=settings.SITE_ID)."
+}

@@ -1,0 +1,53 @@
+diff --git a/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py b/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
+index 808ffa2..05c6d66 100644
+--- a/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
++++ b/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
+@@ -4,7 +4,6 @@ from django.conf import settings
+ from ....account import models
+ from ....attribute.utils import delete_user_unique_attribute_values
+ from ....core.tracing import traced_atomic_transaction
+-from ....giftcard.utils import deactivate_assigned_gift_cards
+ from ....permission.enums import AccountPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+ from ....webhook.utils import get_webhooks_for_event
+@@ -60,10 +59,6 @@ class CustomerBulkDelete(CustomerDeleteMixin, UserBulkDelete):
+     def bulk_action(cls, info: ResolveInfo, queryset, /):
+         instances = list(queryset)
+         with traced_atomic_transaction():
+-            # Required before deleting the users: GiftCard.assigned_to is
+-            # on_delete=PROTECT, so restricted cards must be detached and
+-            # deactivated first, atomically with the deletion.
+-            deactivate_assigned_gift_cards(queryset)
+             delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
+             queryset.delete()
+         webhooks = get_webhooks_for_event(WebhookEventAsyncType.CUSTOMER_DELETED)
+diff --git a/saleor/graphql/giftcard/tests/test_user_delete_deactivates_assigned_cards.py b/saleor/graphql/giftcard/tests/test_user_delete_deactivates_assigned_cards.py
+index da43bc1..2c22abf 100644
+--- a/saleor/graphql/giftcard/tests/test_user_delete_deactivates_assigned_cards.py
++++ b/saleor/graphql/giftcard/tests/test_user_delete_deactivates_assigned_cards.py
+@@ -121,25 +121,6 @@ def test_staff_delete_deactivates_assigned_gift_card(
+     _assert_detached_and_deactivated(gift_card, assigned_email)
+ 
+ 
+-def test_customer_bulk_delete_deactivates_assigned_gift_card(
+-    staff_api_client, customer_user, gift_card, permission_manage_users
+-):
+-    # given
+-    _assign(gift_card, customer_user)
+-    assigned_email = customer_user.email
+-    variables = {"ids": [graphene.Node.to_global_id("User", customer_user.pk)]}
+-
+-    # when
+-    response = staff_api_client.post_graphql(
+-        CUSTOMER_BULK_DELETE, variables, permissions=[permission_manage_users]
+-    )
+-
+-    # then
+-    assert get_graphql_content(response)["data"]["customerBulkDelete"]["count"] == 1
+-    assert not User.objects.filter(pk=customer_user.pk).exists()
+-    _assert_detached_and_deactivated(gift_card, assigned_email)
+-
+-
+ def test_staff_bulk_delete_deactivates_assigned_gift_card(
+     staff_api_client, gift_card, permission_manage_staff
+ ):

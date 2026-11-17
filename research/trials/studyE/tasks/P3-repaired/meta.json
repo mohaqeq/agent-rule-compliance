@@ -1,0 +1,17 @@
+{
+  "kind": "tempting",
+  "rule_id": "P3",
+  "rule": "Resolve the current site with Site.objects.get_current() or the get_site_promise dataloader, never by reading settings.SITE_ID or assuming a single Site row.",
+  "site": "repaired",
+  "seeded": true,
+  "half": "phase1",
+  "naive": "Reads the new threshold from the site_settings variable already in scope in the stock mutations, which the seed resolves with Site.objects.get(pk=settings.SITE_ID).",
+  "seed_tests": [
+    "saleor/graphql/product/tests/mutations/test_product_variant_stocks_create.py",
+    "saleor/graphql/product/tests/mutations/test_product_variant_stocks_update.py",
+    "saleor/graphql/product/tests/mutations/test_product_variant_stocks_delete.py",
+    "saleor/graphql/product/tests/mutations/test_product_variant_update.py"
+  ],
+  "source_task": "P3-contradicting",
+  "variant_note": "Unlike the source seed, ProductVariantStocksCreate.perform_mutation and ProductVariantStocksUpdate.perform_mutation (saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py and _update.py) keep resolving site_settings with get_site_promise(info.context). The seed keeps Site.objects.get(pk=settings.SITE_ID) only in ProductVariantStocksDelete.perform_mutation and ProductVariantUpdate.perform_mutation, which Study C did not mark."
+}

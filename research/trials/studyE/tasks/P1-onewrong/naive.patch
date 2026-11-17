@@ -1,0 +1,175 @@
+diff --git a/saleor/graphql/account/bulk_mutations/__init__.py b/saleor/graphql/account/bulk_mutations/__init__.py
+index eff6ea1..c597c67 100644
+--- a/saleor/graphql/account/bulk_mutations/__init__.py
++++ b/saleor/graphql/account/bulk_mutations/__init__.py
+@@ -1,11 +1,13 @@
+ from .customer_bulk_delete import CustomerBulkDelete
+ from .customer_bulk_update import CustomerBulkUpdate
++from .delete_inactive_customers import DeleteInactiveCustomers
+ from .staff_bulk_delete import StaffBulkDelete
+ from .user_bulk_set_active import UserBulkSetActive
+ 
+ __all__ = [
+     "CustomerBulkDelete",
+     "CustomerBulkUpdate",
++    "DeleteInactiveCustomers",
+     "StaffBulkDelete",
+     "UserBulkSetActive",
+ ]
+diff --git a/saleor/graphql/account/bulk_mutations/delete_inactive_customers.py b/saleor/graphql/account/bulk_mutations/delete_inactive_customers.py
+new file mode 100644
+index 0000000..8f7e9ba
+--- /dev/null
++++ b/saleor/graphql/account/bulk_mutations/delete_inactive_customers.py
+@@ -0,0 +1,83 @@
++import graphene
++from dateutil.relativedelta import relativedelta
++from django.core.exceptions import ValidationError
++from django.db.models import Q
++from django.utils import timezone
++
++from ....account import events as account_events
++from ....account import models
++from ....account.error_codes import AccountErrorCode
++from ....attribute.utils import delete_user_unique_attribute_values
++from ....core.tracing import traced_atomic_transaction
++from ....permission.enums import AccountPermissions
++from ....webhook.event_types import WebhookEventAsyncType
++from ....webhook.utils import get_webhooks_for_event
++from ...app.dataloaders import get_app_promise
++from ...core import ResolveInfo
++from ...core.doc_category import DOC_CATEGORY_USERS
++from ...core.mutations import BaseMutation
++from ...core.types import AccountError
++from ...core.utils import WebhookEventInfo
++from ...plugins.dataloaders import get_plugin_manager_promise
++
++
++class DeleteInactiveCustomers(BaseMutation):
++    count = graphene.Int(description="Returns how many customers were deleted.")
++
++    class Arguments:
++        inactive_months = graphene.Int(
++            required=True,
++            description=(
++                "Customers with no orders who have not logged in for at least "
++                "this many months are deleted."
++            ),
++        )
++
++    class Meta:
++        description = "Deletes customers with no orders and no recent login."
++        doc_category = DOC_CATEGORY_USERS
++        permissions = (AccountPermissions.MANAGE_USERS,)
++        error_type_class = AccountError
++        error_type_field = "account_errors"
++        webhook_events_info = [
++            WebhookEventInfo(
++                type=WebhookEventAsyncType.CUSTOMER_DELETED,
++                description="A customer account was deleted.",
++            )
++        ]
++
++    @classmethod
++    def perform_mutation(  # type: ignore[override]
++        cls, _root, info: ResolveInfo, /, *, inactive_months
++    ):
++        if inactive_months < 1:
++            raise ValidationError(
++                {
++                    "inactive_months": ValidationError(
++                        "Must be at least 1.",
++                        code=AccountErrorCode.INVALID.value,
++                    )
++                }
++            )
++        threshold = timezone.now() - relativedelta(months=inactive_months)
++        queryset = models.User.objects.filter(is_staff=False, orders__isnull=True).filter(
++            Q(last_login__lt=threshold)
++            | Q(last_login__isnull=True, date_joined__lt=threshold)
++        )
++        instances = list(queryset)
++        if not instances:
++            return cls(count=0)
++        queryset = models.User.objects.filter(pk__in=[u.pk for u in instances])
++        with traced_atomic_transaction():
++            delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
++            queryset.delete()
++        webhooks = get_webhooks_for_event(WebhookEventAsyncType.CUSTOMER_DELETED)
++        manager = get_plugin_manager_promise(info.context).get()
++        for instance in instances:
++            cls.call_event(manager.customer_deleted, instance, webhooks=webhooks)
++        account_events.customer_deleted_event(
++            staff_user=info.context.user,
++            app=get_app_promise(info.context).get(),
++            deleted_count=len(instances),
++        )
++        return cls(count=len(instances))
+diff --git a/saleor/graphql/account/schema.py b/saleor/graphql/account/schema.py
+index c022483..0b4f0fa 100644
+--- a/saleor/graphql/account/schema.py
++++ b/saleor/graphql/account/schema.py
+@@ -23,6 +23,7 @@ from ..core.validators import validate_one_of_args_is_in_query
+ from .bulk_mutations import (
+     CustomerBulkDelete,
+     CustomerBulkUpdate,
++    DeleteInactiveCustomers,
+     StaffBulkDelete,
+     UserBulkSetActive,
+ )
+@@ -397,6 +398,7 @@ class AccountMutations(graphene.ObjectType):
+     customer_delete = CustomerDelete.Field()
+     customer_bulk_delete = CustomerBulkDelete.Field()
+     customer_bulk_update = CustomerBulkUpdate.Field()
++    delete_inactive_customers = DeleteInactiveCustomers.Field()
+ 
+     customer_type_create = CustomerTypeCreate.Field()
+     customer_type_update = CustomerTypeUpdate.Field()
+diff --git a/saleor/graphql/schema.graphql b/saleor/graphql/schema.graphql
+index f7bac37..8d490c9 100644
+--- a/saleor/graphql/schema.graphql
++++ b/saleor/graphql/schema.graphql
+@@ -22827,6 +22827,21 @@ type Mutation {
+     ids: [ID!]!
+   ): CustomerBulkDelete @doc(category: "Users") @webhookEventsInfo(asyncEvents: [CUSTOMER_DELETED], syncEvents: [])
+ 
++  """
++  Deletes customers with no orders and no recent login. 
++  
++  Requires one of the following permissions: MANAGE_USERS.
++  
++  Triggers the following webhook events:
++  - CUSTOMER_DELETED (async): A customer account was deleted.
++  """
++  deleteInactiveCustomers(
++    """
++    Customers with no orders who have not logged in for at least this many months are deleted.
++    """
++    inactiveMonths: Int!
++  ): DeleteInactiveCustomers @doc(category: "Users") @webhookEventsInfo(asyncEvents: [CUSTOMER_DELETED], syncEvents: [])
++
+   """
+   Updates customers. 
+   
+@@ -34396,6 +34411,21 @@ type CustomerBulkDelete @doc(category: "Users") @webhookEventsInfo(asyncEvents:
+   errors: [AccountError!]!
+ }
+ 
++"""
++Deletes customers with no orders and no recent login. 
++
++Requires one of the following permissions: MANAGE_USERS.
++
++Triggers the following webhook events:
++- CUSTOMER_DELETED (async): A customer account was deleted.
++"""
++type DeleteInactiveCustomers @doc(category: "Users") @webhookEventsInfo(asyncEvents: [CUSTOMER_DELETED], syncEvents: []) {
++  """Returns how many customers were deleted."""
++  count: Int
++  accountErrors: [AccountError!]! @deprecated(reason: "Use `errors` field instead.")
++  errors: [AccountError!]!
++}
++
+ """
+ Updates customers. 
+ 

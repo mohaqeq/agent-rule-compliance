@@ -1,0 +1,15 @@
+{
+ "run": "P3-consistent-none-2",
+ "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+ "turns": 50,
+ "tool_calls": 50,
+ "prompt_tokens": 1888162,
+ "completion_tokens": 8362,
+ "cached_tokens": 1722912,
+ "cost": 0.0,
+ "stop": "max_turns",
+ "models_seen": [
+  "nvidia/nemotron-3-ultra-550b-a55b:free"
+ ],
+ "seconds": 238.9
+}

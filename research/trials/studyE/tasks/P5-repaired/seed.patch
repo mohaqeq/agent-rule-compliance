@@ -1,0 +1,25 @@
+diff --git a/saleor/graphql/giftcard/mutations/gift_card_activate.py b/saleor/graphql/giftcard/mutations/gift_card_activate.py
+index 0be2fe9..61d46fd 100644
+--- a/saleor/graphql/giftcard/mutations/gift_card_activate.py
++++ b/saleor/graphql/giftcard/mutations/gift_card_activate.py
+@@ -1,6 +1,6 @@
+ import graphene
+ 
+-from ....giftcard import events
++from ....giftcard import events, models
+ from ....giftcard.utils import activate_gift_card
+ from ....permission.enums import GiftcardPermissions
+ from ....webhook.event_types import WebhookEventAsyncType
+@@ -44,6 +44,12 @@ class GiftCardActivate(BaseMutation):
+         clean_gift_card(gift_card)
+         # create event only when is_active value has changed
+         create_event = not gift_card.is_active
++        # Clamp a negative balance to zero in one conditional database write that
++        # checks the stored balance, not the value read before.
++        if models.GiftCard.objects.filter(
++            pk=gift_card.pk, current_balance_amount__lt=0
++        ).update(current_balance_amount=0):
++            gift_card.current_balance_amount = 0
+         activate_gift_card(gift_card)
+         if create_event:
+             app = get_app_promise(info.context).get()

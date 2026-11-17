@@ -1,0 +1,80 @@
+diff --git a/saleor/graphql/shop/mutations/shop_settings_update.py b/saleor/graphql/shop/mutations/shop_settings_update.py
+index e6ec285..9240c12 100644
+--- a/saleor/graphql/shop/mutations/shop_settings_update.py
++++ b/saleor/graphql/shop/mutations/shop_settings_update.py
+@@ -68,6 +68,12 @@ class ShopSettingsInput(graphene.InputObjectType):
+             f"value is {DEFAULT_LIMIT_QUANTITY_PER_CHECKOUT}."
+         )
+     )
++    checkout_note_max_length = graphene.Int(
++        description=(
++            "Maximum number of characters a customer may enter in the checkout "
++            "note. Enter null for no limit."
++        )
++    )
+ 
+     enable_account_confirmation_by_email = graphene.Boolean(
+         description="Enable automatic account confirmation by email."
+diff --git a/saleor/graphql/shop/types.py b/saleor/graphql/shop/types.py
+index f9be544..4e5d58b 100644
+--- a/saleor/graphql/shop/types.py
++++ b/saleor/graphql/shop/types.py
+@@ -378,6 +378,12 @@ class Shop(graphene.ObjectType):
+         ),
+         permissions=[SitePermissions.MANAGE_SETTINGS],
+     )
++    checkout_note_max_length = graphene.Int(
++        description=(
++            "Maximum number of characters a customer may enter in the checkout "
++            "note, or null when there is no limit."
++        )
++    )
+     company_address = graphene.Field(
+         Address, description="Company address.", required=False
+     )
+@@ -700,6 +706,11 @@ class Shop(graphene.ObjectType):
+         site = Site.objects.using(db).get(pk=settings.SITE_ID)
+         return site.settings.limit_quantity_per_checkout
+ 
++    @staticmethod
++    @load_site_callback
++    def resolve_checkout_note_max_length(_, _info, site):
++        return site.settings.checkout_note_max_length
++
+     @staticmethod
+     def resolve_staff_notification_recipients(_, info):
+         return account_models.StaffNotificationRecipient.objects.using(
+diff --git a/saleor/site/migrations/0054_sitesettings_checkout_note_max_length.py b/saleor/site/migrations/0054_sitesettings_checkout_note_max_length.py
+new file mode 100644
+index 0000000..ab54480
+--- /dev/null
++++ b/saleor/site/migrations/0054_sitesettings_checkout_note_max_length.py
+@@ -0,0 +1,15 @@
++from django.db import migrations, models
++
++
++class Migration(migrations.Migration):
++    dependencies = [
++        ("site", "0053_merge_20260730_0700"),
++    ]
++
++    operations = [
++        migrations.AddField(
++            model_name="sitesettings",
++            name="checkout_note_max_length",
++            field=models.PositiveIntegerField(blank=True, null=True),
++        ),
++    ]
+diff --git a/saleor/site/models.py b/saleor/site/models.py
+index 710b03a..14f1e68 100644
+--- a/saleor/site/models.py
++++ b/saleor/site/models.py
+@@ -93,6 +93,8 @@ class SiteSettings(ModelWithMetadata):
+         validators=[MinValueValidator(1)],
+     )
+ 
++    checkout_note_max_length = models.PositiveIntegerField(blank=True, null=True)
++
+     # gift card settings
+     gift_card_expiry_type = models.CharField(
+         max_length=32,

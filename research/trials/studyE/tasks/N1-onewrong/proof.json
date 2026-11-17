@@ -1,0 +1,30 @@
+{
+ "base": {
+  "passed": true,
+  "failing": [
+   "test_behavior_expiry_date_is_removed",
+   "test_behavior_expiry_date_is_set",
+   "test_behavior_gift_card_updated_event_is_sent",
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 746.3
+ },
+ "reference": {
+  "passed": true,
+  "failing": [],
+  "seconds": 720.1
+ },
+ "naive": {
+  "passed": true,
+  "failing": [
+   "test_rule_event_fires_only_after_commit"
+  ],
+  "seconds": 552.4
+ },
+ "seed": {
+  "passed": true,
+  "failing": [],
+  "seconds": 583.4
+ },
+ "ok": true
+}

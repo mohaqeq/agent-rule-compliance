@@ -1,0 +1,87 @@
+diff --git a/saleor/giftcard/migrations/0026_alter_giftcard_assigned_to.py b/saleor/giftcard/migrations/0026_alter_giftcard_assigned_to.py
+new file mode 100644
+index 0000000..e9789a5
+--- /dev/null
++++ b/saleor/giftcard/migrations/0026_alter_giftcard_assigned_to.py
+@@ -0,0 +1,23 @@
++import django.db.models.deletion
++from django.db import migrations, models
++
++
++class Migration(migrations.Migration):
++    dependencies = [
++        ("account", "0099_remove_digitalcontent_customerevent_type"),
++        ("giftcard", "0025_giftcard_customer_assignment"),
++    ]
++
++    operations = [
++        migrations.AlterField(
++            model_name="giftcard",
++            name="assigned_to",
++            field=models.ForeignKey(
++                blank=True,
++                null=True,
++                on_delete=django.db.models.deletion.SET_NULL,
++                related_name="assigned_gift_cards",
++                to="account.user",
++            ),
++        ),
++    ]
+diff --git a/saleor/giftcard/models.py b/saleor/giftcard/models.py
+index 9a8117e..057b696 100644
+--- a/saleor/giftcard/models.py
++++ b/saleor/giftcard/models.py
+@@ -67,11 +67,9 @@ class GiftCard(ModelWithMetadata):
+         settings.AUTH_USER_MODEL,
+         blank=True,
+         null=True,
+-        # PROTECT (not SET_NULL): deleting an assignee must go through
+-        # deactivate_assigned_gift_cards() so the card is detached AND
+-        # deactivated together. A raw delete is refused rather than silently
+-        # leaving an active card restricted to a ghost user.
+-        on_delete=models.PROTECT,
++        # The assignee reference is cleared when the user is deleted;
++        # assigned_to_email keeps the trace of who the card was assigned to.
++        on_delete=models.SET_NULL,
+         related_name="assigned_gift_cards",
+     )
+     assigned_to_email = models.EmailField(null=True, blank=True)
+diff --git a/saleor/giftcard/tests/test_models.py b/saleor/giftcard/tests/test_models.py
+index 0ad2f53..ceada7e 100644
+--- a/saleor/giftcard/tests/test_models.py
++++ b/saleor/giftcard/tests/test_models.py
+@@ -2,7 +2,6 @@ from decimal import Decimal
+ 
+ import pytest
+ from django.db import IntegrityError, transaction
+-from django.db.models import ProtectedError
+ 
+ from ..models import GiftCard
+ 
+@@ -21,17 +20,20 @@ def test_gift_card_can_be_assigned_to_customer(gift_card, customer_user):
+     assert customer_user.assigned_gift_cards.filter(pk=gift_card.pk).exists()
+ 
+ 
+-def test_deleting_assigned_customer_is_protected(gift_card, customer_user):
++def test_deleting_assigned_customer_clears_assignee(gift_card, customer_user):
+     # given a card restricted to the customer
+     gift_card.assigned_to = customer_user
+     gift_card.assigned_to_email = customer_user.email
+     gift_card.save(update_fields=["assigned_to", "assigned_to_email"])
++    email = customer_user.email
+ 
+-    # when / then: assigned_to is on_delete=PROTECT, so a raw delete is refused.
+-    # Deletion must go through deactivate_assigned_gift_cards() first (used by
+-    # the user-deletion mutations).
+-    with pytest.raises(ProtectedError):
+-        customer_user.delete()
++    # when
++    customer_user.delete()
++
++    # then: the reference is cleared and the email trace is kept
++    gift_card.refresh_from_db()
++    assert gift_card.assigned_to_id is None
++    assert gift_card.assigned_to_email == email
+ 
+ 
+ def test_current_balance_cannot_be_negative(gift_card):

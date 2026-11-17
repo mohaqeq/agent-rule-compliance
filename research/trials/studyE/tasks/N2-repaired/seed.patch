@@ -1,0 +1,27 @@
+diff --git a/saleor/graphql/app/types.py b/saleor/graphql/app/types.py
+index 5c5c654..23dee66 100644
+--- a/saleor/graphql/app/types.py
++++ b/saleor/graphql/app/types.py
+@@ -370,6 +370,13 @@ class AppManifestBrandLogo(BaseObjectType):
+         return f"data:{mimetype};base64,{thumbnail_str}"
+ 
+ 
++def get_logo_cache_size(
++    size: int | None, size_rounding: ThumbnailSizeRounding | None = None
++) -> int:
++    """Return the thumbnail size under which a brand logo is cached."""
++    return get_thumbnail_size(size, size_rounding)
++
++
+ class AppBrandLogo(BaseObjectType):
+     default = IconThumbnailField(
+         graphene.String,
+@@ -396,7 +403,7 @@ class AppBrandLogo(BaseObjectType):
+             return build_absolute_uri(root.brand_logo_default.url)
+ 
+         format = get_thumbnail_format(format)
+-        selected_size = get_thumbnail_size(size, size_rounding)
++        selected_size = get_thumbnail_size(size, ThumbnailSizeRounding.NEAREST)
+ 
+         if isinstance(root, models.App):
+             object_type = "App"

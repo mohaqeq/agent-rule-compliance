@@ -60,6 +60,13 @@ Full report: [research/docs/14-study-d-results.md](research/docs/14-study-d-resu
 
 Full report: [research/docs/15-study-c-results.md](research/docs/15-study-c-results.md).
 
+**Study E (stopped).** One wrong precedent, a repaired precedent, and a model of a different supplier. The study
+was stopped before the main runs. The task variants stay for later work, and a partial run with a free model is
+inconclusive. Status: [research/docs/16-study-e-status.md](research/docs/16-study-e-status.md).
+
+**State of the project.** Phase 2 is paused after Studies A to D. Open questions and proposals:
+[research/docs/ideas-for-later-studies.md](research/docs/ideas-for-later-studies.md).
+
 ## Where this work comes from
 
 This repository continues [unified-context-notation](https://github.com/mohaqeq/unified-context-notation). That
@@ -75,7 +82,7 @@ gave no benefit, and that agents copy the code near the change. This repository 
 
 | Path | Contents |
 |---|---|
-| [research/docs](research/docs/) | The phase 2 plan, the results of Studies A to D, and ideas for later studies |
+| [research/docs](research/docs/) | The phase 2 plan, the results of Studies A to D, the status of Study E, and ideas for later studies |
 | [research/trials/studyA](research/trials/studyA/PREREGISTRATION.md) | Pre-registration, 21 tasks with graders, results, analysis output, tool-call logs |
 | [research/trials/saleor](research/trials/saleor/NOTES.md) | The model of the saleor rules and the phase 1 saleor tasks |
 | [research/trials/containers](research/trials/containers/README.md) | Container images for grading and statistics |
