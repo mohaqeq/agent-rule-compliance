@@ -1,6 +1,7 @@
 """Study D: run the static checks on the change of each run and report recall and false alarms.
 
-  python evaluate.py RUNS_JSON CHECKS_DIR OUT_DIR
+  python evaluate.py RUNS_JSON CHECKS_DIR OUT_DIR [--whole-files]
+--whole-files (not pre-specified): all lines of each changed file count as changed, so old code in those files is examined too.
 RUNS_JSON comes from extract_changes.py. CHECKS_DIR has one <RULE>.py for each rule, with CLASS, NOTES and check().
 Writes OUT_DIR/findings.json (one row for each run) and OUT_DIR/studyd.md.
 """
@@ -43,6 +44,14 @@ def main():
     mods = load(sys.argv[2])
     out_dir = sys.argv[3]
     os.makedirs(out_dir, exist_ok=True)
+    if "--whole-files" in sys.argv:
+        for r in runs:
+            for p in list(r["changed"]):
+                try:
+                    with open(os.path.join(r["workspace"], p), "rb") as fh:
+                        r["changed"][p] = list(range(1, fh.read().count(b"\n") + 2))
+                except OSError:
+                    del r["changed"][p]
     errors = collections.Counter()
     for r in runs:
         r["findings"], r["other"] = [], {}

@@ -13,6 +13,8 @@ The record of phase 1 (documents 01 to 10, the pilot and the first trials) is in
 | 13 | [12 Study A results](docs/12-study-a-results.md) | 210 runs, two models: code that breaks a rule near the change causes violations in 87% (Haiku) and 97% (Sonnet) of runs, against 17% at consistent sites. A site with no precedent is not a risk |
 | 14 | [Study B pre-registration](trials/studyB/PREREGISTRATION.md) | Pinned before any run: six arms of guidance and checks at the six contradicting sites, visible rule tests with proofs, decision rules, hashes |
 | 15 | [13 Study B results](docs/13-study-b-results.md) | 180 Haiku runs and 54 Sonnet runs at the contradicting sites: project tests in the loop do not prevent violations (83% against 87%), the documentation text prevents most (20%), a test for the rule prevents all (0%). Sonnet gave the same rates (83%, 22%, 0%) |
+| 16 | [Study D protocol](trials/studyD/PROTOCOL.md) | Written before any check existed: general static checks from the rule texts only, evaluated one time on the 444 runs |
+| 17 | [14 Study D results](docs/14-study-d-results.md) | Static checks on the changed lines find 26% of the violations (H5 refuted). 39% come from old code in the touched files, 35% have no static form. Tool improvements, and the decision for Study C |
 
 ## Data and tools
 

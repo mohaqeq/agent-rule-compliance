@@ -39,6 +39,14 @@ Limits: one repository (saleor), six rules, models from one supplier.
 Full report: [research/docs/13-study-b-results.md](research/docs/13-study-b-results.md).
 The stronger model gave the same result.
 
+**Study D (complete, no new runs).** Can a general static check find the violations?
+
+- Static checks, written from the rule texts only, found 26% of the 156 violations on the changed lines.
+- 39% of the violations come from old code in the touched files. 35% have no static form, and only a test finds them.
+- The same checks find the wrong precedent before the change, for four of six rules.
+
+Full report: [research/docs/14-study-d-results.md](research/docs/14-study-d-results.md).
+
 ## Where this work comes from
 
 This repository continues [unified-context-notation](https://github.com/mohaqeq/unified-context-notation). That
