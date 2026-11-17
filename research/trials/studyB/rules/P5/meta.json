@@ -1,0 +1,3 @@
+{"rule_id": "P5", "ucn_rule": "AtomicBalance", "rule_test_path": "saleor/graphql/giftcard/tests/bulk_mutations/test_gift_card_bulk_top_up_rule.py",
+ "prose_source": "docs/adr/0004-race-safe-balance-adjustments.md:1-7",
+ "proof": {"reference": "passed", "naive": "failed: test_rule_bulk_top_up_does_not_lose_concurrent_balance_change"}}

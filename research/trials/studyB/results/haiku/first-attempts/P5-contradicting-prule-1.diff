@@ -1,0 +1,77 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index acfddc1..593d894 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -54,6 +54,7 @@ All notable, unreleased changes to this project will be documented in this file.
+ 
+ ### GraphQL API
+ 
++- Added `giftCardBulkTopUp` staff mutation. It adds the same positive `amount` to the current balance of each listed gift card and leaves the initial balance unchanged. It returns `count` and `errors`, and requires the `MANAGE_GIFT_CARD` permission.
+ - Added `stockAvailability` and `stocks` filters to the `productVariants` query `where` input, allowing variants to be filtered by their stock status and stock quantity for a given channel - #17689 by @ayesha-waris
+ - `lines` input on the `checkoutCreate` mutation is no longer required. When omitted, a checkout with no lines is created.
+ - Removed the deprecated `availableShippingMethods` field from the `Order` type. Use `shippingMethods` instead.
+diff --git a/saleor/graphql/giftcard/bulk_mutations/__init__.py b/saleor/graphql/giftcard/bulk_mutations/__init__.py
+index fdcd714..f101438 100644
+--- a/saleor/graphql/giftcard/bulk_mutations/__init__.py
++++ b/saleor/graphql/giftcard/bulk_mutations/__init__.py
+@@ -2,10 +2,12 @@ from .gift_card_bulk_activate import GiftCardBulkActivate
+ from .gift_card_bulk_create import GiftCardBulkCreate
+ from .gift_card_bulk_deactivate import GiftCardBulkDeactivate
+ from .gift_card_bulk_delete import GiftCardBulkDelete
++from .gift_card_bulk_top_up import GiftCardBulkTopUp
+ 
+ __all__ = [
+     "GiftCardBulkActivate",
+     "GiftCardBulkCreate",
+     "GiftCardBulkDeactivate",
+     "GiftCardBulkDelete",
++    "GiftCardBulkTopUp",
+ ]
+diff --git a/saleor/graphql/giftcard/schema.py b/saleor/graphql/giftcard/schema.py
+index 3fdfe5a..1b616d7 100644
+--- a/saleor/graphql/giftcard/schema.py
++++ b/saleor/graphql/giftcard/schema.py
+@@ -19,6 +19,7 @@ from .bulk_mutations import (
+     GiftCardBulkCreate,
+     GiftCardBulkDeactivate,
+     GiftCardBulkDelete,
++    GiftCardBulkTopUp,
+ )
+ from .filters import GiftCardFilterInput, GiftCardTagFilterInput
+ from .mutations import (
+@@ -153,3 +154,4 @@ class GiftCardMutations(graphene.ObjectType):
+     gift_card_bulk_delete = GiftCardBulkDelete.Field()
+     gift_card_bulk_activate = GiftCardBulkActivate.Field()
+     gift_card_bulk_deactivate = GiftCardBulkDeactivate.Field()
++    gift_card_bulk_top_up = GiftCardBulkTopUp.Field()
+diff --git a/saleor/graphql/schema.graphql b/saleor/graphql/schema.graphql
+index f7bac37..2a5c30b 100644
+--- a/saleor/graphql/schema.graphql
++++ b/saleor/graphql/schema.graphql
+@@ -20926,6 +20926,26 @@ type Mutation {
+     ids: [ID!]!
+   ): GiftCardBulkDeactivate @doc(category: "Gift cards") @webhookEventsInfo(asyncEvents: [GIFT_CARD_STATUS_CHANGED], syncEvents: [])
+ 
++  """
++  Add the same amount to the current balance of several gift cards. The initial balance of the gift cards is not changed. 
++  
++  Added in Saleor 3.24.
++  
++  Requires one of the following permissions: MANAGE_GIFT_CARD.
++  
++  Triggers the following webhook events:
++  - GIFT_CARD_UPDATED (async): A gift card balance was topped up.
++  """
++  giftCardBulkTopUp(
++    """
++    Amount to add to the current balance of each gift card. Must be greater than zero. The initial balance is not changed.
++    """
++    amount: Decimal!
++
++    """List of gift card IDs to top up."""
++    ids: [ID!]!
++  ): GiftCardBulkTopUp @doc(category: "Gift cards") @webhookEventsInfo(asyncEvents: [GIFT_CARD_UPDATED], syncEvents: [])
++
+   """
+   Update plugin configuration. 
+   

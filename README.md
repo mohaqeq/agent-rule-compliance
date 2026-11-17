@@ -23,8 +23,21 @@ prevents the violation.
 Full report: [research/docs/12-study-a-results.md](research/docs/12-study-a-results.md).
 Limits: one repository (saleor), six rules, models from one supplier.
 
-**Study B (not started).** What is the cheapest context or check that prevents a violation at a contradicting site?
-The plan is in [research/docs/11-next-phase.md](research/docs/11-next-phase.md).
+**Study B (complete, 234 runs, two models).** What prevents the violation at a site where the near code breaks the rule?
+
+| What the agent gets | Violation rate, Haiku | Violation rate, Sonnet |
+|---|---|---|
+| Nothing | 87% | not tested |
+| The project tests to run | 83% | 83% |
+| The documentation text of the rule | 20% | 22% |
+| One test written for the rule (with or without guidance) | 0% | 0% |
+
+- Existing tests do not help: they pass, and the violation stays.
+- Text that states the rule helps much, but it is not sufficient.
+- A test that fails when the rule is broken was sufficient in all runs.
+
+Full report: [research/docs/13-study-b-results.md](research/docs/13-study-b-results.md).
+The stronger model gave the same result.
 
 ## Where this work comes from
 
@@ -41,7 +54,7 @@ gave no benefit, and that agents copy the code near the change. This repository 
 
 | Path | Contents |
 |---|---|
-| [research/docs](research/docs/) | The phase 2 plan and the Study A results |
+| [research/docs](research/docs/) | The phase 2 plan, the Study A and Study B results, and ideas for later studies |
 | [research/trials/studyA](research/trials/studyA/PREREGISTRATION.md) | Pre-registration, 21 tasks with graders, results, analysis output, tool-call logs |
 | [research/trials/saleor](research/trials/saleor/NOTES.md) | The model of the saleor rules and the phase 1 saleor tasks |
 | [research/trials/containers](research/trials/containers/README.md) | Container images for grading and statistics |

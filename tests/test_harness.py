@@ -125,6 +125,12 @@ class ReconGrading(Tmp):
                  "validator_sha": self.recon.sha(self.spec["validator"])}
         return self.recon.grade_one(self.spec, entry, {"dir": os.path.join(self.d, "_task")}, set())
 
+    def test_validator_without_line_numbers_reports_nothing_on_a_clean_run(self):
+        self.spec["validator_no_lines"] = True
+        r = self.grade("Contracts: 4 kept, 0 broken.")
+        self.assertEqual(r["validator_new"], [])
+        self.assertEqual(r["violations"], 0)
+
     def test_clean_run(self):
         r = self.grade("Contracts: 4 kept, 0 broken.")
         self.assertEqual((r["success"], r["violations"], r["tampered"]), (1, 0, []))
@@ -346,6 +352,123 @@ class StudyAEval(unittest.TestCase):
         self.assertIn("Not run", md)
 
 
+class StudyBEval(unittest.TestCase):
+    def setUp(self):
+        import studyb_eval
+        self.ev = studyb_eval
+
+    def rows(self, ks, rules=6, n=8, model="haiku", **extra):
+        """ks: {arm: number of violations out of n, the same in each rule}."""
+        out = []
+        for i in range(rules):
+            for arm, k in ks.items():
+                for j in range(n):
+                    out.append({"rule_id": f"R{i}", "arm": arm, "violations": int(j < k), "success": 1, "agent_model": model,
+                                "tokens": 1000 + 10 * j, "tool_calls": 10, "check_runs": 2, "failed_check_runs": 1,
+                                "rule_test_changed": False, "final_rule_test_passed": None, **extra})
+        return out
+
+    def go(self, ks, **kw):
+        return self.ev.analyse(self.rows(ks, **kw))["models"]["haiku"]
+
+    def test_h2_refuted_when_gen_is_15_points_below_prose(self):
+        g = self.go({"none": 7, "prose": 7, "gen": 4})
+        self.assertAlmostEqual(g["contrasts"][0]["diff"], -0.375)
+        self.assertTrue(g["decision"]["H2"].startswith("REFUTED"))
+
+    def test_h2_supported_when_lower_bound_is_above_zero(self):
+        g = self.go({"none": 7, "prose": 3, "gen": 7})
+        self.assertEqual(g["decision"]["H2"], "SUPPORTED")
+
+    def test_h2_inconclusive_between(self):
+        g = self.go({"none": 7, "prose": 4, "gen": 4})
+        self.assertEqual(g["decision"]["H2"], "INCONCLUSIVE")
+
+    def test_h2_ceiling_and_floor_are_inconclusive(self):
+        self.assertIn("ceiling", self.go({"none": 8, "prose": 8, "gen": 8})["decision"]["H2"])
+        self.assertIn("ceiling", self.go({"none": 8, "prose": 0, "gen": 0})["decision"]["H2"])
+
+    def test_h2b_is_inconclusive_when_none_is_below_60_percent(self):
+        g = self.go({"none": 4, "prose": 0, "gen": 4})  # none = 50%
+        self.assertTrue(g["decision"]["H2b"]["prose"].startswith("INCONCLUSIVE"))
+        g = self.go({"none": 5, "prose": 0, "gen": 5})  # none = 62.5%
+        self.assertEqual(g["decision"]["H2b"]["prose"], "EFFECTIVE")
+        self.assertEqual(g["decision"]["H2b"]["gen"], "NOT EFFECTIVE")
+
+    def test_missing_arms_are_marked_not_errors(self):
+        g = self.go({"none": 8, "prose": 2, "gen": 6})
+        by = {c["contrast"]: c for c in g["contrasts"]}
+        self.assertTrue(by["gen - prose"]["available"])
+        self.assertFalse(by["rule - none"]["available"])
+        self.assertFalse(by["urule - prule"]["available"])
+        self.assertEqual(g["decision"]["H2b"]["rule"], "not available")
+        self.assertEqual(g["h3"]["decision"], "not available")
+        self.assertNotIn("rule", g["rates"])
+        self.assertIn("not available", self.ev.markdown(self.ev.analyse(self.rows({"none": 8, "prose": 2, "gen": 6}))))
+
+    def test_h3_and_ucn(self):
+        rows = self.rows({"none": 8, "rule": 4, "prule": 2, "urule": 1})
+        for r in rows:
+            if r["arm"] == "prule":
+                r.update(tokens=500, failed_check_runs=0)
+            if r["arm"] == "urule":
+                r.update(tokens=400, failed_check_runs=0)
+        g = self.ev.analyse(rows)["models"]["haiku"]
+        self.assertEqual(g["h3"]["decision"], "SUPPORTED")
+        self.assertEqual(g["ucn"]["tokens_diff"], -100)
+        self.assertAlmostEqual(g["ucn"]["violations"]["diff"], -0.125)
+        for r in rows:
+            if r["arm"] == "prule":
+                r.update(tokens=5000, failed_check_runs=3)
+        g = self.ev.analyse(rows)["models"]["haiku"]
+        self.assertEqual(g["h3"]["decision"], "REFUTED")
+
+    def test_sensitivities_check_use_cost_and_leave_one_out(self):
+        rows = self.rows({"none": 8, "gen": 4, "prose": 4, "rule": 4})
+        for r in rows:
+            r["success"] = int(r["violations"] == 0 or r["rule_id"] == "R0")
+            if r["arm"] == "rule":
+                r["final_rule_test_passed"] = r["violations"] == 0
+                r["rule_test_changed"] = r["violations"] == 0 and r["tokens"] < 1060
+        g = self.ev.analyse(rows)["models"]["haiku"]
+        s = g["sensitivity"]
+        self.assertEqual(s["1_success_only"]["rates"]["gen"]["n"], 4 * 5 + 8)
+        self.assertEqual(s["2_without_N2_P1"]["rates"]["none"]["n"], 6 * 8)  # no rule is named N2 or P1 here
+        self.assertGreater(s["3_rule_test_change_is_violation"]["rates"]["rule"]["violation_rate"], 0.5)
+        self.assertEqual(g["check_use"]["rule"]["share_passing"], 0.5)
+        self.assertEqual(g["check_use"]["rule"]["violation_rate_passing"], 0.0)
+        self.assertEqual(g["cost"]["gen"]["median_check_runs"], 2)
+        self.assertIsNone(g["cost"]["none"]["median_check_runs"])
+        self.assertEqual(len(g["h2_leave_one_rule_out"]), 6)
+        self.assertFalse(g["mixed_model"]["run"])
+
+    def test_rules_n2_and_p1_are_dropped_in_sensitivity_2(self):
+        rows = self.rows({"none": 8, "prose": 4}, rules=0)
+        for rule in ("N1", "N2", "P1", "P3"):
+            rows += [dict(r, rule_id=rule) for r in self.rows({"none": 8, "prose": 4}, rules=1)]
+        s = self.ev.analyse(rows)["models"]["haiku"]["sensitivity"]["2_without_N2_P1"]
+        self.assertEqual(s["rates"]["none"]["n"], 16)
+
+    def test_arm_filter_models_and_skips(self):
+        rows = self.rows({"none": 8, "prose": 2, "gen": 6}) + self.rows({"prose": 2}, model="sonnet") + [
+            {"rule_id": "R0", "arm": "none", "violations": None}, {"rule_id": "R0", "arm": "x", "violations": 1}]
+        res = self.ev.analyse(rows, arms=("none", "prose"))
+        self.assertEqual(sorted(res["models"]), ["haiku", "sonnet"])
+        self.assertEqual(res["skipped"], 6 * 8 + 2)
+        self.assertNotIn("gen", res["models"]["haiku"]["rates"])
+
+    def test_deterministic_and_cli_writes_files(self):
+        rows = self.rows({"none": 8, "prose": 3, "gen": 5})
+        self.assertEqual(self.ev.analyse(rows), self.ev.analyse(rows))
+        d = tempfile.mkdtemp()
+        self.addCleanup(rmtree, d)
+        src = os.path.join(d, "r.json")
+        write(src, json.dumps(rows))
+        self.assertEqual(self.ev.main([src, "--out", os.path.join(d, "out")]), 0)
+        self.assertTrue(os.path.isfile(os.path.join(d, "out", "studyb.json")))
+        self.assertIn("gen - prose", read(os.path.join(d, "out", "studyb.md")))
+
+
 class SmallTools(unittest.TestCase):
     def test_hash_tree_is_sorted_markdown(self):
         import hash_tree
@@ -363,6 +486,360 @@ class SmallTools(unittest.TestCase):
 
     def test_gitattributes_pins_study_a_line_endings(self):
         self.assertIn("research/trials/studyA/** text eol=lf", read(os.path.join(ROOT, ".gitattributes")).splitlines())
+
+
+class StudyBChecks(Tmp):
+    """agent_tests.py: argument rules, JUnit reading, one log line per invocation, one database per invocation."""
+
+    def setUp(self):
+        super().setUp()
+        import agent_tests
+        self.at = agent_tests
+        self.ws = os.path.join(self.d, "ws", "wabc")
+        write(os.path.join(self.ws, "tests", "test_a.py"), "def test_a(): pass\n")
+        self.runs = os.path.join(self.d, "runs")
+        write(os.path.join(self.runs, "index.json"), json.dumps(
+            [{"run": "T-rule-1", "workspace": self.ws, "rule_test_path": "tests/test_rule.py"}]))
+
+    def patch(self, obj, name, value):
+        self.addCleanup(setattr, obj, name, getattr(obj, name))
+        setattr(obj, name, value)
+
+    def test_arguments(self):
+        ok = self.at.check_args(["tests/test_a.py::test_a", "-k", "a and not b", "-x", "-q", "tests"], self.ws)
+        self.assertEqual(ok, ["tests/test_a.py::test_a", "-k", "a and not b", "-x", "-q", "tests"])
+        for bad in (["--pdb"], ["-s"], ["-p", "x"], ["--rootdir=/"], ["-xq"], ["-kfoo"], ["-k"], ["../x.py"],
+                    ["tests/../../x.py"], ["C:/x.py"], ["/etc/passwd"], ["tests\\..\\..\\x"], ["-c", "x.ini"],
+                    ["--junitxml=/repo/x"]):
+            with self.assertRaises(self.at.Refused, msg=str(bad)):
+                self.at.check_args(bad, self.ws)
+
+    def test_junit_counts_and_rule_test_detection(self):
+        x = os.path.join(self.d, "r.xml")
+        write(x, junit([("tests.test_rule", "test_r", "passed", ""), ("tests.test_rule.TestC", "test_c", "failed", ""),
+                        ("tests.test_a", "test_a", "passed", ""), ("tests.test_rule_other", "test_o", "skipped", "")]))
+        self.assertEqual(self.at.read_junit(x, "tests/test_rule.py"), (2, 1, 0, True))
+        self.assertEqual(self.at.read_junit(x, "tests/test_zzz.py")[3], False)
+        self.assertEqual(self.at.read_junit(x), (2, 1, 0, False))
+        self.assertEqual(self.at.read_junit(os.path.join(self.d, "none.xml")), (0, 0, 0, False))
+
+    def fake_pytest(self, code=0):
+        calls = []
+
+        def fake(workspace, args, rule_test_path, time_limit=0):
+            calls.append((workspace, args, rule_test_path))
+            return code, "\n".join(f"line {i}" for i in range(400)), 3, 1, 0, True
+        self.patch(self.at, "run_pytest", fake)
+        return calls
+
+    def test_main_logs_one_line_per_invocation_and_prints_the_tail(self):
+        import io
+        import contextlib
+        calls = self.fake_pytest(1)
+        for _ in range(2):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                self.assertEqual(self.at.main([self.runs, "wabc", "tests/test_a.py", "-x"]), 1)
+        self.assertEqual(len(buf.getvalue().splitlines()), 150)
+        self.assertTrue(buf.getvalue().startswith("line 250"))
+        rows = [json.loads(l) for l in read(os.path.join(self.runs, "checks", "T-rule-1.jsonl")).splitlines()]
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(sorted(rows[0]), sorted(["ts", "args", "exit_code", "passed", "failed", "errors", "seconds", "ran_rule_test"]))
+        self.assertEqual((rows[0]["args"], rows[0]["exit_code"], rows[0]["passed"], rows[0]["failed"], rows[0]["ran_rule_test"]),
+                         (["tests/test_a.py", "-x"], 1, 3, 1, True))
+        self.assertEqual(calls[0][2], "tests/test_rule.py")
+
+    def test_refusals_run_nothing_and_log_nothing(self):
+        import io
+        import contextlib
+        calls = self.fake_pytest()
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(self.at.main([self.runs, "wabc", "--pdb"]), 2)
+            self.assertEqual(self.at.main([self.runs, "unknown"]), 2)
+        self.assertEqual(calls, [])
+        self.assertFalse(os.path.exists(os.path.join(self.runs, "checks")))
+
+    def test_each_invocation_has_its_own_postgres_and_removes_it(self):
+        seen = []
+
+        kws = []
+
+        def fake_docker(cmd, **kw):
+            seen.append(cmd)
+            kws.append(kw)
+            return subprocess.CompletedProcess(cmd, 0, "ok\n", "")
+        self.patch(self.at, "docker", fake_docker)
+        self.patch(self.at.time, "sleep", lambda s: None)
+        self.at.run_pytest(self.ws, ["tests"], None)
+        self.at.run_pytest(self.ws, ["tests"], None)
+        pgs = [c[c.index("--name") + 1] for c in seen if c[0] == "run" and "-d" in c]
+        nets = [c[c.index("--network") + 1] for c in seen if c[0] == "run" and "--network" in c]
+        self.assertEqual(len(set(pgs)), 2)
+        self.assertEqual(sorted(nets), sorted(f"container:{p}" for p in pgs))
+        removed = [c[2] for c in seen if c[:2] == ["rm", "-f"]]
+        self.assertTrue(all(p in removed for p in pgs))
+        runs = [(c, k) for c, k in zip(seen, kws) if "--network" in c]
+        self.assertTrue(all(k.get("workspace") == self.ws for _, k in runs))  # the tree goes in as a stream, no mount
+        self.assertFalse(any(":/repo" in a for c, _ in runs for a in c))
+        self.assertTrue(all("--reuse-db" in c for c, _ in runs))  # the fake docker has the base image
+        self.assertTrue(all(self.at.PG_BASE_IMAGE in c for c in seen if c[0] == "run" and "-d" in c))
+
+    def test_without_the_base_image_postgres_is_new_and_the_db_is_not_reused(self):
+        seen = []
+
+        def fake_docker(cmd, **kw):
+            seen.append(cmd)
+            return subprocess.CompletedProcess(cmd, 1 if cmd[:2] == ["image", "inspect"] else 0, "ok\n", "")
+        self.patch(self.at, "docker", fake_docker)
+        self.patch(self.at.time, "sleep", lambda s: None)
+        self.at.run_pytest(self.ws, ["tests"], None)
+        self.assertTrue(any(self.at.PG_IMAGE in c for c in seen if c[0] == "run"))
+        self.assertFalse(any("--reuse-db" in c for c in seen))
+
+    def test_tree_stream_skips_git_and_bytecode_and_keeps_paths(self):
+        import io
+        import tarfile
+        write(os.path.join(self.ws, ".git", "HEAD"), "x\n")
+        write(os.path.join(self.ws, "pkg", "__pycache__", "m.pyc"), "x\n")
+        write(os.path.join(self.ws, "pkg", "m.py"), "x = 1\n")
+        buf = io.BytesIO()
+        self.at.send_tree(self.ws, buf)
+        buf.seek(0)
+        self.assertEqual(sorted(tarfile.open(fileobj=buf).getnames()), ["pkg/m.py", "tests/test_a.py"])
+
+    def test_timeout_removes_the_test_container(self):
+        seen = []
+
+        def fake_docker(cmd, **kw):
+            seen.append(cmd)
+            if "--network" in cmd:
+                raise subprocess.TimeoutExpired(cmd, 1, output=b"partial")
+            return subprocess.CompletedProcess(cmd, 0, "", "")
+        self.patch(self.at, "docker", fake_docker)
+        self.patch(self.at.time, "sleep", lambda s: None)
+        code, text, *_ = self.at.run_pytest(self.ws, ["tests"], None, time_limit=5)
+        self.assertEqual(code, 124)
+        self.assertIn("TIME LIMIT", text)
+        self.assertTrue(any(c[:2] == ["rm", "-f"] and c[2].startswith("ucn-agent-tests-") for c in seen))
+
+
+class StudyBArms(Tmp):
+    """recon.prepare with arms, and the grading additions."""
+
+    def setUp(self):
+        super().setUp()
+        import recon
+        self.recon = recon
+        self.repo = os.path.join(self.d, "repo")
+        write(os.path.join(self.repo, "src", "app", "a", "x.ts"), "export const x = 1;\n")
+        write(os.path.join(self.repo, "AGENTS.md"), "agents\n")
+        write(os.path.join(self.repo, "docs", "adr", "0001.md"), "adr\n")
+        for cmd in (["init", "-q"], ["add", "-A"], ["-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "base"]):
+            subprocess.run(["git", "-C", self.repo, *cmd], capture_output=True, check=True)
+        self.rev = subprocess.run(["git", "-C", self.repo, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+        self.model = os.path.join(self.d, "model.ucn")
+        write(self.model, GENERIC + "\nrule QuietNames: names stay in lower case\n  src: README.md\n")
+        self.tasks = os.path.join(self.d, "tasks")
+        write(os.path.join(self.tasks, "T1", "task.md"), "Change component A so that it exports y.\n")
+        write(os.path.join(self.tasks, "T1", "meta.json"), json.dumps({"kind": "tempting", "rule_id": "Q7", "site": "none"}))
+        self.rules = os.path.join(self.d, "rules")
+        write(os.path.join(self.rules, "Q7", "prose.md"),
+              "<!-- docs/adr/0042-names.md lines 1-3 -->\nComponents exports are named in lower case.\n")
+        write(os.path.join(self.rules, "Q7", "rule_test.py"), "def test_rule(): pass\n")
+        write(os.path.join(self.rules, "Q7", "meta.json"),
+              json.dumps({"rule_test_path": "src/app/a/tests/test_rule.py", "ucn_rule": "QuietNames"}))
+        self.out = os.path.join(self.d, "out")
+        arms = {"none": ("none", "none"), "prose": ("prose", "none"), "gen": ("none", "generic"),
+                "rule": ("none", "rule"), "prule": ("prose", "rule"), "urule": ("ucn", "rule")}
+        self.spec = {"repo": self.repo, "rev": self.rev, "model": self.model, "tasks": self.tasks, "rules_dir": self.rules,
+                     "arms": {n: {"guidance": g, "check": c, "runs": 1} for n, (g, c) in arms.items()},
+                     "remove": {"C": ["docs/adr"]}, "squash_base": True, "anonymous_workspaces": True,
+                     "validator": "ucn/ucn_validate.py", "today": TODAY, "grader_image": "G"}
+        self.index = {e["cond"]: e for e in self.recon.prepare(self.spec, self.out)}
+
+    def prompt(self, arm):
+        return read(os.path.join(self.out, f"T1-{arm}-1.prompt.txt"))
+
+    def test_run_ids_workspaces_and_fields(self):
+        self.assertEqual(sorted(self.index), sorted(self.spec["arms"]))
+        e = self.index["urule"]
+        self.assertEqual((e["run"], e["arm"], e["guidance"], e["check"]), ("T1-urule-1", "urule", "ucn", "rule"))
+        self.assertRegex(os.path.basename(e["workspace"]), r"^w[0-9a-f]{10}$")
+        ws = e["workspace"]
+        self.assertFalse(os.path.exists(os.path.join(ws, "docs", "adr")))
+        self.assertFalse(os.path.exists(os.path.join(ws, "AGENTS.md")))
+        self.assertTrue(os.path.exists(os.path.join(ws, "context.ucn")))
+        self.assertFalse(os.path.exists(os.path.join(ws, "model.ucn")))
+        self.assertEqual(self.recon.changed_since(ws, e["base_commit"]), [])
+
+    def test_prompts(self):
+        for arm in self.spec["arms"]:
+            text = self.prompt(arm)
+            self.assertNotIn("Q7", text)
+            self.assertNotIn("xperiment", text)
+            if arm in ("prule", "urule", "gen"):
+                self.assertNotRegex(text, rf"\b{arm}\b")
+        self.assertIn("do not run the project's test suite", self.prompt("none"))
+        self.assertNotIn("agent_tests.py", self.prompt("prose"))
+        self.assertIn("Project documentation that can be relevant:\n\nComponents exports", self.prompt("prose"))
+        self.assertIn("agent_tests.py", self.prompt("gen"))
+        self.assertIn(os.path.basename(self.index["gen"]["workspace"]), self.prompt("gen"))
+        self.assertNotIn("test for a project rule", self.prompt("gen"))
+        self.assertNotIn("do not run the project's test suite", self.prompt("gen"))
+        for arm in ("rule", "prule", "urule"):
+            t = self.prompt(arm)
+            self.assertIn("src/app/a/tests/test_rule.py is a test for a project rule. It must pass at the end", t)
+            self.assertIn("agent_tests.py", t)
+        self.assertIn("Read context.ucn first", self.prompt("urule"))
+        self.assertNotIn("ucn_validate", self.prompt("urule"))
+        self.assertNotIn("model.ucn", self.prompt("urule"))
+
+    def test_prose_has_no_source_comment_and_its_size_is_recorded(self):
+        for arm in ("prose", "prule"):
+            self.assertNotIn("<!--", self.prompt(arm))
+            self.assertNotIn("0042", self.prompt(arm))
+            self.assertIn("\n\nComponents exports are named in lower case.\n\nTask:", self.prompt(arm))
+            self.assertEqual(self.index[arm]["prose_chars"], len("Components exports are named in lower case."))
+        self.assertNotIn("prose_chars", self.index["none"])
+
+    def test_ucn_context_holds_the_rule_and_records_budget_and_size(self):
+        e = self.index["urule"]
+        ctx = read(os.path.join(e["workspace"], "context.ucn"))
+        self.assertIn("QuietNames", ctx)
+        self.assertEqual((e["ucn_budget"], e["ucn_chars"]), (2500, len(ctx)))
+        self.assertNotIn("ucn_budget", self.index["rule"])
+
+    def test_ucn_context_grows_the_budget_in_steps_and_stops_if_the_rule_is_missing(self):
+        calls = []
+
+        def fake(model, task, budget, explicit=()):
+            calls.append((budget, explicit))
+            return ("has R" if budget >= 5000 else "none"), []
+        real = self.recon.ucn_project.project
+        self.recon.ucn_project.project = fake
+        self.addCleanup(setattr, self.recon.ucn_project, "project", real)
+        self.assertEqual(self.recon.ucn_context("m", "t", {"budget": 2500}, "R"), ("has R", 5000))
+        self.assertEqual(calls, [(2500, ("R",)), (3500, ("R",)), (5000, ("R",))])
+        with self.assertRaises(SystemExit) as cm:
+            self.recon.ucn_context("m", "t", {"budget": 2500}, "Missing")
+        self.assertIn("Missing", str(cm.exception))
+        self.assertEqual(self.recon.ucn_context("m", "t", {"budget": 6000, "ucn_budgets": (3500, 9000)}, "R")[1], 6000)
+
+    def test_a_ucn_arm_without_ucn_rule_is_refused(self):
+        write(os.path.join(self.rules, "Q7", "meta.json"), json.dumps({"rule_test_path": "src/app/a/tests/test_rule.py"}))
+        with self.assertRaises(SystemExit) as cm:
+            self.recon.prepare(self.spec, os.path.join(self.d, "out4"))
+        self.assertIn("ucn_rule", str(cm.exception))
+
+    def test_workspaces_come_from_one_base_copy_and_are_identical_to_a_direct_checkout(self):
+        self.assertTrue(os.path.isdir(os.path.join(self.out, "_base", "T1")))
+        direct = os.path.join(self.d, "direct")
+        subprocess.run(["git", "-c", "core.symlinks=false", "clone", "-q", "--no-tags", self.repo, direct], check=True)
+        subprocess.run(["git", "-C", direct, "checkout", "-q", self.rev], check=True)
+        self.recon.strip_docs(direct, ["docs/adr"])
+        direct_base = self.recon.squash_base(direct)
+
+        def files(root):
+            return {os.path.relpath(os.path.join(d, n), root): self.recon.sha(os.path.join(d, n))
+                    for d, ds, ns in os.walk(root) for n in ns if ".git" not in os.path.relpath(d, root).split(os.sep)}
+        e = self.index["none"]
+        self.assertEqual(files(e["workspace"]), {k: v for k, v in files(direct).items() if not k.endswith("AGENTS.md")
+                                                  and not k.startswith("docs" + os.sep + "adr")})
+        g = lambda ws, *a: subprocess.run(["git", "-C", ws, *a], capture_output=True, text=True).stdout
+        self.assertEqual(g(e["workspace"], "status", "--porcelain"), "")
+        self.assertEqual(len(g(e["workspace"], "log", "--format=%H").split()), 1)
+        self.assertEqual(e["base_commit"], direct_base)  # the same commit id as a direct checkout and squash
+        self.assertEqual(self.recon.changed_since(e["workspace"], e["base_commit"]), [])
+
+    def test_rule_test_is_in_the_base_commit(self):
+        e = self.index["rule"]
+        p = os.path.join(e["workspace"], "src", "app", "a", "tests", "test_rule.py")
+        self.assertEqual(read(p), "def test_rule(): pass\n")
+        tracked = subprocess.run(["git", "-C", e["workspace"], "ls-files"], capture_output=True, text=True).stdout.split()
+        self.assertIn("src/app/a/tests/test_rule.py", tracked)
+        self.assertFalse(os.path.exists(os.path.join(self.index["gen"]["workspace"], "src", "app", "a", "tests")))
+
+    def test_suffix_texts_are_spec_options(self):
+        self.spec["suffix_generic"] = "GEN {cmd}"
+        self.spec["suffix_rule"] = "RULE {cmd} {rule_test}"
+        self.recon.prepare(self.spec, self.out)
+        self.assertRegex(self.prompt("gen"), r"GEN python .*agent_tests\.py .* w[0-9a-f]{10}$")
+        self.assertRegex(self.prompt("rule"), r"RULE python .*agent_tests\.py .* w[0-9a-f]{10} src/app/a/tests/test_rule\.py$")
+
+    def test_prompt_with_the_rule_id_is_refused(self):
+        write(os.path.join(self.rules, "Q7", "prose.md"), "Rule q7 says: lower case.\n")
+        with self.assertRaises(SystemExit):
+            self.recon.prepare(self.spec, os.path.join(self.d, "out2"))
+
+    def test_conditions_still_work_in_a_conditions_spec(self):
+        spec = dict(self.spec, conditions={"C": 1})
+        del spec["arms"]
+        idx = self.recon.prepare(spec, os.path.join(self.d, "out3"))
+        self.assertEqual([e["run"] for e in idx], ["T1-C1"])
+        self.assertNotIn("arm", idx[0])
+
+    def grade(self, arm, edit=None, log=None):
+        e = dict(self.index[arm])
+        if edit:
+            edit(e["workspace"])
+        if log is not None:
+            os.makedirs(os.path.dirname(e["checks_log"]), exist_ok=True)
+            with open(e["checks_log"], "w") as fh:
+                fh.write("".join(json.dumps(r) + "\n" for r in log))
+        real = self.recon.run
+
+        def fake(cmd, **kw):
+            if cmd[0] != "docker":
+                return real(cmd, **kw)
+            out = [a for a in cmd if a.endswith(":/out")][0].rsplit(":", 1)[0]
+            write(os.path.join(out, f"{e['run']}.xml"), junit([("test_t", "test_ok", "passed", "")]))
+            return subprocess.CompletedProcess(cmd, 0, "", "")
+        self.recon.run = fake
+        self.addCleanup(setattr, self.recon, "run", real)
+        spec = dict(self.spec, validator=ucn_dep.resolve("ucn/ucn_validate.py"))
+        task = {"id": "T1", "dir": os.path.join(self.tasks, "T1"), "rule_id": "Q7"}
+        return self.recon.grade_one(spec, e, task, set())
+
+    def test_grading_fields_without_agent_changes(self):
+        r = self.grade("rule")
+        self.assertEqual((r["arm"], r["guidance"], r["check"]), ("rule", "none", "rule"))
+        self.assertEqual((r["check_runs"], r["failed_check_runs"], r["rule_test_runs_before_first_pass"]), (0, 0, None))
+        self.assertEqual((r["rule_test_changed"], r["changed"], r["tampered"]), (False, [], []))
+
+    def test_check_log_counts(self):
+        rows = [{"exit_code": 1, "ran_rule_test": False}, {"exit_code": 1, "ran_rule_test": True},
+                {"exit_code": 0, "ran_rule_test": False}, {"exit_code": 1, "ran_rule_test": True},
+                {"exit_code": 0, "ran_rule_test": True}, {"exit_code": 0, "ran_rule_test": True}]
+        r = self.grade("rule", log=rows)
+        self.assertEqual((r["check_runs"], r["failed_check_runs"], r["rule_test_runs_before_first_pass"]), (6, 3, 2))
+        r = self.grade("gen", log=rows[:2])
+        self.assertEqual((r["check_runs"], r["failed_check_runs"], r["rule_test_runs_before_first_pass"], r["rule_test_changed"]),
+                         (2, 2, None, False))
+        r = self.grade("rule", log=rows[:2])
+        self.assertIsNone(r["rule_test_runs_before_first_pass"])
+
+    def test_final_rule_test_passed(self):
+        ok = {"exit_code": 0, "ran_rule_test": True}
+        bad = {"exit_code": 1, "ran_rule_test": True}
+        other = {"exit_code": 1, "ran_rule_test": False}
+        self.assertIs(self.grade("rule", log=[bad, ok, other])["final_rule_test_passed"], True)
+        self.assertIs(self.grade("rule", log=[ok, bad])["final_rule_test_passed"], False)
+        self.assertIsNone(self.grade("rule", log=[other])["final_rule_test_passed"])
+        self.assertIsNone(self.grade("gen", log=[ok])["final_rule_test_passed"])
+
+    def test_rule_test_change_or_delete_is_reported_apart(self):
+        tp = lambda ws: os.path.join(ws, "src", "app", "a", "tests", "test_rule.py")
+        r = self.grade("rule", edit=lambda ws: write(tp(ws), "def test_rule(): assert True\n"))
+        self.assertTrue(r["rule_test_changed"])
+        self.assertEqual(r["changed"], [])
+        r = self.grade("prule", edit=lambda ws: (os.remove(tp(ws)), write(os.path.join(ws, "src", "new.ts"), "1\n")))
+        self.assertTrue(r["rule_test_changed"])
+        self.assertEqual(r["changed"], ["src/new.ts"])
+
+    def test_ucn_arm_context_is_guarded(self):
+        self.assertEqual(self.grade("urule")["tampered"], [])
+        r = self.grade("urule", edit=lambda ws: write(os.path.join(ws, "context.ucn"), "edited\n"))
+        self.assertEqual((r["tampered"], r["violations"]), (["context.ucn"], 1))
 
 
 class Pilot(unittest.TestCase):

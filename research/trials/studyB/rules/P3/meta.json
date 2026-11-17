@@ -1,0 +1,3 @@
+{"rule_id": "P3", "ucn_rule": "NoSiteIdReads", "rule_test_path": "saleor/graphql/product/tests/mutations/test_product_variant_stocks_low_stock_rule.py",
+ "prose_source": "AGENTS.md:28-40",
+ "proof": {"reference": "passed", "naive": "failed: test_rule_stocks_create_resolves_site_without_site_id, test_rule_stocks_update_resolves_site_without_site_id"}}

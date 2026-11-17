@@ -1,0 +1,28 @@
+{
+ "repo": "<a clean clone of saleor>",
+ "rev": "1d707dc",
+ "model": "research/trials/studyB/model.ucn",
+ "tasks": "research/trials/studyA/tasks",
+ "task_ids": ["N1-contradicting", "N2-contradicting", "N3-contradicting", "P1-contradicting", "P3-contradicting", "P5-contradicting"],
+ "rules_dir": "research/trials/studyB/rules",
+ "arms": {
+  "none":  {"guidance": "none",  "check": "none",    "runs": 5},
+  "prose": {"guidance": "prose", "check": "none",    "runs": 5},
+  "gen":   {"guidance": "none",  "check": "generic", "runs": 5},
+  "rule":  {"guidance": "none",  "check": "rule",    "runs": 5},
+  "prule": {"guidance": "prose", "check": "rule",    "runs": 5},
+  "urule": {"guidance": "ucn",   "check": "rule",    "runs": 5}
+ },
+ "remove": {"C": ["docs/adr"]},
+ "squash_base": true,
+ "anonymous_workspaces": true,
+ "budget": 2500,
+ "test_cmd": "python D:/work/tools/run_tests.py {token}",
+ "validator_no_lines": true,
+ "model_name": "<haiku or sonnet>",
+ "grader_image": "ucn-saleor-grader",
+ "grader_docker_args": ["--network", "container:<postgres container>"],
+ "validator": "ucn/ucn_validate.py",
+ "today": "2026-11-15",
+ "suffix": "Make the change in the code, and add or update tests where it makes sense. The project's dependencies are not installed on this machine: do not install packages and do not run the project's test suite; reason carefully about the code instead. Do not create git commits. Only read and modify files inside that repository directory.\n\nWhen you are done, reply with a short summary: files changed and why."
+}

@@ -1,0 +1,10 @@
+{
+ "rule_id": "N1",
+ "ucn_rule": "WebhooksThroughCallEvent",
+ "rule_test_path": "saleor/graphql/meta/tests/mutations/test_category_event_rule.py",
+ "prose_source": "AGENTS.md:321-335",
+ "proof": {
+  "reference": "passed",
+  "naive": "failed: test_rule_category_metadata_event_is_dispatched_on_commit[execute_update_public_metadata_for_item], test_rule_category_metadata_event_is_dispatched_on_commit[execute_update_private_metadata_for_item]"
+ }
+}

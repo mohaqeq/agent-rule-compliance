@@ -1,0 +1,6 @@
+ M CHANGELOG.md
+ M saleor/graphql/giftcard/bulk_mutations/__init__.py
+ M saleor/graphql/giftcard/schema.py
+ M saleor/graphql/schema.graphql
+?? saleor/graphql/giftcard/bulk_mutations/gift_card_bulk_top_up.py
+?? saleor/graphql/giftcard/tests/bulk_mutations/test_gift_card_bulk_top_up.py

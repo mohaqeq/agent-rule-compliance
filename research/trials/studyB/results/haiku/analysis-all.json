@@ -1,0 +1,1583 @@
+{
+ "rows": 180,
+ "analysed": 180,
+ "skipped": 0,
+ "arms": [
+  "none",
+  "prose",
+  "gen",
+  "rule",
+  "prule",
+  "urule"
+ ],
+ "seed": 20260101,
+ "bootstrap_resamples": 10000,
+ "permutation_shuffles": 10000,
+ "models": {
+  "haiku": {
+   "analysed": 180,
+   "rates": {
+    "none": {
+     "violation_rate": 0.8666666666666667,
+     "success_rate": 0.8,
+     "n": 30
+    },
+    "prose": {
+     "violation_rate": 0.2,
+     "success_rate": 0.8666666666666667,
+     "n": 30
+    },
+    "gen": {
+     "violation_rate": 0.8333333333333334,
+     "success_rate": 0.9,
+     "n": 30
+    },
+    "rule": {
+     "violation_rate": 0.0,
+     "success_rate": 1.0,
+     "n": 30
+    },
+    "prule": {
+     "violation_rate": 0.0,
+     "success_rate": 1.0,
+     "n": 30
+    },
+    "urule": {
+     "violation_rate": 0.0,
+     "success_rate": 1.0,
+     "n": 30
+    }
+   },
+   "rates_by_rule": {
+    "N1": {
+     "none": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "urule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     }
+    },
+    "N2": {
+     "none": {
+      "violation_rate": 1.0,
+      "success_rate": 0.0,
+      "n": 5
+     },
+     "prose": {
+      "violation_rate": 0.2,
+      "success_rate": 0.8,
+      "n": 5
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 0.4,
+      "n": 5
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "urule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     }
+    },
+    "N3": {
+     "none": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "gen": {
+      "violation_rate": 0.8,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "urule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     }
+    },
+    "P1": {
+     "none": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prose": {
+      "violation_rate": 0.6,
+      "success_rate": 0.8,
+      "n": 5
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "urule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     }
+    },
+    "P3": {
+     "none": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prose": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "gen": {
+      "violation_rate": 1.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "urule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     }
+    },
+    "P5": {
+     "none": {
+      "violation_rate": 0.2,
+      "success_rate": 0.8,
+      "n": 5
+     },
+     "prose": {
+      "violation_rate": 0.4,
+      "success_rate": 0.6,
+      "n": 5
+     },
+     "gen": {
+      "violation_rate": 0.2,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "rule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "prule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     },
+     "urule": {
+      "violation_rate": 0.0,
+      "success_rate": 1.0,
+      "n": 5
+     }
+    }
+   },
+   "contrasts": [
+    {
+     "contrast": "gen - prose",
+     "a": "gen",
+     "b": "prose",
+     "rules": 6,
+     "rate_a": 0.8333333333333334,
+     "rate_b": 0.2,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": 0.6333333333333333,
+     "ci": [
+      0.26666666666666666,
+      0.9333333333333333
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 0.00019998000199980003,
+     "available": true
+    },
+    {
+     "contrast": "prose - none",
+     "a": "prose",
+     "b": "none",
+     "rules": 6,
+     "rate_a": 0.2,
+     "rate_b": 0.8666666666666667,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": -0.6666666666666667,
+     "ci": [
+      -0.9666666666666667,
+      -0.29999999999999993
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 9.999000099990002e-05,
+     "available": true
+    },
+    {
+     "contrast": "gen - none",
+     "a": "gen",
+     "b": "none",
+     "rules": 6,
+     "rate_a": 0.8333333333333334,
+     "rate_b": 0.8666666666666667,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": -0.033333333333333326,
+     "ci": [
+      -0.09999999999999998,
+      0.0
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 1.0,
+     "available": true
+    },
+    {
+     "contrast": "rule - none",
+     "a": "rule",
+     "b": "none",
+     "rules": 6,
+     "rate_a": 0.0,
+     "rate_b": 0.8666666666666667,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": -0.8666666666666667,
+     "ci": [
+      -1.0,
+      -0.6
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 9.999000099990002e-05,
+     "available": true
+    },
+    {
+     "contrast": "prule - none",
+     "a": "prule",
+     "b": "none",
+     "rules": 6,
+     "rate_a": 0.0,
+     "rate_b": 0.8666666666666667,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": -0.8666666666666667,
+     "ci": [
+      -1.0,
+      -0.6
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 9.999000099990002e-05,
+     "available": true
+    },
+    {
+     "contrast": "urule - none",
+     "a": "urule",
+     "b": "none",
+     "rules": 6,
+     "rate_a": 0.0,
+     "rate_b": 0.8666666666666667,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": -0.8666666666666667,
+     "ci": [
+      -1.0,
+      -0.6
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 9.999000099990002e-05,
+     "available": true
+    },
+    {
+     "contrast": "urule - prule",
+     "a": "urule",
+     "b": "prule",
+     "rules": 6,
+     "rate_a": 0.0,
+     "rate_b": 0.0,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 1.0,
+     "available": true
+    }
+   ],
+   "decision": {
+    "H2": "SUPPORTED",
+    "H2b": {
+     "prose": "EFFECTIVE",
+     "gen": "NOT EFFECTIVE",
+     "rule": "EFFECTIVE",
+     "prule": "EFFECTIVE",
+     "urule": "EFFECTIVE"
+    }
+   },
+   "h2_leave_one_rule_out": [
+    {
+     "left_out": "N1",
+     "diff": 0.56
+    },
+    {
+     "left_out": "N2",
+     "diff": 0.6000000000000001
+    },
+    {
+     "left_out": "N3",
+     "diff": 0.6
+    },
+    {
+     "left_out": "P1",
+     "diff": 0.68
+    },
+    {
+     "left_out": "P3",
+     "diff": 0.56
+    },
+    {
+     "left_out": "P5",
+     "diff": 0.7999999999999999
+    }
+   ],
+   "h3": {
+    "tokens_prule": 77288.0,
+    "tokens_rule": 76256.0,
+    "failed_check_runs_prule": 0.0,
+    "failed_check_runs_rule": 0.5,
+    "decision": "INCONCLUSIVE"
+   },
+   "ucn": {
+    "violations": {
+     "contrast": "urule - prule",
+     "a": "urule",
+     "b": "prule",
+     "rules": 6,
+     "rate_a": 0.0,
+     "rate_b": 0.0,
+     "n_a": 30,
+     "n_b": 30,
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "bootstrap_resamples_used": 10000,
+     "p": 1.0,
+     "available": true
+    },
+    "decision": "none (no threshold)",
+    "tokens_urule": 73928.5,
+    "tokens_prule": 77288.0,
+    "tokens_diff": -3359.5,
+    "failed_check_runs_urule": 0.0,
+    "failed_check_runs_prule": 0.0,
+    "failed_check_runs_diff": 0.0
+   },
+   "mixed_model": {
+    "run": true,
+    "converged": true,
+    "method": "BinomialBayesMixedGLM.fit_vb",
+    "terms": [
+     {
+      "term": "gen",
+      "or": 2.148413778985483,
+      "lo": 0.8049927108283749,
+      "hi": 5.733818087600983
+     },
+     {
+      "term": "prose",
+      "or": 0.0767700293601758,
+      "lo": 0.0315694566446257,
+      "hi": 0.18668795837401814
+     },
+     {
+      "term": "prule",
+      "or": 0.007811618272882426,
+      "lo": 0.0014328699637642004,
+      "hi": 0.04258682335759574
+     },
+     {
+      "term": "rule",
+      "or": 0.00781162034041705,
+      "lo": 0.001432869186752515,
+      "hi": 0.0425868689947319
+     },
+     {
+      "term": "urule",
+      "or": 0.0078116166354000914,
+      "lo": 0.0014328708193881304,
+      "hi": 0.042586780073110155
+     }
+    ],
+    "rule_sd_log_odds": 0.8739147793260357
+   },
+   "sensitivity": {
+    "1_success_only": {
+     "rates": {
+      "none": {
+       "violation_rate": 0.8333333333333334,
+       "success_rate": 1.0,
+       "n": 24
+      },
+      "prose": {
+       "violation_rate": 0.07692307692307693,
+       "success_rate": 1.0,
+       "n": 26
+      },
+      "gen": {
+       "violation_rate": 0.8148148148148148,
+       "success_rate": 1.0,
+       "n": 27
+      },
+      "rule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 30
+      },
+      "prule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 30
+      },
+      "urule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 30
+      }
+     },
+     "rates_by_rule": {
+      "N1": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "N2": {
+       "none": {
+        "violation_rate": null,
+        "success_rate": null,
+        "n": 0
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 4
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 2
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "N3": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 0.8,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P1": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.5,
+        "success_rate": 1.0,
+        "n": 4
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P3": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P5": {
+       "none": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 4
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 3
+       },
+       "gen": {
+        "violation_rate": 0.2,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      }
+     },
+     "contrasts": [
+      {
+       "contrast": "gen - prose",
+       "a": "gen",
+       "b": "prose",
+       "rules": 6,
+       "rate_a": 0.8148148148148148,
+       "rate_b": 0.07692307692307693,
+       "n_a": 27,
+       "n_b": 26,
+       "diff": 0.7378917378917378,
+       "ci": [
+        0.46464646464646464,
+        0.9629629629629629
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "prose - none",
+       "a": "prose",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.07692307692307693,
+       "rate_b": 0.8333333333333334,
+       "n_a": 26,
+       "n_b": 24,
+       "diff": -0.7564102564102564,
+       "ci": [
+        -1.0,
+        -0.37373737373737376
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "gen - none",
+       "a": "gen",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.8148148148148148,
+       "rate_b": 0.8333333333333334,
+       "n_a": 27,
+       "n_b": 24,
+       "diff": -0.0185185185185186,
+       "ci": [
+        -0.11111111111111116,
+        0.11111111111111105
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 1.0,
+       "available": true
+      },
+      {
+       "contrast": "rule - none",
+       "a": "rule",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.8333333333333334,
+       "n_a": 30,
+       "n_b": 24,
+       "diff": -0.8333333333333334,
+       "ci": [
+        -1.0,
+        -0.45454545454545453
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "prule - none",
+       "a": "prule",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.8333333333333334,
+       "n_a": 30,
+       "n_b": 24,
+       "diff": -0.8333333333333334,
+       "ci": [
+        -1.0,
+        -0.45454545454545453
+       ],
+       "bootstrap_resamples_used": 9999,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "urule - none",
+       "a": "urule",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.8333333333333334,
+       "n_a": 30,
+       "n_b": 24,
+       "diff": -0.8333333333333334,
+       "ci": [
+        -1.0,
+        -0.45454545454545453
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "urule - prule",
+       "a": "urule",
+       "b": "prule",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.0,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": 0.0,
+       "ci": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 1.0,
+       "available": true
+      }
+     ],
+     "decision": {
+      "H2": "SUPPORTED",
+      "H2b": {
+       "prose": "EFFECTIVE",
+       "gen": "NOT EFFECTIVE",
+       "rule": "EFFECTIVE",
+       "prule": "EFFECTIVE",
+       "urule": "EFFECTIVE"
+      }
+     }
+    },
+    "2_without_N2_P1": {
+     "rates": {
+      "none": {
+       "violation_rate": 0.8,
+       "success_rate": 0.95,
+       "n": 20
+      },
+      "prose": {
+       "violation_rate": 0.1,
+       "success_rate": 0.9,
+       "n": 20
+      },
+      "gen": {
+       "violation_rate": 0.75,
+       "success_rate": 1.0,
+       "n": 20
+      },
+      "rule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 20
+      },
+      "prule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 20
+      },
+      "urule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 20
+      }
+     },
+     "rates_by_rule": {
+      "N1": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "N3": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 0.8,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P3": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P5": {
+       "none": {
+        "violation_rate": 0.2,
+        "success_rate": 0.8,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.4,
+        "success_rate": 0.6,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 0.2,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      }
+     },
+     "contrasts": [
+      {
+       "contrast": "gen - prose",
+       "a": "gen",
+       "b": "prose",
+       "rules": 4,
+       "rate_a": 0.75,
+       "rate_b": 0.1,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": 0.65,
+       "ci": [
+        0.10000000000000003,
+        1.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 0.00019998000199980003,
+       "available": true
+      },
+      {
+       "contrast": "prose - none",
+       "a": "prose",
+       "b": "none",
+       "rules": 4,
+       "rate_a": 0.1,
+       "rate_b": 0.8,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": -0.7000000000000001,
+       "ci": [
+        -1.0,
+        -0.10000000000000003
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "gen - none",
+       "a": "gen",
+       "b": "none",
+       "rules": 4,
+       "rate_a": 0.75,
+       "rate_b": 0.8,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": -0.050000000000000044,
+       "ci": [
+        -0.15000000000000002,
+        0.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 1.0,
+       "available": true
+      },
+      {
+       "contrast": "rule - none",
+       "a": "rule",
+       "b": "none",
+       "rules": 4,
+       "rate_a": 0.0,
+       "rate_b": 0.8,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": -0.8,
+       "ci": [
+        -1.0,
+        -0.4
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "prule - none",
+       "a": "prule",
+       "b": "none",
+       "rules": 4,
+       "rate_a": 0.0,
+       "rate_b": 0.8,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": -0.8,
+       "ci": [
+        -1.0,
+        -0.4
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "urule - none",
+       "a": "urule",
+       "b": "none",
+       "rules": 4,
+       "rate_a": 0.0,
+       "rate_b": 0.8,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": -0.8,
+       "ci": [
+        -1.0,
+        -0.4
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "urule - prule",
+       "a": "urule",
+       "b": "prule",
+       "rules": 4,
+       "rate_a": 0.0,
+       "rate_b": 0.0,
+       "n_a": 20,
+       "n_b": 20,
+       "diff": 0.0,
+       "ci": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 1.0,
+       "available": true
+      }
+     ],
+     "decision": {
+      "H2": "SUPPORTED",
+      "H2b": {
+       "prose": "EFFECTIVE",
+       "gen": "NOT EFFECTIVE",
+       "rule": "EFFECTIVE",
+       "prule": "EFFECTIVE",
+       "urule": "EFFECTIVE"
+      }
+     }
+    },
+    "3_rule_test_change_is_violation": {
+     "rates": {
+      "none": {
+       "violation_rate": 0.8666666666666667,
+       "success_rate": 0.8,
+       "n": 30
+      },
+      "prose": {
+       "violation_rate": 0.2,
+       "success_rate": 0.8666666666666667,
+       "n": 30
+      },
+      "gen": {
+       "violation_rate": 0.8333333333333334,
+       "success_rate": 0.9,
+       "n": 30
+      },
+      "rule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 30
+      },
+      "prule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 30
+      },
+      "urule": {
+       "violation_rate": 0.0,
+       "success_rate": 1.0,
+       "n": 30
+      }
+     },
+     "rates_by_rule": {
+      "N1": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "N2": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 0.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.2,
+        "success_rate": 0.8,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 0.4,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "N3": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 0.8,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P1": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.6,
+        "success_rate": 0.8,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P3": {
+       "none": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 1.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      },
+      "P5": {
+       "none": {
+        "violation_rate": 0.2,
+        "success_rate": 0.8,
+        "n": 5
+       },
+       "prose": {
+        "violation_rate": 0.4,
+        "success_rate": 0.6,
+        "n": 5
+       },
+       "gen": {
+        "violation_rate": 0.2,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "rule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "prule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       },
+       "urule": {
+        "violation_rate": 0.0,
+        "success_rate": 1.0,
+        "n": 5
+       }
+      }
+     },
+     "contrasts": [
+      {
+       "contrast": "gen - prose",
+       "a": "gen",
+       "b": "prose",
+       "rules": 6,
+       "rate_a": 0.8333333333333334,
+       "rate_b": 0.2,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": 0.6333333333333333,
+       "ci": [
+        0.26666666666666666,
+        0.9333333333333333
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 0.00019998000199980003,
+       "available": true
+      },
+      {
+       "contrast": "prose - none",
+       "a": "prose",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.2,
+       "rate_b": 0.8666666666666667,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": -0.6666666666666667,
+       "ci": [
+        -0.9666666666666667,
+        -0.29999999999999993
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "gen - none",
+       "a": "gen",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.8333333333333334,
+       "rate_b": 0.8666666666666667,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": -0.033333333333333326,
+       "ci": [
+        -0.09999999999999998,
+        0.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 1.0,
+       "available": true
+      },
+      {
+       "contrast": "rule - none",
+       "a": "rule",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.8666666666666667,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": -0.8666666666666667,
+       "ci": [
+        -1.0,
+        -0.6
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "prule - none",
+       "a": "prule",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.8666666666666667,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": -0.8666666666666667,
+       "ci": [
+        -1.0,
+        -0.6
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "urule - none",
+       "a": "urule",
+       "b": "none",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.8666666666666667,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": -0.8666666666666667,
+       "ci": [
+        -1.0,
+        -0.6
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 9.999000099990002e-05,
+       "available": true
+      },
+      {
+       "contrast": "urule - prule",
+       "a": "urule",
+       "b": "prule",
+       "rules": 6,
+       "rate_a": 0.0,
+       "rate_b": 0.0,
+       "n_a": 30,
+       "n_b": 30,
+       "diff": 0.0,
+       "ci": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_resamples_used": 10000,
+       "p": 1.0,
+       "available": true
+      }
+     ],
+     "decision": {
+      "H2": "SUPPORTED",
+      "H2b": {
+       "prose": "EFFECTIVE",
+       "gen": "NOT EFFECTIVE",
+       "rule": "EFFECTIVE",
+       "prule": "EFFECTIVE",
+       "urule": "EFFECTIVE"
+      }
+     }
+    }
+   },
+   "check_use": {
+    "rule": {
+     "runs": 30,
+     "ended_with_passing_rule_test": 29,
+     "share_passing": 0.9666666666666667,
+     "never_ran_rule_test": 1,
+     "violation_rate_passing": 0.0,
+     "violation_rate_not_passing": 0.0
+    },
+    "prule": {
+     "runs": 30,
+     "ended_with_passing_rule_test": 29,
+     "share_passing": 0.9666666666666667,
+     "never_ran_rule_test": 1,
+     "violation_rate_passing": 0.0,
+     "violation_rate_not_passing": 0.0
+    },
+    "urule": {
+     "runs": 30,
+     "ended_with_passing_rule_test": 29,
+     "share_passing": 0.9666666666666667,
+     "never_ran_rule_test": 1,
+     "violation_rate_passing": 0.0,
+     "violation_rate_not_passing": 0.0
+    }
+   },
+   "cost": {
+    "none": {
+     "median_tokens": 82285.0,
+     "median_tool_calls": 36.5,
+     "median_check_runs": null,
+     "n": 30
+    },
+    "prose": {
+     "median_tokens": 84922.5,
+     "median_tool_calls": 41.5,
+     "median_check_runs": null,
+     "n": 30
+    },
+    "gen": {
+     "median_tokens": 77863.5,
+     "median_tool_calls": 33.5,
+     "median_check_runs": 2.0,
+     "n": 30
+    },
+    "rule": {
+     "median_tokens": 76256.0,
+     "median_tool_calls": 34.0,
+     "median_check_runs": 2.0,
+     "n": 30
+    },
+    "prule": {
+     "median_tokens": 77288.0,
+     "median_tool_calls": 34.5,
+     "median_check_runs": 2.0,
+     "n": 30
+    },
+    "urule": {
+     "median_tokens": 73928.5,
+     "median_tool_calls": 35.0,
+     "median_check_runs": 2.0,
+     "n": 30
+    }
+   }
+  }
+ }
+}
