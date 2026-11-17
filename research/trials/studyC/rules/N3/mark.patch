@@ -1,0 +1,22 @@
+diff --git a/saleor/graphql/channel/utils.py b/saleor/graphql/channel/utils.py
+index ac3ffd4..b22f553 100644
+--- a/saleor/graphql/channel/utils.py
++++ b/saleor/graphql/channel/utils.py
+@@ -118,6 +118,8 @@ def delete_invalid_warehouse_to_shipping_zone_relations(
+     )
+ 
+     # delete invalid shipping zone - warehouse relations
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: Don't use the `id` DB field in Django models, instead use `pk` when referencing the object ID field from a model.
+     ShippingZoneWarehouse.objects.filter(
+         id__in=shipping_zone_warehouses_to_delete
+     ).delete()
+@@ -148,6 +150,8 @@ def _get_invalid_shipping_zone_warehouses_ids(
+     shipping_zone_warehouses, warehouse_to_channel_ids, zone_to_channel_ids
+ ):
+     shipping_zone_warehouses_to_delete = []
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: Don't use the `id` DB field in Django models, instead use `pk` when referencing the object ID field from a model.
+     for id, zone_id, warehouse_id in shipping_zone_warehouses.values_list(
+         "id", "shippingzone_id", "warehouse_id"
+     ):

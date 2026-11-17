@@ -1,0 +1,17 @@
+{
+ "source": "scan",
+ "places": [
+  {
+   "path": "saleor/graphql/app/types.py",
+   "line": 353,
+   "function": "resolve_default",
+   "comment_above": 347
+  },
+  {
+   "path": "saleor/graphql/app/types.py",
+   "line": 378,
+   "function": "get_logo_cache_size",
+   "comment_above": 378
+  }
+ ]
+}

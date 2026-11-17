@@ -1,0 +1,26 @@
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
+index 5313057..68f3dcd 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py
+@@ -108,6 +108,8 @@ class ProductVariantStocksCreate(BaseMutation):
+                     requestor=requestor,
+                 )
+ 
++            # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++            # Rule: Never read `settings.SITE_ID` directly to identify the current site; resolve the site with `Site.objects.get_current()` (or the `get_site_promise` dataloader in the GraphQL layer).
+             site_settings = Site.objects.get(pk=settings.SITE_ID).settings
+             if not site_settings.use_legacy_shipping_zone_stock_availability:
+                 call_event(
+diff --git a/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py b/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
+index 133df3d..5ca6dab 100644
+--- a/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
++++ b/saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py
+@@ -154,6 +154,8 @@ class ProductVariantStocksUpdate(ProductVariantStocksCreate):
+                 warehouse_ids, "warehouse", only_type=Warehouse
+             )
+ 
++            # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++            # Rule: Never read `settings.SITE_ID` directly to identify the current site; resolve the site with `Site.objects.get_current()` (or the `get_site_promise` dataloader in the GraphQL layer).
+             site_settings = Site.objects.get(pk=settings.SITE_ID).settings
+             requestor = get_user_or_app_from_context(info.context)
+             cls.update_or_create_variant_stocks(

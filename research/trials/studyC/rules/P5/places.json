@@ -1,0 +1,23 @@
+{
+ "source": "hand",
+ "places": [
+  {
+   "path": "saleor/graphql/giftcard/mutations/gift_card_activate.py",
+   "line": 47,
+   "function": "perform_mutation",
+   "comment_above": 47
+  },
+  {
+   "path": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py",
+   "line": 87,
+   "function": "perform_mutation",
+   "comment_above": 87
+  },
+  {
+   "path": "saleor/graphql/giftcard/mutations/gift_card_update.py",
+   "line": 82,
+   "function": "clean_balance",
+   "comment_above": 82
+  }
+ ]
+}
