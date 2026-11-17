@@ -1,30 +1,32 @@
-# Coding agents repeat the wrong precedent, and only a test stops them
+# Coding agents repeat the wrong precedent. Here is what stops them
 
-*Draft, 2026-11-17. A short report on Study A and Study B of the agent-rule-compliance project.*
+*Draft, 2026-11-17. A short report on Studies A to D of the agent-rule-compliance project.*
 
 A project has rules that its tests do not always examine. An architecture decision says "send webhooks through this
 function". A security rule says "this record stays restricted after the customer is deleted". When does an AI coding
 agent break such a rule, and what prevents it?
 
-I did two experiments with 444 agent runs. The results are clear.
+I did four studies with 588 agent runs on a real codebase. The short answer:
 
 1. **If the code near the change breaks the rule, the agent breaks it again, in almost every run.**
 2. **The tests that the project has do not prevent this. One test written for the rule prevents it each time.**
+3. **A static check finds only one violation in four. But it finds the old wrong code before the change.**
+4. **One sentence at that old wrong code ("this breaks a rule, do not copy it") prevents most violations.**
 
-## Experiment 1: what causes the violation
+## The setup
 
 - **Codebase:** saleor, a large open-source shop system with written architecture decisions.
-- **Rules:** six rules from those decisions.
-- **Tasks:** 21 tickets. Each rule has a ticket at three types of site:
-  - *consistent:* the near code follows the rule;
-  - *none:* the near code has no example of the rule;
-  - *contradicting:* the near code breaks the rule.
+- **Rules:** six rules from those decisions. Three name a code form (for example "use `pk`, not `id`"). Three are
+  about behaviour (for example "a gift card balance change must be atomic").
 - **Agents:** Claude Haiku and Claude Sonnet, with no project documentation. They could read all the code.
-- **Runs:** 210 (5 for each ticket and model).
 - **Grading:** hidden tests. Each grader was proven before the runs: it fails on the base, it passes on a correct
   solution, and it finds a solution that does the task but breaks the rule.
+- The hypotheses, the tasks and the analysis of each study were published before its first run.
 
-The hypotheses, the tasks and the analysis were published before the first run of each experiment.
+## Study A: what causes the violation
+
+21 tickets. Each rule has a ticket at a site where the near code follows the rule, has no example, or breaks the
+rule. 210 runs.
 
 | Code near the change | Runs that broke the rule, Haiku | Runs that broke the rule, Sonnet |
 |---|---|---|
@@ -32,78 +34,87 @@ The hypotheses, the tasks and the analysis were published before the first run o
 | No example | 23% | 13% |
 | Breaks the rule | 87% | 97% |
 
-Three things are important.
+- **A wrong precedent is copied.** The difference is 70 points for Haiku and 80 points for Sonnet.
+- **A stronger model does not help.**
+- **A missing precedent is not the problem.** The risk is a wrong one.
+- Among runs that did the task correctly, 0 of 117 broke a rule at sites without a wrong precedent. At sites with
+  a wrong precedent, 37 of 42 broke it.
 
-1. **A wrong precedent is copied.** The difference between "breaks the rule" and "follows the rule" is 70 points for
-   Haiku and 80 points for Sonnet. The 95% interval does not include zero for either model.
-2. **A stronger model does not help.** Sonnet did the tasks with fewer steps, but it copied the wrong precedent at
-   least as often as Haiku.
-3. **A missing precedent is not the problem.** Where the near code had no example, the agents did not break rules
-   more often than at consistent sites.
+## Study B: what prevents it
 
-One more number shows how sharp the effect is. I looked only at runs that did the task correctly. At sites without
-a wrong precedent, 0 of 117 of those runs broke a rule. At sites with a wrong precedent, 37 of 42 broke it.
+The six tickets with a wrong precedent. Each agent got nothing, the project tests to run, the rule text, or a test
+written for the rule. 234 runs.
 
-## Experiment 2: what prevents the violation
-
-The second experiment used only the six tickets where the near code breaks the rule. Each agent got one of these:
-
-- **Nothing:** the ticket only.
-- **The project tests:** a command that runs the tests of the project. The agent could use it as often as necessary.
-- **The rule text:** the paragraph of the project documentation that states the rule.
-- **A rule test:** the project tests, and one more test that fails when the new code breaks the rule.
-
-There were 234 runs: 180 with Haiku and 54 with Sonnet.
-
-| What the agent gets | Runs that broke the rule, Haiku | Runs that broke the rule, Sonnet |
+| What the agent gets | Haiku | Sonnet |
 |---|---|---|
 | Nothing | 87% | not tested |
 | The project tests to run | 83% | 83% |
-| The rule text | 20% | 22% |
-| A rule test | 0% | 0% |
+| The rule text from the project documentation | 20% | 22% |
+| A test written for the rule | 0% | 0% |
 
-1. **The project tests prevent almost nothing.** The agents ran the tests, the tests passed, and the violation
-   stayed. The existing tests do not examine the rule at the new place, so a pass says nothing about the rule.
-   The agent accepts the pass as confirmation.
-2. **The rule text prevents most violations, but not all.** It failed most for one security rule. There the near
-   code was a strong example of the opposite, and the agents followed the code. Sonnet failed there in all three runs.
-3. **A rule test prevented all violations.** This was true in 48 of 48 runs with the two models, and in 57 more
-   Haiku runs that also got guidance text. The agents read the failure and corrected the code. No agent changed
-   or deleted the test.
-4. **The rule test was not more expensive.** The median number of tokens for a run was almost the same in all groups.
-   An agent that can run a test reads less code to make sure of its change.
-5. **More guidance added nothing to the rule test.** Plain text or a formal notation with the rule test gave the
-   same result as the rule test only.
+- **The project tests prevent almost nothing.** They pass, because they do not examine the rule at the new place.
+  The agent takes the pass as confirmation.
+- **The rule text helps much, but not always.** It failed most where the near code was a strong opposite example.
+- **A rule test prevented all violations, and it was not more expensive.** The agents read the failure and
+  corrected the code.
+
+## Study D: can a general static check find the violations?
+
+A fresh agent wrote one static check for each rule. It saw only the rule texts and the codebase, not the tickets
+or the results. I ran the checks one time on all 444 runs of Studies A and B.
+
+- **On the changed lines, the checks found 26% of the 156 violations.** One rule had 100%. One had 0%.
+- **39% of the violations come from old code in the touched file.** The agent did not write the forbidden form. It
+  used a value from an old line that contains it. A check of the changed lines cannot see this.
+- **35% have no static form.** "The card stays restricted" is not a code pattern. Only a test found these.
+- **But the same checks find the wrong precedent before the change**, for four of the six rules.
+
+## Study C: tell the agent about the wrong precedent
+
+The six tickets again. Each agent got nothing, a two-line comment above each piece of old wrong code, or the same
+text in the ticket with a list of the places. The comment says: "the code below breaks a project rule and stays
+only until it is repaired. Do not copy it", and the rule in one sentence. 144 runs.
+
+| What the agent gets | Haiku | Sonnet |
+|---|---|---|
+| Nothing | 87% | 94% |
+| A comment at the old wrong code | 20% | 18% |
+| The same text in the ticket, with the places | 7% | 33% |
+
+- **The two measures are as effective as the full rule text**, and a tool can make them.
+- **For the four rules where the static check found the places**, both models had 0 to 2 violations in each group
+  with a measure. Without it, they broke the rule in every run.
+- **With the text in the ticket, Haiku also repaired the old code in all 20 such runs.** The precedent is then gone
+  for the next change too. The change was larger, and a team must expect that.
+- **The measures fail when the agent uses the old code without a copy of its form.** The comment said "do not copy",
+  and the agent did not copy. It used a variable from the marked line.
 
 ## What this means in practice
 
-- An agent treats the near code as the specification. This is good when the code is correct. It is bad when the
-  code contains old violations.
-- Each violation that stays in the code is thus an instruction to the next agent to do the same.
+- An agent treats the near code as the specification. Each old violation is an instruction to the next agent.
 - "The agent ran the tests and they passed" is not evidence that the change obeys the rules of the project.
-- If a rule is important, make it executable first. Then document it. The text helps, but the test decides.
-- Do not expect a stronger model to solve this. In these experiments it did not.
+- The order of measures that these studies support:
+  1. **Make the important rules executable.** A test for the rule was the only measure with 0%.
+  2. **Scan for old violations and mark or repair them.** This is cheap, a tool can do most of it, and it removes
+     most of the risk.
+  3. **Document the rule.** The text helps, but less than the two measures above.
+- Do not expect a stronger model to solve this. In these studies it did not.
 
 ## Limits
 
 - One codebase, one language and six rules. The intervals are over rules, and six is a small number.
-- The two models are from one supplier.
-- Each rule test was written with knowledge of the ticket. It examines the rule for the new feature, not for all
-  code. A real project must write such a test before the change, or have a general check for the rule.
-- The agent got the correct rule text each time. In a real project, the agent must find that text first.
-- The Sonnet part of experiment 2 is small: 3 runs for each ticket and group, and no group without help.
-- An error in my test tooling made the first 36 Sonnet runs with a test command not valid. I did them again.
-  This is not in the published plan. The report describes it, and the first attempts are public.
-- Two of the six rules had difficult tasks with low success in experiment 1. The effect stays large when I remove
-  either of them.
+- The models are from one supplier, and the author of the static checks also.
+- Each rule test was written with knowledge of the ticket. A real project must write it before the change.
+- In Study C the places of two rules were given by hand.
+- The Sonnet parts are small: 3 runs for each ticket and group.
+- An error in my test tooling made the first 36 Sonnet runs with a test command in Study B not valid. I did them
+  again. This is not in the published plan. The report describes it, and the first attempts are public.
 
 ## Next
 
-The two experiments looked at one change at a time. The next question is about time: if one violation makes the
-next violation more probable, do violations increase through a chain of changes? And does a rule test stop that?
+All four studies looked at one change at a time. The next question is about time: does one violation make the next
+one more probable through a chain of changes, and do the measures above stop that?
 
-The data, the graders, the analysis and the tool-call logs of all runs are public:
+The data, the graders, the checks, the analysis and the tool-call logs of all runs are public:
 [github.com/mohaqeq/agent-rule-compliance](https://github.com/mohaqeq/agent-rule-compliance).
-The full reports are
-[Study A](https://github.com/mohaqeq/agent-rule-compliance/blob/main/research/docs/12-study-a-results.md) and
-[Study B](https://github.com/mohaqeq/agent-rule-compliance/blob/main/research/docs/13-study-b-results.md).
+The full reports are in `research/docs`, documents 12 to 15.
