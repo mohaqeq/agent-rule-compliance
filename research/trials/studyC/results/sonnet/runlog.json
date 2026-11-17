@@ -1,0 +1,443 @@
+{
+ "N1-contradicting-mark-1": {
+  "agent_id": "a00fc4802782a5d1e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "P3-contradicting-mark-3": {
+  "agent_id": "a087c8fd10065e69a",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 21,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/test"
+  ]
+ },
+ "N1-contradicting-warn-3": {
+  "agent_id": "a09cc3d42e529304b",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 27,
+  "outside": []
+ },
+ "P1-contradicting-mark-2": {
+  "agent_id": "a0d81e24174fd70ba",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 55,
+  "outside": []
+ },
+ "N1-contradicting-none-3": {
+  "agent_id": "a0fa78bc4d983d402",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "N3-contradicting-none-2": {
+  "agent_id": "a143a04b8dec2b6ae",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 5,
+  "outside": []
+ },
+ "P5-contradicting-mark-2": {
+  "agent_id": "a19663d5b70ba0fb8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "P3-contradicting-mark-1": {
+  "agent_id": "a19c496ea8a780f22",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "P1-contradicting-mark-1": {
+  "agent_id": "a19df004d887ea9bc",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "P5-contradicting-none-2": {
+  "agent_id": "a1d8f1650b24af488",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "P3-contradicting-none-1": {
+  "agent_id": "a210396579e1ecb53",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/appl"
+  ]
+ },
+ "N3-contradicting-warn-1": {
+  "agent_id": "a2c6880b8e49a39ee",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 14,
+  "outside": []
+ },
+ "N3-contradicting-mark-3": {
+  "agent_id": "a31b4e327db351e70",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "N2-contradicting-mark-2": {
+  "agent_id": "a3b05c56f53a70406",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 27,
+  "outside": []
+ },
+ "P3-contradicting-mark-2": {
+  "agent_id": "a3b3c3f1b7c285055",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "P5-contradicting-mark-1": {
+  "agent_id": "a41ed802c10300e29",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 10,
+  "outside": []
+ },
+ "N2-contradicting-warn-1": {
+  "agent_id": "a45302d960f7377c0",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 32,
+  "outside": []
+ },
+ "N3-contradicting-none-3": {
+  "agent_id": "a51e3c4cadcc7a90c",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 5,
+  "outside": []
+ },
+ "N2-contradicting-mark-1": {
+  "agent_id": "a564e82775ab5913f",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "N3-contradicting-warn-2": {
+  "agent_id": "a5be58c6049470106",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 10,
+  "outside": []
+ },
+ "P3-contradicting-none-2": {
+  "agent_id": "a5d7032cdb8a9f4cc",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "P3-contradicting-none-3": {
+  "agent_id": "a62ad327d82bd6d07",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 10,
+  "outside": []
+ },
+ "N2-contradicting-none-2": {
+  "agent_id": "a7447a3f3915df64e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P1-contradicting-warn-3": {
+  "agent_id": "a7527cb63891fe867",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 61,
+  "outside": []
+ },
+ "P5-contradicting-none-1": {
+  "agent_id": "a76d53cc5f40ec51d",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P5-contradicting-warn-1": {
+  "agent_id": "a7fe3f4b8e4251a44",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 7,
+  "outside": []
+ },
+ "P1-contradicting-none-2": {
+  "agent_id": "a80c0e677c19d542e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 52,
+  "outside": []
+ },
+ "P5-contradicting-none-3": {
+  "agent_id": "a830f633dce4cde12",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "N3-contradicting-none-1": {
+  "agent_id": "a84a840cb3c11f85b",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 6,
+  "outside": []
+ },
+ "N2-contradicting-warn-3": {
+  "agent_id": "a89205ea3654541a3",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "N3-contradicting-mark-1": {
+  "agent_id": "a8b066332dabbe9bf",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 8,
+  "outside": []
+ },
+ "P5-contradicting-mark-3": {
+  "agent_id": "a8c5d3efdfa3c427d",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 16,
+  "outside": []
+ },
+ "N3-contradicting-mark-2": {
+  "agent_id": "a97d55efe543625d6",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "N2-contradicting-none-1": {
+  "agent_id": "aa9d43116bf519d32",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "P3-contradicting-warn-3": {
+  "agent_id": "aab47c8c078e15fd8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 21,
+  "outside": []
+ },
+ "N2-contradicting-warn-2": {
+  "agent_id": "aac3be519de915c4d",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 24,
+  "outside": []
+ },
+ "P1-contradicting-warn-2": {
+  "agent_id": "aac42ce5c6b9a916e",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 54,
+  "outside": []
+ },
+ "N1-contradicting-none-2": {
+  "agent_id": "ab4baa41ae0b0fa06",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 11,
+  "outside": []
+ },
+ "P3-contradicting-warn-1": {
+  "agent_id": "ac45058281b1cd2ad",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 74,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad",
+   "Write: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/crea",
+   "Write: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/shop",
+   "Write: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/upda"
+  ]
+ },
+ "N1-contradicting-warn-1": {
+  "agent_id": "ac6fd0cb34b05f216",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 36,
+  "outside": []
+ },
+ "P1-contradicting-mark-3": {
+  "agent_id": "ad0fc6dc78f366e38",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 21,
+  "outside": []
+ },
+ "N2-contradicting-none-3": {
+  "agent_id": "ad8c05848d45542a6",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "N1-contradicting-mark-3": {
+  "agent_id": "ae0a5832ecb05f6c6",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 26,
+  "outside": []
+ },
+ "P5-contradicting-warn-2": {
+  "agent_id": "ae51ac45f9ae07260",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 9,
+  "outside": []
+ },
+ "P1-contradicting-none-1": {
+  "agent_id": "ae7776cd447924da1",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 40,
+  "outside": []
+ },
+ "P1-contradicting-warn-1": {
+  "agent_id": "ae812d61f870aa841",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 66,
+  "outside": []
+ },
+ "P3-contradicting-warn-2": {
+  "agent_id": "ae8215282d7143967",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 64,
+  "outside": []
+ },
+ "N2-contradicting-mark-3": {
+  "agent_id": "aea9e4185362feb1d",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "N1-contradicting-warn-2": {
+  "agent_id": "aee1a2072f803eae0",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 28,
+  "outside": []
+ },
+ "N1-contradicting-mark-2": {
+  "agent_id": "aefdf599dea6a2b3a",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 32,
+  "outside": []
+ },
+ "P1-contradicting-none-3": {
+  "agent_id": "af1d8fc2ccf57e180",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 57,
+  "outside": []
+ },
+ "N3-contradicting-warn-3": {
+  "agent_id": "af301d805e12f47b8",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 12,
+  "outside": []
+ },
+ "N1-contradicting-none-1": {
+  "agent_id": "af3b128f62d706cdd",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "P5-contradicting-warn-3": {
+  "agent_id": "afb261eba92e66b90",
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ }
+}
