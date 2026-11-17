@@ -1,0 +1,41 @@
+{
+ "repo": "<a clean clone of saleor>",
+ "rev": "1d707dc",
+ "model": "research/trials/studyB/model.ucn",
+ "tasks": "research/trials/studyA/tasks",
+ "task_ids": [
+  "N1-consistent",
+  "N2-consistent",
+  "N3-consistent",
+  "P1-consistent",
+  "P3-consistent",
+  "P5-consistent"
+ ],
+ "rules_dir": "<as above>",
+ "arms": {
+  "none": {
+   "guidance": "none",
+   "check": "none",
+   "runs": 3
+  }
+ },
+ "remove": {
+  "C": [
+   "docs/adr"
+  ]
+ },
+ "squash_base": true,
+ "anonymous_workspaces": true,
+ "budget": 2500,
+ "test_cmd": "python D:/work/tools/run_tests.py {token}",
+ "validator_no_lines": true,
+ "model_name": "deepseek",
+ "grader_image": "ucn-saleor-grader",
+ "grader_docker_args": [
+  "--network",
+  "container:<postgres container>"
+ ],
+ "validator": "ucn/ucn_validate.py",
+ "today": "2026-11-17",
+ "suffix": "Make the change in the code, and add or update tests where it makes sense. The project's dependencies are not installed on this machine: do not install packages and do not run the project's test suite; reason carefully about the code instead. Do not create git commits. Only read and modify files inside that repository directory.\n\nWhen you are done, reply with a short summary: files changed and why."
+}
