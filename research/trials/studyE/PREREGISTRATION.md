@@ -100,3 +100,18 @@ SHA-256 of the files at the time of this commit (line endings as committed):
 | `research/harness/recon.py` | `2a48edbfd4a63c844be3fcc47765a59d8eee2ca0a463c709f84b75a9201fc677` |
 
 The E1 and E2 task variants (`tasks/`) are pinned in the next commit, before any E1 or E2 run.
+
+## Change to E3 before any E3 result (2026-11-17, second commit)
+
+The owner of the account did not permit paid model calls. Nine E3 runs had started with the paid model
+(`deepseek/deepseek-v4.1-flash-1017`, $0.60 in total, the pilot included). They are stopped, moved out of the study
+without grading, and their workspaces are reset. E3 now uses only free models, and the harness refuses any model
+that is not free.
+
+- Model: `nvidia/nemotron-3-ultra-550b-a55b:free` (a different supplier, free of charge). The free models have a
+  limit of 1,000 requests each day, so E3 is restricted.
+- Cells: `contradicting` (no information), `mark`, and `consistent`. Runs 1 and 2 of each task and cell: 36 runs.
+  The cells `prose`, `rule` and `warn` are not run.
+- Maximum 50 turns for each run. A run starts only when the free requests of the day are sufficient for a full run.
+- Decisions: H11a as above. H11b only for `mark`. H11c is not tested.
+- With 2 runs for each cell the intervals are wide. E3 is reported as a small replication.

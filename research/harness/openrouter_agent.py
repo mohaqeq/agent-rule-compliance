@@ -106,6 +106,17 @@ def call(key, body, tries=6):
             time.sleep(10 * (i + 1))
 
 
+def require_free(model):
+    """Stop unless the model is free (id ends in ':free' and the public price list shows 0 for input and output).
+    The owner of the account did not permit paid calls."""
+    if not model.endswith(":free"):
+        sys.exit(f"refused: {model} is not a free model (the id must end in ':free')")
+    models = json.load(urllib.request.urlopen("https://openrouter.ai/api/v1/models", timeout=30))["data"]
+    p = next((m.get("pricing") or {} for m in models if m["id"] == model), None)
+    if p is None or any(float(p.get(k) or 0) != 0 for k in ("prompt", "completion", "request", "input_cache_read")):
+        sys.exit(f"refused: the price of {model} is not 0")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("runs_dir")
@@ -114,6 +125,7 @@ def main():
     ap.add_argument("--max-turns", type=int, default=80)
     ap.add_argument("--max-minutes", type=float, default=40)
     a = ap.parse_args()
+    require_free(a.model)
     key = open(os.path.expanduser("~/.openrouter_key"), encoding="utf-8").read().strip()
     prompt = open(f"{a.runs_dir}/{a.run_id}.prompt.txt", encoding="utf-8").read()
     ws = re.search(r"repository at (\S+)", prompt).group(1).rstrip("/")
