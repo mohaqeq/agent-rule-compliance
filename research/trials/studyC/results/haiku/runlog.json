@@ -1,0 +1,729 @@
+{
+ "N2-contradicting-warn-1": {
+  "agent_id": "a0112d6b284802cdd",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ },
+ "N2-contradicting-warn-5": {
+  "agent_id": "a02cc92f800b77822",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "N1-contradicting-warn-4": {
+  "agent_id": "a03343be5a6cf9e18",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "P5-contradicting-mark-4": {
+  "agent_id": "a0342680480eb3f03",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "P1-contradicting-mark-3": {
+  "agent_id": "a083eb4cdafa8246d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 57,
+  "outside": []
+ },
+ "N1-contradicting-none-3": {
+  "agent_id": "a0da76d818f445bd9",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 41,
+  "outside": []
+ },
+ "P5-contradicting-none-4": {
+  "agent_id": "a113946b224acaaee",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 72,
+  "outside": []
+ },
+ "P5-contradicting-none-5": {
+  "agent_id": "a17ee43fa308f7c5c",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 55,
+  "outside": []
+ },
+ "N1-contradicting-warn-1": {
+  "agent_id": "a1c4108cb473a92dd",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 25,
+  "outside": []
+ },
+ "N3-contradicting-mark-2": {
+  "agent_id": "a1f8b087581dd0aa3",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 17,
+  "outside": []
+ },
+ "P1-contradicting-warn-5": {
+  "agent_id": "a27dfe82fb26a4a2d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 91,
+  "outside": []
+ },
+ "P5-contradicting-none-2": {
+  "agent_id": "a29e92b9c101e5b16",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 58,
+  "outside": []
+ },
+ "P3-contradicting-mark-1": {
+  "agent_id": "a2ad0eeb6236ee1ab",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 81,
+  "outside": []
+ },
+ "P1-contradicting-mark-2": {
+  "agent_id": "a2ae7812fdddc5c76",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 53,
+  "outside": []
+ },
+ "N1-contradicting-none-2": {
+  "agent_id": "a2d21e6b790c1706c",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "N2-contradicting-warn-4": {
+  "agent_id": "a2d86473488e6aaeb",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 34,
+  "outside": []
+ },
+ "P5-contradicting-warn-5": {
+  "agent_id": "a2fee109fe90b6105",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 35,
+  "outside": []
+ },
+ "P5-contradicting-none-1": {
+  "agent_id": "a2ff67f198bb46316",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 54,
+  "outside": []
+ },
+ "P5-contradicting-mark-1": {
+  "agent_id": "a302bc32fd5af2933",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 34,
+  "outside": []
+ },
+ "P3-contradicting-none-4": {
+  "agent_id": "a3308f0e4a8f2e9df",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 94,
+  "outside": []
+ },
+ "P3-contradicting-warn-2": {
+  "agent_id": "a335bcd1f81cd14d0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 120,
+  "outside": []
+ },
+ "N2-contradicting-mark-5": {
+  "agent_id": "a34ce3bf4918f26b6",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 51,
+  "outside": []
+ },
+ "P3-contradicting-warn-1": {
+  "agent_id": "a381f81c193715828",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 115,
+  "outside": []
+ },
+ "N2-contradicting-none-4": {
+  "agent_id": "a389a9c91c12a81bc",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "P5-contradicting-none-3": {
+  "agent_id": "a3d807626dd5fe7a0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 69,
+  "outside": []
+ },
+ "N3-contradicting-mark-1": {
+  "agent_id": "a3f0a885caffa2fcf",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "P5-contradicting-mark-2": {
+  "agent_id": "a409b8829bd33d1d4",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 71,
+  "outside": []
+ },
+ "N2-contradicting-mark-3": {
+  "agent_id": "a42836e063d21102e",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 42,
+  "outside": []
+ },
+ "P5-contradicting-mark-3": {
+  "agent_id": "a44b6bc50525a90ff",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 29,
+  "outside": []
+ },
+ "N3-contradicting-warn-5": {
+  "agent_id": "a470459507544e07f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "N1-contradicting-warn-2": {
+  "agent_id": "a4778b28ec596819b",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "P3-contradicting-warn-5": {
+  "agent_id": "a4ae4c28164ab079a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 112,
+  "outside": []
+ },
+ "P5-contradicting-warn-4": {
+  "agent_id": "a508382d33150ff86",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 25,
+  "outside": []
+ },
+ "N3-contradicting-mark-5": {
+  "agent_id": "a5100d4f5a29cb2bd",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "P1-contradicting-warn-3": {
+  "agent_id": "a520b4fd4e0aa8bb0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 94,
+  "outside": []
+ },
+ "N2-contradicting-mark-2": {
+  "agent_id": "a527275e430bd07df",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "N3-contradicting-warn-4": {
+  "agent_id": "a561fa7b69de8c3be",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 23,
+  "outside": []
+ },
+ "N1-contradicting-mark-4": {
+  "agent_id": "a5e32ce1b738c8221",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 36,
+  "outside": []
+ },
+ "N1-contradicting-warn-3": {
+  "agent_id": "a617972e358dc6c52",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 15,
+  "outside": []
+ },
+ "P3-contradicting-none-2": {
+  "agent_id": "a6527dc68087fc3e5",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 90,
+  "outside": []
+ },
+ "P3-contradicting-warn-4": {
+  "agent_id": "a673bcd94e64887f8",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 123,
+  "outside": []
+ },
+ "N2-contradicting-warn-2": {
+  "agent_id": "a690c44c20c1de7d1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 37,
+  "outside": []
+ },
+ "P1-contradicting-none-5": {
+  "agent_id": "a69c0623e63905ef4",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 60,
+  "outside": []
+ },
+ "N2-contradicting-none-5": {
+  "agent_id": "a69caae2c3251e8c0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 43,
+  "outside": []
+ },
+ "N2-contradicting-none-3": {
+  "agent_id": "a6f7f6f2dc6c27faf",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 31,
+  "outside": []
+ },
+ "P1-contradicting-mark-1": {
+  "agent_id": "a6f9893d6a22b2c81",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 63,
+  "outside": []
+ },
+ "N1-contradicting-mark-5": {
+  "agent_id": "a74d96b4b5dc7380a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 36,
+  "outside": []
+ },
+ "P3-contradicting-mark-4": {
+  "agent_id": "a75ad5089d2ec4148",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 102,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad",
+   "Write: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/crea",
+   "Write: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/shop",
+   "Edit: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/upda"
+  ]
+ },
+ "N2-contradicting-none-2": {
+  "agent_id": "a7b182fa4ecc9a36a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 42,
+  "outside": []
+ },
+ "N3-contradicting-mark-4": {
+  "agent_id": "a7c4d37ac26494289",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "N3-contradicting-warn-2": {
+  "agent_id": "a7d6a1050600b6e8a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 13,
+  "outside": []
+ },
+ "P3-contradicting-none-1": {
+  "agent_id": "a7f4a9c15afe90543",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 82,
+  "outside": []
+ },
+ "P1-contradicting-none-3": {
+  "agent_id": "a81131f04c38a7b41",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 40,
+  "outside": []
+ },
+ "N1-contradicting-none-5": {
+  "agent_id": "a830ece16f7a1c7ce",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 30,
+  "outside": []
+ },
+ "N3-contradicting-warn-1": {
+  "agent_id": "a83164e4b2e46780b",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "N1-contradicting-warn-5": {
+  "agent_id": "a84c88267678327e6",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "N2-contradicting-mark-4": {
+  "agent_id": "a8a091f904f16adda",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "N3-contradicting-none-1": {
+  "agent_id": "a8bfd78a43106f022",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 18,
+  "outside": []
+ },
+ "N2-contradicting-mark-1": {
+  "agent_id": "a8c53dfe2be96e394",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ },
+ "P1-contradicting-mark-5": {
+  "agent_id": "a8eda36cab1dd5afc",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 39,
+  "outside": []
+ },
+ "N3-contradicting-none-5": {
+  "agent_id": "a93166f5ad9a45b97",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "N3-contradicting-mark-3": {
+  "agent_id": "a9398fc3443849d28",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 23,
+  "outside": []
+ },
+ "N3-contradicting-none-4": {
+  "agent_id": "a97486fcab64ca471",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 22,
+  "outside": []
+ },
+ "N1-contradicting-none-4": {
+  "agent_id": "a9841337e0e215b81",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 23,
+  "outside": []
+ },
+ "P3-contradicting-none-3": {
+  "agent_id": "a98a6675fbdc5e44f",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 97,
+  "outside": []
+ },
+ "P3-contradicting-warn-3": {
+  "agent_id": "a98c8c02517af317b",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 118,
+  "outside": []
+ },
+ "P1-contradicting-warn-2": {
+  "agent_id": "a98df93d6acf75929",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 92,
+  "outside": []
+ },
+ "N3-contradicting-none-2": {
+  "agent_id": "aa124824893191153",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 21,
+  "outside": []
+ },
+ "P1-contradicting-warn-1": {
+  "agent_id": "aa3464f965755f040",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 69,
+  "outside": []
+ },
+ "N1-contradicting-mark-3": {
+  "agent_id": "aa6843a718188ffa0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 21,
+  "outside": []
+ },
+ "P1-contradicting-warn-4": {
+  "agent_id": "aa7015d86cf7062bb",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 100,
+  "outside": []
+ },
+ "N1-contradicting-mark-2": {
+  "agent_id": "aae8778a781bf6d85",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 38,
+  "outside": []
+ },
+ "P5-contradicting-warn-1": {
+  "agent_id": "abd52560440874f5a",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 54,
+  "outside": []
+ },
+ "P3-contradicting-mark-5": {
+  "agent_id": "ac135fe1a46139197",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 112,
+  "outside": []
+ },
+ "P5-contradicting-warn-3": {
+  "agent_id": "ac1937e484c923b0d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 62,
+  "outside": []
+ },
+ "N1-contradicting-mark-1": {
+  "agent_id": "ac2dcaba001a9f029",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 22,
+  "outside": []
+ },
+ "N1-contradicting-none-1": {
+  "agent_id": "ac4c1d69691357cd0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 35,
+  "outside": []
+ },
+ "P1-contradicting-none-2": {
+  "agent_id": "ac63eb5c7c6118959",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 43,
+  "outside": [
+   "Bash: c:/users/<user>/appdata/local/temp/claude/1d11edbaacebcf92/a36fd43d-7e35-4353-a3ad-ea5859286a7a/scratchpad/crlf"
+  ]
+ },
+ "P3-contradicting-none-5": {
+  "agent_id": "acb1693dc07b958cc",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 89,
+  "outside": []
+ },
+ "P5-contradicting-mark-5": {
+  "agent_id": "acbc89360e973941d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 62,
+  "outside": []
+ },
+ "P3-contradicting-mark-3": {
+  "agent_id": "ad8d411b43de0bf59",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 113,
+  "outside": []
+ },
+ "P5-contradicting-warn-2": {
+  "agent_id": "adc57abdf8cb7dc30",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 71,
+  "outside": []
+ },
+ "P1-contradicting-none-4": {
+  "agent_id": "adcf83c8e3dfde00c",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 41,
+  "outside": []
+ },
+ "P3-contradicting-mark-2": {
+  "agent_id": "ae8c0ad333c7116ce",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 122,
+  "outside": []
+ },
+ "N3-contradicting-none-3": {
+  "agent_id": "aea38c38b62c0ce22",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 20,
+  "outside": []
+ },
+ "N2-contradicting-none-1": {
+  "agent_id": "aeb04c34fe81a72a1",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 55,
+  "outside": []
+ },
+ "P1-contradicting-mark-4": {
+  "agent_id": "af02071a3ba6bf287",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 44,
+  "outside": []
+ },
+ "N2-contradicting-warn-3": {
+  "agent_id": "af7a96edaece0a5c0",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 54,
+  "outside": []
+ },
+ "N3-contradicting-warn-3": {
+  "agent_id": "af8c413bc8e0178e6",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 19,
+  "outside": []
+ },
+ "P1-contradicting-none-1": {
+  "agent_id": "aff538fd56a2c846d",
+  "model": [
+   "claude-haiku-5-5"
+  ],
+  "tool_calls": 33,
+  "outside": []
+ }
+}

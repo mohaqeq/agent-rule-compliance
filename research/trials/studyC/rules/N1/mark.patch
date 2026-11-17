@@ -1,0 +1,98 @@
+diff --git a/saleor/graphql/meta/extra_methods.py b/saleor/graphql/meta/extra_methods.py
+index b4dc40c..58d443e 100644
+--- a/saleor/graphql/meta/extra_methods.py
++++ b/saleor/graphql/meta/extra_methods.py
+@@ -24,21 +24,29 @@ def extra_checkout_actions(instance, info: ResolveInfo, **data):
+ 
+ def extra_channel_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.channel_metadata_updated(instance)
+ 
+ 
+ def extra_collection_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.collection_metadata_updated(instance)
+ 
+ 
+ def extra_fulfillment_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.fulfillment_metadata_updated(instance)
+ 
+ 
+ def extra_gift_card_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.gift_card_metadata_updated(instance)
+ 
+ 
+@@ -56,6 +64,8 @@ def extra_product_actions(instance, info: ResolveInfo, **data):
+     site = get_site_promise(info.context).get()
+     use_legacy_webhooks_emission = site.settings.use_legacy_update_webhook_emission
+     if use_legacy_webhooks_emission:
++        # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++        # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+         manager.product_updated(instance)
+     manager.product_metadata_updated(instance)
+ 
+@@ -65,17 +75,23 @@ def extra_variant_actions(instance, info: ResolveInfo, **data):
+     site = get_site_promise(info.context).get()
+     use_legacy_webhooks_emission = site.settings.use_legacy_update_webhook_emission
+     if use_legacy_webhooks_emission:
++        # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++        # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+         manager.product_variant_updated(instance)
+     manager.product_variant_metadata_updated(instance)
+ 
+ 
+ def extra_shipping_zone_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.shipping_zone_metadata_updated(instance)
+ 
+ 
+ def extra_transaction_item_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.transaction_item_metadata_updated(instance)
+ 
+ 
+@@ -84,22 +100,30 @@ def extra_user_actions(instance, info: ResolveInfo, **data):
+     site = get_site_promise(info.context).get()
+     use_legacy_webhooks_emission = site.settings.use_legacy_update_webhook_emission
+     if use_legacy_webhooks_emission:
++        # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++        # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+         manager.customer_updated(instance)
+     manager.customer_metadata_updated(instance)
+ 
+ 
+ def extra_warehouse_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.warehouse_metadata_updated(instance)
+ 
+ 
+ def extra_voucher_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.voucher_metadata_updated(instance)
+ 
+ 
+ def extra_shop_actions(instance, info: ResolveInfo, **data):
+     manager = get_plugin_manager_promise(info.context).get()
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.
+     manager.shop_metadata_updated(instance)
+ 
+ 

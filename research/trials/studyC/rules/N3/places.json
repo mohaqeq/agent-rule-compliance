@@ -1,0 +1,17 @@
+{
+ "source": "scan",
+ "places": [
+  {
+   "path": "saleor/graphql/channel/utils.py",
+   "line": 122,
+   "function": "delete_invalid_warehouse_to_shipping_zone_relations",
+   "comment_above": 121
+  },
+  {
+   "path": "saleor/graphql/channel/utils.py",
+   "line": 152,
+   "function": "_get_invalid_shipping_zone_warehouses_ids",
+   "comment_above": 151
+  }
+ ]
+}

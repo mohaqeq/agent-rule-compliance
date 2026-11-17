@@ -1,0 +1,39 @@
+diff --git a/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py b/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
+index 05c6d66..86b427f 100644
+--- a/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
++++ b/saleor/graphql/account/bulk_mutations/customer_bulk_delete.py
+@@ -60,6 +60,8 @@ class CustomerBulkDelete(CustomerDeleteMixin, UserBulkDelete):
+         instances = list(queryset)
+         with traced_atomic_transaction():
+             delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
++            # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++            # Rule: When the customer a gift card is assigned to is deleted, the card must not silently become free for anyone to use again; it stays restricted until staff reassign it.
+             queryset.delete()
+         webhooks = get_webhooks_for_event(WebhookEventAsyncType.CUSTOMER_DELETED)
+         manager = get_plugin_manager_promise(info.context).get()
+diff --git a/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py b/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py
+index 021d925..c603ba0 100644
+--- a/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py
++++ b/saleor/graphql/account/bulk_mutations/staff_bulk_delete.py
+@@ -73,6 +73,8 @@ class StaffBulkDelete(StaffDeleteMixin, UserBulkDelete):
+         instances = list(queryset)
+         with traced_atomic_transaction():
+             delete_user_unique_attribute_values(queryset.values_list("pk", flat=True))
++            # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++            # Rule: When the customer a gift card is assigned to is deleted, the card must not silently become free for anyone to use again; it stays restricted until staff reassign it.
+             queryset.delete()
+         manager = get_plugin_manager_promise(info.context).get()
+         webhooks = get_webhooks_for_event(WebhookEventAsyncType.STAFF_DELETED)
+diff --git a/saleor/graphql/account/mutations/staff/customer_delete.py b/saleor/graphql/account/mutations/staff/customer_delete.py
+index 703f612..e601b7e 100644
+--- a/saleor/graphql/account/mutations/staff/customer_delete.py
++++ b/saleor/graphql/account/mutations/staff/customer_delete.py
+@@ -38,6 +38,8 @@ class CustomerDelete(CustomerDeleteMixin, UserDelete):
+             description="External ID of a customer to update.",
+         )
+ 
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: When the customer a gift card is assigned to is deleted, the card must not silently become free for anyone to use again; it stays restricted until staff reassign it.
+     @classmethod
+     def perform_mutation(cls, root, info: ResolveInfo, /, **data):
+         with traced_atomic_transaction():

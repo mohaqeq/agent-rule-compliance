@@ -1,0 +1,17 @@
+{
+ "source": "scan",
+ "places": [
+  {
+   "path": "saleor/graphql/product/bulk_mutations/product_variant_stocks_create.py",
+   "line": 111,
+   "function": "perform_mutation",
+   "comment_above": 111
+  },
+  {
+   "path": "saleor/graphql/product/bulk_mutations/product_variant_stocks_update.py",
+   "line": 157,
+   "function": "perform_mutation",
+   "comment_above": 157
+  }
+ ]
+}

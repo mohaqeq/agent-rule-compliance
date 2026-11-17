@@ -39,6 +39,27 @@ Limits: one repository (saleor), six rules, models from one supplier.
 Full report: [research/docs/13-study-b-results.md](research/docs/13-study-b-results.md).
 The stronger model gave the same result.
 
+**Study D (complete, no new runs).** Can a general static check find the violations?
+
+- Static checks, written from the rule texts only, found 26% of the 156 violations on the changed lines.
+- 39% of the violations come from old code in the touched files. 35% have no static form, and only a test finds them.
+- The same checks find the wrong precedent before the change, for four of six rules.
+
+Full report: [research/docs/14-study-d-results.md](research/docs/14-study-d-results.md).
+
+**Study C (complete, 144 runs, two models).** Does information about the wrong precedent prevent the violation?
+
+| What the agent gets | Haiku | Sonnet |
+|---|---|---|
+| Nothing | 87% | 94% |
+| A comment at the old wrong code: "do not copy it", and the rule in one sentence | 20% | 18% |
+| The same text in the ticket, with the list of places | 7% | 33% |
+
+- The two measures are as effective as the full rule text of Study B, and a tool can make them.
+- With the warning in the ticket, Haiku also repaired the old code in all scanned runs.
+
+Full report: [research/docs/15-study-c-results.md](research/docs/15-study-c-results.md).
+
 ## Where this work comes from
 
 This repository continues [unified-context-notation](https://github.com/mohaqeq/unified-context-notation). That
@@ -54,7 +75,7 @@ gave no benefit, and that agents copy the code near the change. This repository 
 
 | Path | Contents |
 |---|---|
-| [research/docs](research/docs/) | The phase 2 plan, the Study A and Study B results, and ideas for later studies |
+| [research/docs](research/docs/) | The phase 2 plan, the results of Studies A to D, and ideas for later studies |
 | [research/trials/studyA](research/trials/studyA/PREREGISTRATION.md) | Pre-registration, 21 tasks with graders, results, analysis output, tool-call logs |
 | [research/trials/saleor](research/trials/saleor/NOTES.md) | The model of the saleor rules and the phase 1 saleor tasks |
 | [research/trials/containers](research/trials/containers/README.md) | Container images for grading and statistics |

@@ -1,0 +1,506 @@
+[
+ {
+  "run": "N1-contradicting-mark-1",
+  "rule_id": "N1",
+  "arm": "mark",
+  "violations": 0,
+  "after": 15,
+  "marks_left": 12,
+  "marks": 12,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-mark-2",
+  "rule_id": "N1",
+  "arm": "mark",
+  "violations": 0,
+  "after": 15,
+  "marks_left": 12,
+  "marks": 12,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-mark-3",
+  "rule_id": "N1",
+  "arm": "mark",
+  "violations": 0,
+  "after": 15,
+  "marks_left": 12,
+  "marks": 12,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-none-1",
+  "rule_id": "N1",
+  "arm": "none",
+  "violations": 1,
+  "after": 16,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-none-2",
+  "rule_id": "N1",
+  "arm": "none",
+  "violations": 1,
+  "after": 16,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-none-3",
+  "rule_id": "N1",
+  "arm": "none",
+  "violations": 1,
+  "after": 16,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-warn-1",
+  "rule_id": "N1",
+  "arm": "warn",
+  "violations": 0,
+  "after": 15,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-warn-2",
+  "rule_id": "N1",
+  "arm": "warn",
+  "violations": 0,
+  "after": 15,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N1-contradicting-warn-3",
+  "rule_id": "N1",
+  "arm": "warn",
+  "violations": 0,
+  "after": 15,
+  "base": 15,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N2-contradicting-mark-1",
+  "rule_id": "N2",
+  "arm": "mark",
+  "violations": 0,
+  "after": 4,
+  "marks_left": 2,
+  "marks": 2,
+  "base": 5,
+  "clean": false,
+  "reduced": true
+ },
+ {
+  "run": "N2-contradicting-mark-2",
+  "rule_id": "N2",
+  "arm": "mark",
+  "violations": 0,
+  "after": 4,
+  "marks_left": 2,
+  "marks": 2,
+  "base": 5,
+  "clean": false,
+  "reduced": true
+ },
+ {
+  "run": "N2-contradicting-mark-3",
+  "rule_id": "N2",
+  "arm": "mark",
+  "violations": 0,
+  "after": 2,
+  "marks_left": 1,
+  "marks": 2,
+  "base": 5,
+  "clean": false,
+  "reduced": true
+ },
+ {
+  "run": "N2-contradicting-none-1",
+  "rule_id": "N2",
+  "arm": "none",
+  "violations": 1,
+  "after": 5,
+  "base": 5,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N2-contradicting-none-2",
+  "rule_id": "N2",
+  "arm": "none",
+  "violations": 1,
+  "after": 5,
+  "base": 5,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N2-contradicting-none-3",
+  "rule_id": "N2",
+  "arm": "none",
+  "violations": 1,
+  "after": 5,
+  "base": 5,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N2-contradicting-warn-1",
+  "rule_id": "N2",
+  "arm": "warn",
+  "violations": 0,
+  "after": 5,
+  "base": 5,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N2-contradicting-warn-2",
+  "rule_id": "N2",
+  "arm": "warn",
+  "violations": 0,
+  "after": 5,
+  "base": 5,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N2-contradicting-warn-3",
+  "rule_id": "N2",
+  "arm": "warn",
+  "violations": 0,
+  "after": 5,
+  "base": 5,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-mark-1",
+  "rule_id": "N3",
+  "arm": "mark",
+  "violations": 0,
+  "after": 2,
+  "marks_left": 2,
+  "marks": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-mark-2",
+  "rule_id": "N3",
+  "arm": "mark",
+  "violations": 0,
+  "after": 2,
+  "marks_left": 2,
+  "marks": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-mark-3",
+  "rule_id": "N3",
+  "arm": "mark",
+  "violations": 0,
+  "after": 2,
+  "marks_left": 2,
+  "marks": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-none-1",
+  "rule_id": "N3",
+  "arm": "none",
+  "violations": 1,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-none-2",
+  "rule_id": "N3",
+  "arm": "none",
+  "violations": 1,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-none-3",
+  "rule_id": "N3",
+  "arm": "none",
+  "violations": 1,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-warn-1",
+  "rule_id": "N3",
+  "arm": "warn",
+  "violations": 0,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-warn-2",
+  "rule_id": "N3",
+  "arm": "warn",
+  "violations": 0,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "N3-contradicting-warn-3",
+  "rule_id": "N3",
+  "arm": "warn",
+  "violations": 0,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "P1-contradicting-mark-1",
+  "rule_id": "P1",
+  "arm": "mark",
+  "violations": 0,
+  "marks_left": 3,
+  "marks": 3
+ },
+ {
+  "run": "P1-contradicting-mark-2",
+  "rule_id": "P1",
+  "arm": "mark",
+  "violations": 1,
+  "marks_left": 3,
+  "marks": 3
+ },
+ {
+  "run": "P1-contradicting-mark-3",
+  "rule_id": "P1",
+  "arm": "mark",
+  "violations": 0,
+  "marks_left": 3,
+  "marks": 3
+ },
+ {
+  "run": "P1-contradicting-none-1",
+  "rule_id": "P1",
+  "arm": "none",
+  "violations": 1
+ },
+ {
+  "run": "P1-contradicting-none-2",
+  "rule_id": "P1",
+  "arm": "none",
+  "violations": 1
+ },
+ {
+  "run": "P1-contradicting-none-3",
+  "rule_id": "P1",
+  "arm": "none",
+  "violations": 1
+ },
+ {
+  "run": "P1-contradicting-warn-1",
+  "rule_id": "P1",
+  "arm": "warn",
+  "violations": 0
+ },
+ {
+  "run": "P1-contradicting-warn-2",
+  "rule_id": "P1",
+  "arm": "warn",
+  "violations": 1
+ },
+ {
+  "run": "P1-contradicting-warn-3",
+  "rule_id": "P1",
+  "arm": "warn",
+  "violations": 0
+ },
+ {
+  "run": "P3-contradicting-mark-1",
+  "rule_id": "P3",
+  "arm": "mark",
+  "violations": 0,
+  "after": 0,
+  "marks_left": 0,
+  "marks": 2,
+  "base": 2,
+  "clean": true,
+  "reduced": true
+ },
+ {
+  "run": "P3-contradicting-mark-2",
+  "rule_id": "P3",
+  "arm": "mark",
+  "violations": 0,
+  "after": 0,
+  "marks_left": 0,
+  "marks": 2,
+  "base": 2,
+  "clean": true,
+  "reduced": true
+ },
+ {
+  "run": "P3-contradicting-mark-3",
+  "rule_id": "P3",
+  "arm": "mark",
+  "violations": 0,
+  "after": 0,
+  "marks_left": 0,
+  "marks": 2,
+  "base": 2,
+  "clean": true,
+  "reduced": true
+ },
+ {
+  "run": "P3-contradicting-none-1",
+  "rule_id": "P3",
+  "arm": "none",
+  "violations": 1,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "P3-contradicting-none-2",
+  "rule_id": "P3",
+  "arm": "none",
+  "violations": 1,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "P3-contradicting-none-3",
+  "rule_id": "P3",
+  "arm": "none",
+  "violations": 1,
+  "after": 2,
+  "base": 2,
+  "clean": false,
+  "reduced": false
+ },
+ {
+  "run": "P3-contradicting-warn-1",
+  "rule_id": "P3",
+  "arm": "warn",
+  "violations": 1,
+  "after": 0,
+  "base": 2,
+  "clean": true,
+  "reduced": true
+ },
+ {
+  "run": "P3-contradicting-warn-2",
+  "rule_id": "P3",
+  "arm": "warn",
+  "violations": 0,
+  "after": 0,
+  "base": 2,
+  "clean": true,
+  "reduced": true
+ },
+ {
+  "run": "P3-contradicting-warn-3",
+  "rule_id": "P3",
+  "arm": "warn",
+  "violations": 1,
+  "after": 0,
+  "base": 2,
+  "clean": true,
+  "reduced": true
+ },
+ {
+  "run": "P5-contradicting-mark-1",
+  "rule_id": "P5",
+  "arm": "mark",
+  "violations": null,
+  "marks_left": 3,
+  "marks": 3
+ },
+ {
+  "run": "P5-contradicting-mark-2",
+  "rule_id": "P5",
+  "arm": "mark",
+  "violations": 1,
+  "marks_left": 3,
+  "marks": 3
+ },
+ {
+  "run": "P5-contradicting-mark-3",
+  "rule_id": "P5",
+  "arm": "mark",
+  "violations": 1,
+  "marks_left": 3,
+  "marks": 3
+ },
+ {
+  "run": "P5-contradicting-none-1",
+  "rule_id": "P5",
+  "arm": "none",
+  "violations": 1
+ },
+ {
+  "run": "P5-contradicting-none-2",
+  "rule_id": "P5",
+  "arm": "none",
+  "violations": 0
+ },
+ {
+  "run": "P5-contradicting-none-3",
+  "rule_id": "P5",
+  "arm": "none",
+  "violations": 1
+ },
+ {
+  "run": "P5-contradicting-warn-1",
+  "rule_id": "P5",
+  "arm": "warn",
+  "violations": 1
+ },
+ {
+  "run": "P5-contradicting-warn-2",
+  "rule_id": "P5",
+  "arm": "warn",
+  "violations": 1
+ },
+ {
+  "run": "P5-contradicting-warn-3",
+  "rule_id": "P5",
+  "arm": "warn",
+  "violations": 1
+ }
+]

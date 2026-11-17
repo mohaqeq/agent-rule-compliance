@@ -1,0 +1,12 @@
+{
+ "P1": [
+  {"path": "saleor/graphql/account/bulk_mutations/customer_bulk_delete.py", "line": 63},
+  {"path": "saleor/graphql/account/bulk_mutations/staff_bulk_delete.py", "line": 76},
+  {"path": "saleor/graphql/account/mutations/staff/customer_delete.py", "line": 42}
+ ],
+ "P5": [
+  {"path": "saleor/graphql/giftcard/mutations/gift_card_balance_adjust.py", "line": 87},
+  {"path": "saleor/graphql/giftcard/mutations/gift_card_update.py", "line": 82},
+  {"path": "saleor/graphql/giftcard/mutations/gift_card_activate.py", "line": 47}
+ ]
+}

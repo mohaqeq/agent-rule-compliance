@@ -1,0 +1,8 @@
+{
+ "N1": "When triggering plugin manager methods to dispatch webhook events, always use `call_event` from `saleor.core.utils.events` instead of calling the manager method directly.",
+ "N2": "A thumbnail field must let the `sizeRounding` argument choose how a requested size is matched; the default is `UP`, and `NEAREST` is opt-in.",
+ "N3": "Don't use the `id` DB field in Django models, instead use `pk` when referencing the object ID field from a model.",
+ "P1": "When the customer a gift card is assigned to is deleted, the card must not silently become free for anyone to use again; it stays restricted until staff reassign it.",
+ "P3": "Never read `settings.SITE_ID` directly to identify the current site; resolve the site with `Site.objects.get_current()` (or the `get_site_promise` dataloader in the GraphQL layer).",
+ "P5": "Any gift card balance operation must be atomic: never read a balance, decide, and write it back as separate steps."
+}

@@ -366,6 +366,19 @@ def prepare(spec, out):
                             raise SystemExit(f"{rid}: no prose.md for rule {t.get('rule_id')} in {spec['rules_dir']}")
                         intro = f"{PROSE_LINE}\n\n{prose}"
                         arm_info_extra = {"prose_chars": len(prose)}
+                    if guidance in ("mark", "warn"):  # Study C: information about old code that breaks the rule
+                        rdir = os.path.join(spec["rules_dir"], t["rule_id"])
+                        if guidance == "mark":  # comments at the old code; they become part of the base commit
+                            patch = os.path.abspath(os.path.join(rdir, "mark.patch"))
+                            r = run(["git", "-C", ws, "apply", "--whitespace=nowarn", patch])
+                            if r.returncode != 0:
+                                raise SystemExit(f"{rid}: mark.patch does not apply: {r.stderr.strip()[-300:]}")
+                            arm_info_extra = {"mark_sha": sha(patch)}
+                        else:  # the same information as a paragraph of the prompt
+                            with open(os.path.join(rdir, "warn.md"), encoding="utf-8") as fh:
+                                warn = fh.read().strip()
+                            intro = f"Read the code for context.\n\n{warn}"
+                            arm_info_extra = {"warn_chars": len(warn)}
                     if guidance == "ucn":
                         shutil.copy(spec["model"], os.path.join(ws, "model.ucn"))  # the projection needs it; the agent does not
                         if not ucn_rule:

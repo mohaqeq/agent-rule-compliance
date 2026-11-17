@@ -1,0 +1,23 @@
+{
+ "source": "hand",
+ "places": [
+  {
+   "path": "saleor/graphql/account/bulk_mutations/customer_bulk_delete.py",
+   "line": 63,
+   "function": "bulk_action",
+   "comment_above": 63
+  },
+  {
+   "path": "saleor/graphql/account/bulk_mutations/staff_bulk_delete.py",
+   "line": 76,
+   "function": "bulk_action",
+   "comment_above": 76
+  },
+  {
+   "path": "saleor/graphql/account/mutations/staff/customer_delete.py",
+   "line": 42,
+   "function": "perform_mutation",
+   "comment_above": 41
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "source": "scan",
+ "places": [
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 27,
+   "function": "extra_channel_actions",
+   "comment_above": 27
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 32,
+   "function": "extra_collection_actions",
+   "comment_above": 32
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 37,
+   "function": "extra_fulfillment_actions",
+   "comment_above": 37
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 42,
+   "function": "extra_gift_card_actions",
+   "comment_above": 42
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 59,
+   "function": "extra_product_actions",
+   "comment_above": 59
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 68,
+   "function": "extra_variant_actions",
+   "comment_above": 68
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 74,
+   "function": "extra_shipping_zone_actions",
+   "comment_above": 74
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 79,
+   "function": "extra_transaction_item_actions",
+   "comment_above": 79
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 87,
+   "function": "extra_user_actions",
+   "comment_above": 87
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 93,
+   "function": "extra_warehouse_actions",
+   "comment_above": 93
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 98,
+   "function": "extra_voucher_actions",
+   "comment_above": 98
+  },
+  {
+   "path": "saleor/graphql/meta/extra_methods.py",
+   "line": 103,
+   "function": "extra_shop_actions",
+   "comment_above": 103
+  }
+ ]
+}

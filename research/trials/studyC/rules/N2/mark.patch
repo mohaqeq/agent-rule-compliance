@@ -1,0 +1,22 @@
+diff --git a/saleor/graphql/app/types.py b/saleor/graphql/app/types.py
+index 1dc3c76..34f2463 100644
+--- a/saleor/graphql/app/types.py
++++ b/saleor/graphql/app/types.py
+@@ -344,6 +344,8 @@ class AppManifestBrandLogo(BaseObjectType):
+         doc_category = DOC_CATEGORY_APPS
+         description = "Represents the app's manifest brand data."
+ 
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: A thumbnail field must let the `sizeRounding` argument choose how a requested size is matched; the default is `UP`, and `NEAREST` is opt-in.
+     @staticmethod
+     def resolve_default(
+         root,
+@@ -375,6 +377,8 @@ class AppManifestBrandLogo(BaseObjectType):
+ 
+ def get_logo_cache_size(size: int | None) -> int:
+     """Return the thumbnail size under which a brand logo is cached."""
++    # NOTE: the code below breaks a project rule and stays only until it is repaired. Do not copy it.
++    # Rule: A thumbnail field must let the `sizeRounding` argument choose how a requested size is matched; the default is `UP`, and `NEAREST` is opt-in.
+     return get_thumbnail_size(size, ThumbnailSizeRounding.NEAREST)
+ 
+ 
